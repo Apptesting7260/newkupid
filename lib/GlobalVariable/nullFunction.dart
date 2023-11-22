@@ -1,0 +1,95 @@
+
+import '../match_maker/match_maker_profile_update.dart';
+import '../match_seeker/Requests/SeekeerIncominSingalRequestPage.dart';
+import '../match_seeker/lever/StaticLiverPool.dart';
+import '../match_seeker/lever/new_liver.dart';
+import '../match_seeker/profile/interest.dart';
+import 'GlobalVariable.dart';
+
+class GlobalVarribalNull{
+  void NullFunction(){
+
+    SelectedGender=null;
+   SelectedLocation=null;
+   SelectedMtachMakerExperience=null;
+   SelectedDate=null;
+    startdate=null;
+     datestring=null;
+   imgFile=null;
+   Matchtype=null;
+   match_with_id=null;
+   match_from_id=null;
+   Requeststatus=null;
+    Ocupasion=null;
+     verification_method="nationality_identity_card";
+   nationality=null;
+     ImagetoUpload=null;
+   Subcriptiontype=null;
+    isSpinTimerVisible = false;
+   choose=null;
+   listAsString=null;
+   roomid=null;
+   otpVerification=null;
+     galleryImageFiles = [];
+    interests=[];
+   selectSmoke=null;
+    selectDrink=null;
+   selectchildren=null;
+   selectEducation=null;
+   selectHopping=null;
+    selectGender=null;
+    isVisible = true;
+   isNotVisible = false;
+    Liverpooldprofiles=[];
+    isboxloading=false;
+    selectedInterests = [];
+    myId;
+    pachedemail;
+    messagetype="text";
+   messageimgurl;
+   messagaudiourl;
+    anotherchatuser;
+    makerchatuser;
+  Makeridchat;
+    makeride;
+    rolevalue=1;
+    videoFile=null;
+   selectedseekerid=null;
+    selectExperience=null;
+   match_fromid=null;
+   requestId=null;
+   match_withid=null;
+   chatimage=null;
+   chatname=null;
+   chatimage1=null;
+   chatname1=null;
+   Makerid=null;
+   Sikeraddress=null;
+    BioTitle=null;
+    BioDescription=null;
+    IntrestedIn=null;
+    Interests=null;
+   SikerReligon=null;
+    selectedCountry = '';
+    userIdsiker=null;
+    requestIdsiker=null;
+    requestid=null;
+   requestype="1";
+   action_with=null;
+   action_from=null;
+   actiontype=null;
+    liverpullrequested;
+    spinnwillrequested;
+    startTime;
+     endTime;
+     selectedRadioTile=0;
+
+     islivierpooled=false;
+     isspinedwill=false;
+    name1;
+    name2;
+   img1;
+  im2;
+     images = [];
+  }
+}

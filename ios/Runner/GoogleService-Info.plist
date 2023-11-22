@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>662975972473-oim1defkctlb66k1dai2tms6jsacnsrg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.662975972473-oim1defkctlb66k1dai2tms6jsacnsrg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBSz1v6301Ux4l60SMiykOFCWiSTfark40</string>
+	<key>GCM_SENDER_ID</key>
+	<string>662975972473</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cupid.match.cupidMatch</string>
+	<key>PROJECT_ID</key>
+	<string>kupid-85be3</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kupid-85be3.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:662975972473:ios:095df7cadd7225fe9e40a8</string>
+</dict>
+</plist>

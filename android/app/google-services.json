@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "662975972473",
+    "project_id": "kupid-85be3",
+    "storage_bucket": "kupid-85be3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662975972473:android:7fa7d38146a4aae39e40a8",
+        "android_client_info": {
+          "package_name": "com.cupid.match.cupid_match"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662975972473-i5sct6sia5pd5r7i24v9ltcbvmekj7mg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWzWLgH2PqdkC-1t7ebwWdOt1hP0wGQc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662975972473-i5sct6sia5pd5r7i24v9ltcbvmekj7mg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "662975972473-oim1defkctlb66k1dai2tms6jsacnsrg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cupid.match.cupidMatch"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
