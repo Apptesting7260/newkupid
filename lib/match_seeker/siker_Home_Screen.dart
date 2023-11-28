@@ -819,29 +819,31 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> {
                                                   child: Container(
                                                       child: Column(
                                                         children: [
-                                                          Row(
-                                                            children: [
-                                                              Padding(
-                                                                padding: const EdgeInsets
-                                                                    .only(
-                                                                    left: 20,
-                                                                    top: 10,
-                                                                    bottom:
-                                                                    10),
-                                                                child: Text(
-                                                                  "Seeker ",
+                                                          Expanded(
+                                                            child: Row(
+                                                              children: [
+                                                                Padding(
+                                                                  padding: const EdgeInsets
+                                                                      .only(
+                                                                      left: 20,
+                                                                      top: 10,
+                                                                      bottom:
+                                                                      10),
+                                                                  child: Text(
+                                                                    "Seeker ",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .pink),
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  " Requested",
                                                                   style: TextStyle(
                                                                       color: Colors
-                                                                          .pink),
-                                                                ),
-                                                              ),
-                                                              Text(
-                                                                " Requested",
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .black),
-                                                              )
-                                                            ],
+                                                                          .black),
+                                                                )
+                                                              ],
+                                                            ),
                                                           ),
                                                           Row(
                                                             crossAxisAlignment:
@@ -911,7 +913,7 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> {
                                                                     child: Text(
 
 
-formattedDate,
+                                                                        formattedDate,
 
                                                                       style: TextStyle(
                                                                           color:

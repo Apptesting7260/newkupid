@@ -57,9 +57,17 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
   FocusNode _dropdownFocus1 = FocusNode();
   FocusNode _dropdownFocus2 = FocusNode();
   FocusNode _dropdownFocus3 = FocusNode();
+      FocusNode _dropdownFocus4 = FocusNode();
+  FocusNode _dropdownFocus5 = FocusNode();
+  FocusNode _dropdownFocus6 = FocusNode();
+    FocusNode _dropdownFocus7 = FocusNode();
   bool _isDropdownOpen1 = false;
   bool _isDropdownOpen2 = false;
   bool _isDropdownOpen3 = false;
+    bool _isDropdownOpen4 = false;
+  bool _isDropdownOpen5 = false;
+  bool _isDropdownOpen6 = false;
+  bool _isDropdownOpen7 = false;
   bool _chooseAnswer1 = false;
   bool _chooseAnswer2 = false;
   bool _chooseAnswer3 = false;
@@ -334,9 +342,16 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
 
   String? selectLocalGender;
   var genderItems = ["Male", "Female", "Other"];
-
+  var smokeorNot = ["Yes", "No"];
+  var haveChildren = ["Want some day", "Have some"," Not Sure Yet","No"];
+  var education = ["High School", "Trade School", "College","University Undergraduate","Graduate School"];
+  var hopping = ["Something Casual", "A Relationship", "Marriage Minded","Not sure yet"];
+  String? selectLocalSmoke;
+  String? selectLocalDrike;
   String? selectReligion;
-  var religionItems = ["Hindus", "Muslims", "Sikhs"];
+  String? selectLocalChildren;
+  String? selectLocalEducation;
+  String? selectLocakHopping;
 
   void _onDropdownFocusChange1() {
     setState(() {
@@ -361,6 +376,35 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
       print(_isDropdownOpen3);
     });
   }
+    void _onDropdownFocusChange4() {
+    setState(() {
+      _isDropdownOpen4 = _dropdownFocus4.hasFocus;
+
+      print(_isDropdownOpen4);
+    });
+  }
+     void _onDropdownFocusChange5() {
+    setState(() {
+      _isDropdownOpen5 = _dropdownFocus5.hasFocus;
+
+      print(_isDropdownOpen5);
+    });
+  }
+    void _onDropdownFocusChange6() {
+    setState(() {
+      _isDropdownOpen6 = _dropdownFocus6.hasFocus;
+
+      print(_isDropdownOpen6);
+    });
+  }
+    void _onDropdownFocusChange7() {
+    setState(() {
+      _isDropdownOpen7 = _dropdownFocus7.hasFocus;
+
+      print(_isDropdownOpen7);
+    });
+  }
+
   var data;
   bool containerBoeder = false;
   bool phoneContainerBorder = false;
@@ -378,12 +422,22 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
     _dropdownFocus1.addListener(_onDropdownFocusChange1);
     _dropdownFocus2.addListener(_onDropdownFocusChange2);
     _dropdownFocus3.addListener(_onDropdownFocusChange3);
+         _dropdownFocus4.addListener(_onDropdownFocusChange4);
+      _dropdownFocus5.addListener(_onDropdownFocusChange5);
+       _dropdownFocus6.addListener(_onDropdownFocusChange6);
+        _dropdownFocus7.addListener(_onDropdownFocusChange7);
     startdate=DateFormat("dd-MM-yyyy").parse(datestring!);;
 
-
+datestring=datestring;
     selectGender = null;
-    datestring = null;
+  
     imgFile = null;
+       selectSmoke=null;
+    selectDrink=null;
+    selectchildren=null;
+    selectEducation=null;
+    selectHopping=null;
+    selectGender=null;
 
 if(choose==SeekerProfileControllerInstanse
     .FirstanswerController.value
@@ -406,7 +460,7 @@ else if(choose==SeekerProfileControllerInstanse
 
   @override
   Widget build(BuildContext context) {
-print( SeekerProfileControllerInstanse.imageUrl.value.toString());
+print( SeekerProfileControllerInstanse.imageUrl.toString());
 print("===============================================================================================");
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
@@ -476,14 +530,13 @@ print("=========================================================================
                               fit: StackFit.expand,
                               children: [
                                 imgFile==null? CircleAvatar(
-                                backgroundImage:  SeekerProfileControllerInstanse.imageUrl.value ==
-                                    null||  SeekerProfileControllerInstanse.imageUrl.value==""
+                                backgroundImage:  SeekerProfileControllerInstanse.imageUrl == null||  SeekerProfileControllerInstanse.imageUrl==""
                                     ? CachedNetworkImageProvider(
                                   'https://cdn-icons-png.flaticon.com/512/847/847969.png?w=740&t=st=1691391117~exp=1691391717~hmac=c402e52cf04c8941cd7bc1fae55a6ed27830a0e3f82a34da252300f7b68ce614',
 
                                 )
                                     :CachedNetworkImageProvider(
-                                    SeekerProfileControllerInstanse.imageUrl.value.toString(), )
+                                    SeekerProfileControllerInstanse.imageUrl.toString(), )
                                 ):CircleAvatar(
 
 
@@ -738,10 +791,11 @@ print("=========================================================================
                                   Container(
                                     width: Get.width * 0.7,
                                     child: TextFormField(
+                                      
                                       maxLength: 15,
                                       controller:SeekerProfileControllerInstanse
                                           .PhoneController.value ,
-                                      enabled: true,
+                                      enabled: SeekerProfileControllerInstanse.phone_verify.value==true?false:true,
                                       keyboardType: TextInputType.number,
                                       textAlignVertical: TextAlignVertical
                                           .center,
@@ -823,7 +877,7 @@ print("=========================================================================
                                   ),
 
                                   InkWell(
-                                    child: SeekerProfileControllerInstanse.verified.value ==
+                                    child: SeekerProfileControllerInstanse.phone_verify.value ==
                                         false
                                         ? InkWell(
                                       onTap: () {
@@ -914,7 +968,7 @@ print("=========================================================================
                                           .center,
                                       controller: SeekerProfileControllerInstanse
                                           .EmailController.value,
-                                      enabled: true,
+                                      enabled: SeekerProfileControllerInstanse.verified.value==true?false:true,
                                       decoration: InputDecoration(
                                         hintText: "example@gmail.com",
                                         border: InputBorder.none,
@@ -1131,57 +1185,57 @@ print("=========================================================================
 
                             // ***************************   Occupation Pjdfgjdsfds ***************************
 
-                            SizedBox(height: height * .03),
-                            Text(
-                              "Salary",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .titleSmall,
-                            ),
-                            SizedBox(height: height * .01),
-                            TextFormField(
-                              maxLength: 2,
-                              keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Please Enter Salary";
-                                } else {
-                                  return null;
-                                }
-                              },
-                              controller: SeekerProfileControllerInstanse
-                                  .SalaryController.value,
-                              decoration: InputDecoration(
-                                  suffixText: "LPA",
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(35.0)),
-                                      borderSide:
-                                      BorderSide(color: Color(0xffFE0091))),
-                                  hintStyle: TextStyle(
-                                      fontSize: 16, color: Color(0xffBABABA)),
-                                  contentPadding: EdgeInsets.all(18),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(35.0)),
-                                      borderSide:
-                                      BorderSide(color: Color(0xffBABABA))),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(35.0)),
-                                      borderSide:
-                                      BorderSide(color: Color(0xffBABABA))),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(35.0)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xffBABABA)),
-                                  ),
-                                  hintText: "Salary",
-                                  filled: true,
-                                  fillColor: Colors.white),
-                            ),
+                            // SizedBox(height: height * .03),
+                            // Text(
+                            //   "Salary",
+                            //   style: Theme
+                            //       .of(context)
+                            //       .textTheme
+                            //       .titleSmall,
+                            // ),
+                            // SizedBox(height: height * .01),
+                            // TextFormField(
+                            //   maxLength: 2,
+                            //   keyboardType: TextInputType.number,
+                            //   validator: (value) {
+                            //     if (value!.isEmpty) {
+                            //       return "Please Enter Salary";
+                            //     } else {
+                            //       return null;
+                            //     }
+                            //   },
+                            //   controller: SeekerProfileControllerInstanse
+                            //       .SalaryController.value,
+                            //   decoration: InputDecoration(
+                            //       suffixText: "LPA",
+                            //       focusedBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //           BorderRadius.all(Radius.circular(35.0)),
+                            //           borderSide:
+                            //           BorderSide(color: Color(0xffFE0091))),
+                            //       hintStyle: TextStyle(
+                            //           fontSize: 16, color: Color(0xffBABABA)),
+                            //       contentPadding: EdgeInsets.all(18),
+                            //       enabledBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //           BorderRadius.all(Radius.circular(35.0)),
+                            //           borderSide:
+                            //           BorderSide(color: Color(0xffBABABA))),
+                            //       errorBorder: OutlineInputBorder(
+                            //           borderRadius:
+                            //           BorderRadius.all(Radius.circular(35.0)),
+                            //           borderSide:
+                            //           BorderSide(color: Color(0xffBABABA))),
+                            //       focusedErrorBorder: OutlineInputBorder(
+                            //         borderRadius:
+                            //         BorderRadius.all(Radius.circular(35.0)),
+                            //         borderSide: BorderSide(
+                            //             color: Color(0xffBABABA)),
+                            //       ),
+                            //       hintText: "Salary",
+                            //       filled: true,
+                            //       fillColor: Colors.white),
+                            // ),
 
                             SizedBox(height: height * .03),
                             Text(
@@ -1412,91 +1466,508 @@ print("=========================================================================
                             SizedBox(height: height * .03),
 
                             // ****************  select Religion dropdown ***********************
-                            Text(
-                              "Religion",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .titleSmall,
-                            ),
-                            SizedBox(height: height * .01),
 
-                            Focus(
-                              focusNode: _dropdownFocus2,
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton2<String>(
-                                  isExpanded: true,
-                                  hint: Text("Select Religion"),
-                                  items: religionItems.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items),
-                                    );
-                                  }).toList(),
-                                  value: selectReligion,
-                                  onChanged: (String? value) {
-                                    setState(() {
-                                      selectReligion = value;
-                                      SikerReligon = value;
-                                    });
-                                  },
-                                  buttonStyleData: ButtonStyleData(
-                                    height: Get.height * 0.07,
-                                    padding:
-                                    const EdgeInsets.only(left: 14, right: 14),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      border: Border.all(
-                                          color: _isDropdownOpen2 == false
-                                              ? Colors.grey
-                                              : Colors
-                                              .pink // Set border color based on selected state
-                                      ),
-                                      color: Colors.white,
-                                    ),
+                             SizedBox(height: height * .03),
+                        Text(
+                          "Would you like to have children ?",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(height: height * .01),
+                        // ****************  select children or not dropdown ***********************
+                        Focus(
+                          focusNode: _dropdownFocus3,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: Text("Select"),
+                              items: haveChildren.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              value: selectLocalChildren,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  print(value);
+                                  selectLocalChildren = value;
+                                  selectchildren = value;
+                                  print(selectGender);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: Get.height * 0.07,
+                                padding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: _isDropdownOpen3 == false
+                                        ? Colors.grey
+                                        : Colors.pink,
                                   ),
-                                  iconStyleData: selectReligion == null
-                                      ? IconStyleData(
-                                    icon: Icon(Icons.keyboard_arrow_down),
-                                    iconSize: 30,
-                                    iconEnabledColor: Colors.black,
-                                  )
-                                      : IconStyleData(
-                                    icon: InkWell(
-                                      child: Icon(Icons.close),
-                                      onTap: () {
-                                        setState(() {
-                                          selectReligion = null;
-                                        });
-                                      },
-                                    ),
-                                    iconSize: 25,
-                                    iconEnabledColor: Colors.black,
-                                  ),
-                                  dropdownStyleData: DropdownStyleData(
-                                    width: Get.width * 0.89,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(14),
-                                      color: Colors.white,
-                                    ),
-                                    offset: const Offset(10, 0),
-                                    scrollbarTheme: ScrollbarThemeData(
-                                      radius: const Radius.circular(40),
-                                      thickness: MaterialStateProperty.all<
-                                          double>(
-                                          6),
-                                      thumbVisibility:
-                                      MaterialStateProperty.all<bool>(true),
-                                    ),
-                                  ),
-                                  menuItemStyleData: const MenuItemStyleData(
-                                    height: 40,
-                                    padding: EdgeInsets.only(
-                                        left: 14, right: 14),
-                                  ),
+                                  color: Colors.white,
                                 ),
                               ),
+                              iconStyleData: selectLocalChildren == null
+                                  ? IconStyleData(
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                // Change to up arrow icon
+                                iconSize: 30,
+                                iconEnabledColor: Colors.black,
+                              )
+                                  : IconStyleData(
+                                icon: InkWell(
+                                  child: Icon(Icons.close),
+                                  onTap: () {
+                                    setState(() {
+                                      selectLocalChildren = null;
+                                    });
+                                  },
+                                ), // Change to down arrow icon
+                                iconSize: 25,
+                                //iconEnabledColor: Colors.black,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                width: Get.width * 0.89,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(10, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
                             ),
+                          ),
+                        ),
+                        SizedBox(height: height * .03),
+                        Text(
+                          "Do you drink",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(height: height * .01),
+                        // ****************  select children or not dropdown ***********************
+                        Focus(
+                          focusNode: _dropdownFocus4,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: Text("Select"),
+                              items: smokeorNot.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              value: selectLocalDrike,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  print(value);
+                                  selectLocalDrike = value;
+                                  selectDrink = value;
+                                  print(selectDrink);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: Get.height * 0.07,
+                                padding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: _isDropdownOpen4 == false
+                                        ? Colors.grey
+                                        : Colors.pink,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              iconStyleData: selectLocalDrike == null
+                                  ? IconStyleData(
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                // Change to up arrow icon
+                                iconSize: 30,
+                                iconEnabledColor: Colors.black,
+                              )
+                                  : IconStyleData(
+                                icon: InkWell(
+                                  child: Icon(Icons.close),
+                                  onTap: () {
+                                    setState(() {
+                                      selectLocalDrike = null;
+                                    });
+                                  },
+                                ), // Change to down arrow icon
+                                iconSize: 25,
+                                //iconEnabledColor: Colors.black,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                width: Get.width * 0.89,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(10, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: height * .03),
+                        Text(
+                          "Do you smoke",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(height: height * .01),
+                        // ****************  select children or not dropdown ***********************
+                        Focus(
+                          focusNode: _dropdownFocus5,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: Text("Select"),
+                              items: smokeorNot.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              value: selectLocalSmoke,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  print(value);
+                                  selectLocalSmoke = value;
+                                  selectSmoke = value;
+                                  print(selectGender);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: Get.height * 0.07,
+                                padding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: _isDropdownOpen5 == false
+                                        ? Colors.grey
+                                        : Colors.pink,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              iconStyleData: selectLocalSmoke == null
+                                  ? IconStyleData(
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                // Change to up arrow icon
+                                iconSize: 30,
+                                iconEnabledColor: Colors.black,
+                              )
+                                  : IconStyleData(
+                                icon: InkWell(
+                                  child: Icon(Icons.close),
+                                  onTap: () {
+                                    setState(() {
+                                      selectLocalSmoke = null;
+                                    });
+                                  },
+                                ), // Change to down arrow icon
+                                iconSize: 25,
+                                //iconEnabledColor: Colors.black,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                width: Get.width * 0.89,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(10, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        SizedBox(height: height * .03),
+                        Text(
+                          "Education",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(height: height * .01),
+                        // ****************  select children or not dropdown ***********************
+                        Focus(
+                          focusNode: _dropdownFocus6,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: Text("Select"),
+                              items: education.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              value: selectLocalEducation,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  print(value);
+                                  selectLocalEducation = value;
+                                  selectEducation = value;
+                                  print(selectGender);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: Get.height * 0.07,
+                                padding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: _isDropdownOpen6 == false
+                                        ? Colors.grey
+                                        : Colors.pink,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              iconStyleData: selectLocalEducation == null
+                                  ? IconStyleData(
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                // Change to up arrow icon
+                                iconSize: 30,
+                                iconEnabledColor: Colors.black,
+                              )
+                                  : IconStyleData(
+                                icon: InkWell(
+                                  child: Icon(Icons.close),
+                                  onTap: () {
+                                    setState(() {
+                                      selectLocalEducation = null;
+                                    });
+                                  },
+                                ), // Change to down arrow icon
+                                iconSize: 25,
+                                //iconEnabledColor: Colors.black,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                width: Get.width * 0.89,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(10, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: height * .03),
+                        Text(
+                          "What are you hoping to find",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(height: height * .01),
+                        // ****************  select children or not dropdown ***********************
+                        Focus(
+                          focusNode: _dropdownFocus7,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: Text("Select"),
+                              items: hopping.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              value: selectLocakHopping,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  print(value);
+                                  selectLocakHopping = value;
+                                  selectHopping = value;
+                                  print(selectGender);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: Get.height * 0.07,
+                                padding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: _isDropdownOpen7 == false
+                                        ? Colors.grey
+                                        : Colors.pink,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              iconStyleData: selectLocakHopping == null
+                                  ? IconStyleData(
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                // Change to up arrow icon
+                                iconSize: 30,
+                                iconEnabledColor: Colors.black,
+                              )
+                                  : IconStyleData(
+                                icon: InkWell(
+                                  child: Icon(Icons.close),
+                                  onTap: () {
+                                    setState(() {
+                                      selectLocakHopping = null;
+                                    });
+                                  },
+                                ), // Change to down arrow icon
+                                iconSize: 25,
+                                //iconEnabledColor: Colors.black,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                width: Get.width * 0.89,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(10, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+
+                        SizedBox(height: height * .03),
+        
+                            // Text(
+                            //   "Religion",
+                            //   style: Theme
+                            //       .of(context)
+                            //       .textTheme
+                            //       .titleSmall,
+                            // ),
+                            // SizedBox(height: height * .01),
+
+                            // Focus(
+                            //   focusNode: _dropdownFocus2,
+                            //   child: DropdownButtonHideUnderline(
+                            //     child: DropdownButton2<String>(
+                            //       isExpanded: true,
+                            //       hint: Text("Select Religion"),
+                            //       items: religionItems.map((String items) {
+                            //         return DropdownMenuItem(
+                            //           value: items,
+                            //           child: Text(items),
+                            //         );
+                            //       }).toList(),
+                            //       value: selectReligion,
+                            //       onChanged: (String? value) {
+                            //         setState(() {
+                            //           selectReligion = value;
+                            //           SikerReligon = value;
+                            //         });
+                            //       },
+                            //       buttonStyleData: ButtonStyleData(
+                            //         height: Get.height * 0.07,
+                            //         padding:
+                            //         const EdgeInsets.only(left: 14, right: 14),
+                            //         decoration: BoxDecoration(
+                            //           borderRadius: BorderRadius.circular(30),
+                            //           border: Border.all(
+                            //               color: _isDropdownOpen2 == false
+                            //                   ? Colors.grey
+                            //                   : Colors
+                            //                   .pink // Set border color based on selected state
+                            //           ),
+                            //           color: Colors.white,
+                            //         ),
+                            //       ),
+                            //       iconStyleData: selectReligion == null
+                            //           ? IconStyleData(
+                            //         icon: Icon(Icons.keyboard_arrow_down),
+                            //         iconSize: 30,
+                            //         iconEnabledColor: Colors.black,
+                            //       )
+                            //           : IconStyleData(
+                            //         icon: InkWell(
+                            //           child: Icon(Icons.close),
+                            //           onTap: () {
+                            //             setState(() {
+                            //               selectReligion = null;
+                            //             });
+                            //           },
+                            //         ),
+                            //         iconSize: 25,
+                            //         iconEnabledColor: Colors.black,
+                            //       ),
+                            //       dropdownStyleData: DropdownStyleData(
+                            //         width: Get.width * 0.89,
+                            //         decoration: BoxDecoration(
+                            //           borderRadius: BorderRadius.circular(14),
+                            //           color: Colors.white,
+                            //         ),
+                            //         offset: const Offset(10, 0),
+                            //         scrollbarTheme: ScrollbarThemeData(
+                            //           radius: const Radius.circular(40),
+                            //           thickness: MaterialStateProperty.all<
+                            //               double>(
+                            //               6),
+                            //           thumbVisibility:
+                            //           MaterialStateProperty.all<bool>(true),
+                            //         ),
+                            //       ),
+                            //       menuItemStyleData: const MenuItemStyleData(
+                            //         height: 40,
+                            //         padding: EdgeInsets.only(
+                            //             left: 14, right: 14),
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
 
                             SizedBox(height: height * .03),
 
@@ -2139,9 +2610,9 @@ print("=========================================================================
   }
 
   validation() {
-    if (selectReligion == null) {
+  if (selectchildren == null) {
       Fluttertoast.showToast(
-          msg: "Pless Select Religion",
+          msg: "Pless Select you like to have children",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -2157,7 +2628,47 @@ print("=========================================================================
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    } else if (selectGender == null) {
+    } else if (selectDrink == null) {
+      Fluttertoast.showToast(
+          msg: "Pless Select Drink or not",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    else if (selectSmoke == null) {
+      Fluttertoast.showToast(
+          msg: "Pless Select smoke or not",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }   else if ( selectHopping== null) {
+      Fluttertoast.showToast(
+          msg: "Pless Select  you hoping to find in your partner",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }else if (selectEducation == null) {
+      Fluttertoast.showToast(
+          msg: "Pless Select education",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    
+    
+     else if (selectGender == null) {
       Fluttertoast.showToast(
           msg: "Pless Select Gender",
           toastLength: Toast.LENGTH_SHORT,
@@ -2166,8 +2677,8 @@ print("=========================================================================
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    } else if (imgFile == null||   SeekerProfileControllerInstanse.imageUrl.value==null||
-        SeekerProfileControllerInstanse.imageUrl.value=="") {
+    } else if (imgFile == null||   SeekerProfileControllerInstanse.imageUrl==null||
+        SeekerProfileControllerInstanse.imageUrl=="") {
       Fluttertoast.showToast(
           msg: "Pless Select profile picture",
           toastLength: Toast.LENGTH_SHORT,

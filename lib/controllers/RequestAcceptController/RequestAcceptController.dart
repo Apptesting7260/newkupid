@@ -1,8 +1,3 @@
-
-
-
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/data/response/status.dart';

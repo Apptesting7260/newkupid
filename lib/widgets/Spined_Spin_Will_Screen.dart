@@ -808,6 +808,7 @@ Fluttertoast.showToast(
                           setState(() {
                     isboxloading=false;
                              Get.back();
+                              Get.back();
                          if (SpeendReqestControllerinstance
                                                         .staticLiverPullvalue
                                                         .value

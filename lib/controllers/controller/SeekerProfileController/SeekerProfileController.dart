@@ -106,7 +106,7 @@ class SeekerProfileController extends GetxController {
       request.fields['occupation'] = Ocupasion.toString();
       request.fields['gender'] = selectGender.toString();
       request.fields['type'] = "${2}";
-      request.fields['salary'] = SalaryController.value.text;
+      // request.fields['salary'] = SalaryController.value.text;
       request.fields['like_to_have_children'] = selectchildren.toString();
       request.fields['do_you_drink'] = selectDrink.toString();
       request.fields['do_you_smoke'] = selectSmoke.toString();

@@ -69,7 +69,7 @@ RxInt remainingSeconds = 0.obs;
   }
   void SpeendRequestApihit(){
     //  setRxRequestStatus(Status.LOADING);
-
+seekerprofilerequested.value=false;
     _api.SpeendRequestDetailsapi().then((value){
       setRxRequestStatus(Status.COMPLETED);
      SpeendRequest(value);

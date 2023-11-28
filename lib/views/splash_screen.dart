@@ -20,6 +20,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
+ 
 
 usercheck();
     // TODO: implement initState
@@ -59,4 +60,10 @@ usercheck()async{
       ),
     );
   }
+  
+
+
+
+  
 }
+

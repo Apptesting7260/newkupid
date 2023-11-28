@@ -49,9 +49,18 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   FocusNode _dropdownFocus1 = FocusNode();
   FocusNode _dropdownFocus2 = FocusNode();
   FocusNode _dropdownFocus3 = FocusNode();
+    FocusNode _dropdownFocus4 = FocusNode();
+  FocusNode _dropdownFocus5 = FocusNode();
+  FocusNode _dropdownFocus6 = FocusNode();
+    FocusNode _dropdownFocus7 = FocusNode();
+
   bool _isDropdownOpen1 = false;
   bool _isDropdownOpen2 = false;
   bool _isDropdownOpen3 = false;
+  bool _isDropdownOpen4 = false;
+  bool _isDropdownOpen5 = false;
+  bool _isDropdownOpen6 = false;
+  bool _isDropdownOpen7 = false;
   bool _chooseAnswer1 = false;
   bool _chooseAnswer2 = false;
   bool _chooseAnswer3 = false;
@@ -358,6 +367,34 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
       print(_isDropdownOpen3);
     });
   }
+    void _onDropdownFocusChange4() {
+    setState(() {
+      _isDropdownOpen4 = _dropdownFocus4.hasFocus;
+
+      print(_isDropdownOpen4);
+    });
+  }
+    void _onDropdownFocusChange5() {
+    setState(() {
+      _isDropdownOpen5 = _dropdownFocus5.hasFocus;
+
+      print(_isDropdownOpen5);
+    });
+  }
+    void _onDropdownFocusChange6() {
+    setState(() {
+      _isDropdownOpen6 = _dropdownFocus6.hasFocus;
+
+      print(_isDropdownOpen6);
+    });
+  }
+    void _onDropdownFocusChange7() {
+    setState(() {
+      _isDropdownOpen7 = _dropdownFocus7.hasFocus;
+
+      print(_isDropdownOpen7);
+    });
+  }
 
   bool containerBoeder = false;
   bool phoneContainerBorder = false;
@@ -373,6 +410,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
     _dropdownFocus1.addListener(_onDropdownFocusChange1);
     _dropdownFocus2.addListener(_onDropdownFocusChange2);
     _dropdownFocus3.addListener(_onDropdownFocusChange3);
+     _dropdownFocus4.addListener(_onDropdownFocusChange4);
+      _dropdownFocus5.addListener(_onDropdownFocusChange5);
+       _dropdownFocus6.addListener(_onDropdownFocusChange6);
+        _dropdownFocus7.addListener(_onDropdownFocusChange7);
     startdate = null;
     selectGender = null;
     datestring = null;
@@ -1082,56 +1123,56 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         // ***************************   Occupation Pjdfgjdsfds ***************************
         
                         SizedBox(height: height * .03),
-                        Text(
-                          "Salary",
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        SizedBox(height: height * .01),
-                        TextFormField(
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                        // Text(
+                        //   "Salary",
+                        //   style: Theme.of(context).textTheme.titleSmall,
+                        // ),
+                        // SizedBox(height: height * .01),
+                        // TextFormField(
+                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
         
-                          maxLength: 2,
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "Please Enter Salary";
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: SeekerProfileControllerInstanse
-                              .SalaryController.value,
-                          decoration: InputDecoration(
-                              suffixText: "LPA",
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(35.0)),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffFE0091))),
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: Color(0xffBABABA)),
-                              contentPadding: EdgeInsets.all(18),
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(35.0)),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffBABABA))),
-                              errorBorder: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(35.0)),
-                                  borderSide:
-                                      BorderSide(color: Color(0xffBABABA))),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(35.0)),
-                                borderSide: BorderSide(color: Color(0xffBABABA)),
-                              ),
-                              hintText: "Salary",
-                              filled: true,
-                              fillColor: Colors.white),
-                        ),
+                        //   maxLength: 2,
+                        //   keyboardType: TextInputType.number,
+                        //   validator: (value) {
+                        //     if (value!.isEmpty) {
+                        //       return "Please Enter Salary";
+                        //     } else {
+                        //       return null;
+                        //     }
+                        //   },
+                        //   controller: SeekerProfileControllerInstanse
+                        //       .SalaryController.value,
+                        //   decoration: InputDecoration(
+                        //       suffixText: "LPA",
+                        //       focusedBorder: OutlineInputBorder(
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(35.0)),
+                        //           borderSide:
+                        //               BorderSide(color: Color(0xffFE0091))),
+                        //       hintStyle: TextStyle(
+                        //           fontSize: 16, color: Color(0xffBABABA)),
+                        //       contentPadding: EdgeInsets.all(18),
+                        //       enabledBorder: OutlineInputBorder(
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(35.0)),
+                        //           borderSide:
+                        //               BorderSide(color: Color(0xffBABABA))),
+                        //       errorBorder: OutlineInputBorder(
+                        //           borderRadius:
+                        //               BorderRadius.all(Radius.circular(35.0)),
+                        //           borderSide:
+                        //               BorderSide(color: Color(0xffBABABA))),
+                        //       focusedErrorBorder: OutlineInputBorder(
+                        //         borderRadius:
+                        //             BorderRadius.all(Radius.circular(35.0)),
+                        //         borderSide: BorderSide(color: Color(0xffBABABA)),
+                        //       ),
+                        //       hintText: "Salary",
+                        //       filled: true,
+                        //       fillColor: Colors.white),
+                        // ),
         
-                        SizedBox(height: height * .03),
+                        // SizedBox(height: height * .03),
                         Text(
                           "Location",
                           style: Theme.of(context).textTheme.titleSmall,
@@ -1344,7 +1385,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: height * .01),
                         // ****************  select children or not dropdown ***********************
                         Focus(
-                          focusNode: _dropdownFocus1,
+                          focusNode: _dropdownFocus3,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
                               isExpanded: true,
@@ -1371,7 +1412,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
-                                    color: _isDropdownOpen1 == false
+                                    color: _isDropdownOpen3 == false
                                         ? Colors.grey
                                         : Colors.pink,
                                   ),
@@ -1426,7 +1467,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: height * .01),
                         // ****************  select children or not dropdown ***********************
                         Focus(
-                          focusNode: _dropdownFocus1,
+                          focusNode: _dropdownFocus4,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
                               isExpanded: true,
@@ -1453,7 +1494,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
-                                    color: _isDropdownOpen1 == false
+                                    color: _isDropdownOpen4 == false
                                         ? Colors.grey
                                         : Colors.pink,
                                   ),
@@ -1508,7 +1549,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: height * .01),
                         // ****************  select children or not dropdown ***********************
                         Focus(
-                          focusNode: _dropdownFocus1,
+                          focusNode: _dropdownFocus5,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
                               isExpanded: true,
@@ -1535,7 +1576,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
-                                    color: _isDropdownOpen1 == false
+                                    color: _isDropdownOpen5 == false
                                         ? Colors.grey
                                         : Colors.pink,
                                   ),
@@ -1591,7 +1632,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: height * .01),
                         // ****************  select children or not dropdown ***********************
                         Focus(
-                          focusNode: _dropdownFocus1,
+                          focusNode: _dropdownFocus6,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
                               isExpanded: true,
@@ -1618,7 +1659,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
-                                    color: _isDropdownOpen1 == false
+                                    color: _isDropdownOpen6 == false
                                         ? Colors.grey
                                         : Colors.pink,
                                   ),
@@ -1673,7 +1714,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: height * .01),
                         // ****************  select children or not dropdown ***********************
                         Focus(
-                          focusNode: _dropdownFocus1,
+                          focusNode: _dropdownFocus7,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
                               isExpanded: true,
@@ -1700,7 +1741,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
-                                    color: _isDropdownOpen1 == false
+                                    color: _isDropdownOpen7 == false
                                         ? Colors.grey
                                         : Colors.pink,
                                   ),

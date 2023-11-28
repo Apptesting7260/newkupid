@@ -1019,11 +1019,14 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
   bool isRequestMade = false;
 
   void handleSpinButtonClick() {
+    SpeendReqestControllerinstance.SpeendRequestApihit();
     if(MagicProfileControllerinstance
         .MagicProfileList
         .value
         .requests!.length>4){
       if (!isSpinTimerVisible) {
+           print( SpeendReqestControllerinstance.seekerprofilerequested.value.toString());
+                   print("8787328==================================================================");
         setState(() {
           MagicProfileControllerinstance.MagicProfileList.value.requests!.shuffle();
           selected.add(Fortune.randomInt(0, items.length));
@@ -1092,18 +1095,21 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
         .size
         .width;
     return Obx(() {
-      switch (MagicProfileControllerinstance.rxRequestStatus.value) {
-        case Status.LOADING:
+      if (MagicProfileControllerinstance.rxRequestStatus.value==Status.LOADING && 
+         SpeendReqestControllerinstance.rxRequestStatus.value==Status.LOADING) {
+        
           return const Center(child: CircularProgressIndicator());
-        case Status.ERROR:
-          if (MagicProfileControllerinstance.error.value == 'No internet') {
+         }
+    if (MagicProfileControllerinstance.rxRequestStatus.value==Status.ERROR && 
+         SpeendReqestControllerinstance.rxRequestStatus.value==Status.ERROR) {
+          if (MagicProfileControllerinstance.error.value == 'No internet'&&SpeendReqestControllerinstance.error.value == 'No internet') {
             return InterNetExceptionWidget(
               onPress: () {},
             );
           } else {
             return GeneralExceptionWidget(onPress: () {});
-          }
-        case Status.COMPLETED:
+          }}
+        else {
           return Container(
             child: Column(
               children: [
@@ -1512,7 +1518,7 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
                                     ],
                                   ),
                                   SizedBox(width: width * .12),
-                                  if(SpeendReqestControllerinstance.seekerprofilerequested.value=="true"&&SpeendReqestControllerinstance
+                                  if(SpeendReqestControllerinstance.seekerprofilerequested.value==false&&SpeendReqestControllerinstance
                                       .staticLiverPullvalue
                                       .value
                                       .data![0].spinLeverpoolRequestedData!.spinRequestData![index].isRequested=="false")  GestureDetector(
@@ -1531,7 +1537,7 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
 
                                         if (selectedseekerid != null) {
                                           showdilog(index, selectedseekerid!);
-                                            SpeendReqestControllerinstance.SpeendRequestApihit();
+                                           
                                         }
 
                                       else if (selectedseekerid != null) {
@@ -1561,7 +1567,7 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
                                       ),
                                     ),
                                   ),
-                                  if( SpeendReqestControllerinstance.seekerprofilerequested.value=="false"&&SpeendReqestControllerinstance
+                                  if(SpeendReqestControllerinstance
                                       .staticLiverPullvalue
                                       .value
                                       .data![0].spinLeverpoolRequestedData!.spinRequestData![index].isRequested=="true")
@@ -1890,13 +1896,16 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
               ),
               GestureDetector(
                 onTap: () {
-                    SpeendReqestControllerinstance.SpeendRequestApihit();
+                    // SpeendReqestControllerinstance.SpeendRequestApihit();
                   setState(() {
                     isboxloading = true;
                   });
 
                   spinedprofilelist[index]['is_requested'] = "true";
                   spinRequestController.apihit();
+                  
+                   print( SpeendReqestControllerinstance.seekerprofilerequested.value.toString());
+                   print("8787328==================================================================");
 
                   if (isboxloading == true) {
                     _showProgressDialog(context);
@@ -1906,6 +1915,7 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
                     setState(() {
                       isboxloading = false;
                       Get.back();
+                       Get.back();
                       if (SpeendReqestControllerinstance
                           .staticLiverPullvalue
                           .value

@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cupid_match/controllers/UserNumberAndNuberverfyController.dart';
+import 'package:cupid_match/match_seeker/profile/profile_details.dart';
+import 'package:cupid_match/match_seeker/profile/profile_page.dart';
 import 'package:cupid_match/models/AllOcupationsModel/AllOcupationsModel.dart';
 import 'package:cupid_match/repository/Auth_Repository/Auth_Repository.dart';
 import 'package:cupid_match/utils/utils.dart';
@@ -36,7 +38,7 @@ class SeekerEditProfileController extends GetxController {
   SeekerMyProfileDetailsController ViewSikerProfileDetailsControllerinstance = Get.put(SeekerMyProfileDetailsController());
   SeekerEditViewDeatailsController ViewSikerProfileDetailsControllerinstances = Get.put(SeekerEditViewDeatailsController());
 
-  final phone_verify = 0.obs;
+  RxBool phone_verify = false.obs;
   final email_verify = 0.obs;
   RxBool verified = false.obs;
   RxBool optsent = false.obs;
@@ -59,7 +61,7 @@ class SeekerEditProfileController extends GetxController {
   final CorrectanswerController = TextEditingController().obs;
   final SalaryController = TextEditingController().obs;
   final otpController = TextEditingController().obs;
-  RxString imageUrl="".obs;
+  String imageUrl="";
   // RxString selectLocalGender="".obs;
   // ViewSikerProfileDetailsControllerinstance.ViewProfileDetail
 
@@ -79,9 +81,7 @@ class SeekerEditProfileController extends GetxController {
     Ocupasion=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.occupation.toString();
     HeightController.value.text= parts[0].toString();
     InchesController.value.text= parts.length > 1 ? parts[1].toString() : '';
-    SalaryController.value.text=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.salary.toString();
     locationcntroller.value.text=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.address.toString();
-    SikerReligon=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.religion.toString();
     datestring=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.dob.toString();
     selectGender=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.gender.toString();
     QuestionController.value.text=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.question.toString();
@@ -90,7 +90,35 @@ class SeekerEditProfileController extends GetxController {
     ThirdanswerController.value.text=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.thirdAnswer.toString();
     choose=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.correctAnswer.toString();
         datestring=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.dob.toString();
-     imageUrl.value=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.imgPath.toString();
+     imageUrl=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.imgPath.toString();
+        selectSmoke=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.doYouSmoke.toString();
+    selectDrink=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.doYouDrink.toString();;
+    selectchildren=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.likeToHaveChildren.toString();;
+    selectEducation=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.education.toString();;
+    selectHopping=ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.hopingToFind.toString();;
+       
+    if(ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.email!=null){
+      verified.value=true;
+    }
+ if(ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.phone!=null){
+      phone_verify.value=true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     print("hhhbhbjhjjjjjjhjbjhbj  seeker data update controller  ");
     print(ViewSikerProfileDetailsControllerinstances.ViewProfileDetail.value.UerDatas!.name.toString());
 
@@ -125,17 +153,13 @@ class SeekerEditProfileController extends GetxController {
       request.fields['update_type'] = "profile";
 
       request.fields['name'] = NameController.value.text;
-      if (UserEmailAndPhoneVerifyControllerinstance
-          .emailAndPhoneVerifyController.value.text
-          .contains("@")) {
-        String email = UserEmailAndPhoneVerifyControllerinstance
-            .emailAndPhoneVerifyController.value.text;
+      if (phone_verify.value==true) {
+        String email = EmailController.value.text;
         request.fields['email'] = email.toString();
         request.fields['email_otp_verified_status'] = "1";
         print("${email}email==============");
-      } else {
-        String phone = UserEmailAndPhoneVerifyControllerinstance
-            .emailAndPhoneVerifyController.value.text;
+      } if(verified.value==true) {
+        String phone = PhoneController.value.text;
         request.fields['phone'] = phone.toString();
 
         request.fields['phone_otp_verified_status'] = "1";
@@ -180,7 +204,7 @@ class SeekerEditProfileController extends GetxController {
       // Check the response status
       if (response.statusCode == 200) {
         print('File uploaded successfully!');
-        Get.to(() => PhotosScreen());
+        Get.to(() =>   ProfilePage(),);
         loading.value = false;
         Ocupasion = null;
         NameController.value.clear();
@@ -210,22 +234,23 @@ class SeekerEditProfileController extends GetxController {
 
 
   Future<void> PhoneAndEmailVerifiyed() async {
+        print("==================================================================");
     rxRequestStatus(Status.LOADING);
 
     Map data = {};
-    if (EmailController.value.text.isNotEmpty) {
+    if (EmailController.value.text.isNotEmpty&& verified.value==false) {
       data = {
         'email': EmailController.value.text,
         'update_type': "email",
         "type": ProfileType.toString(),
-        'phone': SignUpControllerinstance.credentialsController.value.text,
+        'phone': PhoneController.value.text,
       };
-    } else {
+    }    if (PhoneController.value.text.isNotEmpty&& phone_verify.value==false) {
       data = {
         'phone': PhoneController.value.text,
         'update_type': "phone",
         "type": ProfileType.toString(),
-        'email': SignUpControllerinstance.credentialsController.value.text,
+        'email': EmailController.value.text,
       };
     }
     final prefs = await SharedPreferences.getInstance();
@@ -264,11 +289,12 @@ class SeekerEditProfileController extends GetxController {
 
 
   Future<void> PhoneAndEmaiOtpVerifyed(BuildContext context) async {
+    print("==================================================================");
     // rxRequestStatus(Status.LOADING);
     loading.value=true;
     ciculerEdicator.value=true;
     Map data = {};
-    if (EmailController.value.text.isNotEmpty) {
+    if (EmailController.value.text.isNotEmpty&& verified.value==false) {
       data = {
         'email': EmailController.value.text,
         'otp': otpController.value.text,
@@ -276,7 +302,7 @@ class SeekerEditProfileController extends GetxController {
         'update_type': "email_otp_verification",
         "type": ProfileType.toString()
       };
-    } else {
+    } if (PhoneController.value.text.isNotEmpty&& phone_verify.value==false) {
       data = {
         'update_type': "phone_otp_verification",
         'phone': PhoneController.value.text,
@@ -301,6 +327,7 @@ class SeekerEditProfileController extends GetxController {
 
       // ViewProfileDetails(value);
       verified.value = true;
+      phone_verify.value=true;
       loading.value=false;
       print("======================================================$value");
       print(value.msg);
@@ -331,8 +358,9 @@ class SeekerEditProfileController extends GetxController {
 
 
       print("==========$data");
-      otpController.value.clear();
+     
       loading.value = false;
+       otpController.value.clear();
       print("${error.toString()}===============+++=");
       //      rxRequestStatus(Status.COMPLETED);
       // rxRequestStatus(Status.ERROR);

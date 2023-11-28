@@ -129,15 +129,29 @@ class _CustomAudioPlayerState extends State<CustomAudioPlayer> {
   }
 
 
-void _togglePlayback() {
-  if (_isPlaying) {
-    _audioPlayer.pause();
-  } else {
-    _audioPlayer.play(UrlSource(widget.audioUrl)); // Provide the audio source URL here
-  }
-}
+// void _togglePlayback() {
+//   if (_isPlaying) {
+//     _audioPlayer.pause();
+//   } else {
+//     _audioPlayer.play(UrlSource(widget.audioUrl)); // Provide the audio source URL here
+//   }
+// }
 
   void _seekToPosition(double value) {
     _audioPlayer.seek(Duration(milliseconds: value.toInt()));
   }
+
+
+void _togglePlayback() {
+  try {
+    if (_isPlaying) {
+      _audioPlayer.pause();
+    } else {
+      _audioPlayer.play(UrlSource(widget.audioUrl));
+    }
+  } catch (e) {
+    print("Error during playback: $e");
+  }
+}
+
 }
