@@ -914,25 +914,84 @@ class _SlotMachineState extends State<SlotMachine> {
                       _buildReel(2),
                     ],
                   ),
-                  Positioned(
-                      top: pulled == false
-                          ? Get.height * 0.04
-                          : Get.height * 0.08,
-                      right: Get.width * 0.02,
-                      child: pulled == false
-                          ? GestureDetector(
-                              child: Container(
-                                height: Get.height * 0.08,
-                                width: Get.width * 0.1,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/liverup.PNG"))),
-                              ),
-                              onTap: () {
+
+                 
+                  // Positioned(
+                  //     top: pulled == false
+                  //         ? Get.height * 0.04
+                  //         : Get.height * 0.08,
+                  //     right: Get.width * 0.02,
+                  //     child: pulled == false
+                  //         ? GestureDetector(
+                  //             child: Container(
+                  //               height: Get.height * 0.08,
+                  //               width: Get.width * 0.1,
+                  //               decoration: BoxDecoration(
+                  //                   image: DecorationImage(
+                  //                       image: AssetImage(
+                  //                           "assets/images/liverup.PNG"))),
+                  //             ),
+                  //             onTap: () {
 
 
-                                if(MagicProfileControllerinstance.MagicProfileList.value
+                  //               if(MagicProfileControllerinstance.MagicProfileList.value
+                  //                   .requests!.length> 3){
+                  //                 if(staticLiverpullController.seekerprofilerequested.value.toString()=="false"){
+                  //                   // if (pulled == false) {
+                  //                     _startSpinning();
+                  //                   // }
+                  //                   // else if (pulled == true)
+                  //                     Timer(Duration(seconds: 2), () {
+                  //                       _stopSpinning();
+                  //                     });
+                  //                 }else{
+
+                  //                   Fluttertoast.showToast(
+                  //                     msg: "You Have Already Pooled",
+                  //                     toastLength: Toast.LENGTH_SHORT, // You can use Toast.LENGTH_LONG for a longer duration.
+                  //                     gravity: ToastGravity.BOTTOM, // You can change the position to TOP, CENTER, or BOTTOM.
+                  //                     backgroundColor: Colors.black54,
+                  //                     textColor: Colors.white,
+                  //                   );
+
+                  //                 }
+                  //               }else{
+
+                  //                 Fluttertoast.showToast(
+                  //                   msg: "Dont Have Enough Seekers",
+                  //                   toastLength: Toast.LENGTH_SHORT, // You can use Toast.LENGTH_LONG for a longer duration.
+                  //                   gravity: ToastGravity.BOTTOM, // You can change the position to TOP, CENTER, or BOTTOM.
+                  //                   backgroundColor: Colors.black54,
+                  //                   textColor: Colors.white,
+                  //                 );
+
+                  //               }
+
+                               
+                  //             },
+                  //           )
+                  //         : Container(
+                  //             height: Get.height * 0.08,
+                  //             width: Get.width * 0.1,
+                  //             decoration: BoxDecoration(
+                  //                 image: DecorationImage(
+                  //                     image: AssetImage(
+                  //                         "assets/images/liverdown.PNG"))),
+                  //           ))
+                
+                
+                // 
+                ]),
+                SizedBox(
+                  height: Get.height * .03,
+                ),
+                    pulled == false ?GestureDetector(
+                onTap: () {
+                  // match_withid = dataofStaticPull.id.toString();
+                  // print(match_withid);
+                  // SeekerToSeekerRequestControllerinstance
+                  //     .SikerTOSikerRequestApiHit();
+                     if(MagicProfileControllerinstance.MagicProfileList.value
                                     .requests!.length> 3){
                                   if(staticLiverpullController.seekerprofilerequested.value.toString()=="false"){
                                     // if (pulled == false) {
@@ -964,19 +1023,26 @@ class _SlotMachineState extends State<SlotMachine> {
                                   );
 
                                 }
-
-                               
-                              },
-                            )
-                          : Container(
-                              height: Get.height * 0.08,
-                              width: Get.width * 0.1,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/liverdown.PNG"))),
-                            ))
-                ]),
+                },
+                child: Container(
+                  height: height * .05,
+                  width: width * .5,
+                  decoration: BoxDecoration(
+                    color: Color(0xffFE0091),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Roll",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+              )
+              :Container(),
                 SizedBox(
                   height: Get.height * .03,
                 ),
@@ -1298,8 +1364,8 @@ Fluttertoast.showToast(
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: Container(
-        width: Get.width * 0.25,
-        height: Get.height * 0.24,
+        width: Get.width * 0.30,
+        height: Get.height * 0.28,
         decoration: BoxDecoration(
           border: Border.all(width: 2, color: Color(0xffDC9F3C)),
           borderRadius: BorderRadius.all(Radius.circular(10)),

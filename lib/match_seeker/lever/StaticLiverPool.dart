@@ -95,49 +95,51 @@ class _LiverPooledWidgetState extends State<LiverPooledWidget> {
                       _buildReel(2),
                     ],
                   ),
-                  Positioned(
-                      top: pulled == false
-                          ? Get.height * 0.04
-                          : Get.height * 0.08,
-                      right: -Get.width * 0.01,
-                      child: pulled == false
-                          ? GestureDetector(
-                              child: Container(
-                                height: Get.height * 0.08,
-                                width: Get.width * 0.1,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/images/liverup.PNG"))),
-                              ),
-                              onTap: () {
-                                Fluttertoast.showToast(
-                                  msg: "You Have Already Pooled",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  // You can use Toast.LENGTH_LONG for a longer duration.
-                                  gravity: ToastGravity.BOTTOM,
-                                  // You can change the position to TOP, CENTER, or BOTTOM.
-                                  backgroundColor: Colors.black54,
-                                  textColor: Colors.white,
-                                );
+                  // Positioned(
+                  //     top: pulled == false
+                  //         ? Get.height * 0.04
+                  //         : Get.height * 0.08,
+                  //     right: -Get.width * 0.01,
+                  //     child: pulled == false
+                  //         ? GestureDetector(
+                  //             child: Container(
+                  //               height: Get.height * 0.08,
+                  //               width: Get.width * 0.1,
+                  //               decoration: BoxDecoration(
+                  //                   image: DecorationImage(
+                  //                       image: AssetImage(
+                  //                           "assets/images/liverup.PNG"))),
+                  //             ),
+                  //             onTap: () {
+                  //               Fluttertoast.showToast(
+                  //                 msg: "You Have Already Pooled",
+                  //                 toastLength: Toast.LENGTH_SHORT,
+                  //                 // You can use Toast.LENGTH_LONG for a longer duration.
+                  //                 gravity: ToastGravity.BOTTOM,
+                  //                 // You can change the position to TOP, CENTER, or BOTTOM.
+                  //                 backgroundColor: Colors.black54,
+                  //                 textColor: Colors.white,
+                  //               );
 
-                                // if (pulled == false) {
-                                //   _startSpinning();
-                                // }
-                                // if (pulled == true)
-                                //   Timer(Duration(seconds: 2), () {
-                                //     _stopSpinning();
-                                //   });
-                              },
-                            )
-                          : Container(
-                              height: Get.height * 0.08,
-                              width: Get.width * 0.1,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/liverdown.PNG"))),
-                            ))
+                  //               // if (pulled == false) {
+                  //               //   _startSpinning();
+                  //               // }
+                  //               // if (pulled == true)
+                  //               //   Timer(Duration(seconds: 2), () {
+                  //               //     _stopSpinning();
+                  //               //   });
+                  //             },
+                  //           )
+                  //         : Container(
+                  //             height: Get.height * 0.08,
+                  //             width: Get.width * 0.1,
+                  //             decoration: BoxDecoration(
+                  //                 image: DecorationImage(
+                  //                     image: AssetImage(
+                  //                         "assets/images/liverdown.PNG"))),
+                  //           ))
+              
+              
                 ]),
                 SizedBox(
                   height: Get.height * .03,
@@ -472,8 +474,8 @@ class _LiverPooledWidgetState extends State<LiverPooledWidget> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: Container(
-        width: Get.width * 0.28,
-        height: Get.height * 0.25,
+        width: Get.width * 0.30,
+        height: Get.height * 0.28,
         decoration: BoxDecoration(
           border: Border.all(width: 2, color: Color(0xffDC9F3C)),
           borderRadius: BorderRadius.all(Radius.circular(10)),
