@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/SeekerMyProfileDetailsController/SeekerMyProfileController.dart';
 import 'package:cupid_match/match_maker/Maker_TabView.dart';
 import 'package:cupid_match/match_maker/invite_state.dart';
@@ -29,7 +31,7 @@ class MyDrawer extends StatefulWidget {
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
-
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final box = GetStorage();
 
 class _MyDrawerState extends State<MyDrawer> {
@@ -345,7 +347,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
    void logout()async {
   final SharedPreferences sp=await SharedPreferences.getInstance();
-
+ setStatus("offline");
     // Delete the cached data when the user logs out
     box.remove('incomingRequestData');
     box.remove('outgoingRequestData');
@@ -367,5 +369,16 @@ class _MyDrawerState extends State<MyDrawer> {
       MaterialPageRoute(builder: (BuildContext context) => SplashScreen()),
       (Route<dynamic> route) => false,
     );
+  }
+
+    setStatus(String status) async {
+    DocumentReference roomRef =
+        _firestore.collection("$seekerUserId").doc("Status");
+    await roomRef.update({'status': status});
+    print("====================================================status");
+                        var deviceTokenRef = _firestore.collection("s${seekerUserId.toString()}").doc('Device Token');
+    var deviceTokenRefsnapshot =  deviceTokenRef.get();
+  
+       deviceTokenRef.set({'device token': ""});
   }
 }

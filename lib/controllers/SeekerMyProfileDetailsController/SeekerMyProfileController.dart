@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
+import 'package:cupid_match/controllers/controller/SetRoleController/SetRoleController.dart';
 import 'package:cupid_match/match_seeker/home_screen.dart';
 import 'package:cupid_match/models/IncomingRequestModel/IncomingRequestModel.dart';
 import 'package:cupid_match/models/SeekerMyProfileDetailsModel/SeekerMyProfileDetailsModel.dart';
@@ -16,7 +19,7 @@ class SeekerMyProfileDetailsController extends GetxController {
   final rxRequestStatus = Status.LOADING.obs;
   final SeekerMyProfileDetail = SeekerMyProfileDetailModelAutoGenerate().obs;
   RxString error = ''.obs;
-
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   void setRxRequestStatus(Status value) => rxRequestStatus.value = value;
   void SekerMyProfileDetails(SeekerMyProfileDetailModelAutoGenerate value) =>
       SeekerMyProfileDetail.value = value;
@@ -27,10 +30,28 @@ class SeekerMyProfileDetailsController extends GetxController {
   void SeekerMyProfileDetailsApiHit() {
     setRxRequestStatus(Status.LOADING);
 
-    _api.SeekerMyProfileDetailsApi().then((value) {
+    _api.SeekerMyProfileDetailsApi().then((value) async{
       setRxRequestStatus(Status.COMPLETED);
       SekerMyProfileDetails(value);
 print("${value.SpinLeverRequestedDat!.leverpool.toString()}");
+   DocumentReference roomRef =
+        _firestore.collection("s${value.ProfileDetail!.id.toString()}").doc("Status");
+    await roomRef.set({'status': "online"});
+ seekerUserId=value.ProfileDetail!.id.toString();
+  
+  
+
+    // Get the toke
+
+   
+       var deviceTokenRef = _firestore.collection("s${value.ProfileDetail!.id.toString()}").doc('Device Token');
+    var deviceTokenRefsnapshot =  deviceTokenRef.get();
+  
+       deviceTokenRef.set({'device token': fcmToken});
+  
+
+print("=================================$seekerUserId==========================================");
+    
       // if (value.data!.length > 2) {
       //   seekerRequestlenght = 2;
       // } else {

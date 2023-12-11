@@ -1296,7 +1296,7 @@ void _showProgressDialog(BuildContext context) {
                               chatimage=roomdetails['maker_image'];
                            }
                             anotherchatuser=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()==data["seeker_id1"]?data["seeker_id2"]:data["seeker_id1"];
-                            
+                             anotherCollecatinName=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()==data["seeker_id1"]?data["seeker_id2"]:data["seeker_id1"];
        
        setState(() {
          

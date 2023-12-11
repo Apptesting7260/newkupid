@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/SeekerToMakerController/SeekerToMakerController.dart';
 import 'package:cupid_match/controllers/controller/IncomingRequestController/IncomingRequestController.dart';
@@ -54,7 +55,7 @@ class SikerHomeScreen extends StatefulWidget {
   State<SikerHomeScreen> createState() => _SikerHomeScreenState();
 }
 
-class _SikerHomeScreenState extends State<SikerHomeScreen> {
+class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingObserver{
   // OutgoinRequestController controller = Get.put(OutgoinRequestController());
   // IncomingSeekerRequestController Incontroller = Get.put(IncomingSeekerRequestController());
   // final ViewSikerProfileDetailsControllernstance =
@@ -70,8 +71,10 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> {
   String? Getcurrentuser;
   @override
   HomeRequestController requestHomeController=Get.put(HomeRequestController());
-  void initState() {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  void initState() {
+             
     requestHomeController.homeRequest();
     seekerMyProfileController.SeekerMyProfileDetailsApiHit();
     recentSeekerMatchesController.isrecentSeekermatchesApi();
@@ -85,14 +88,43 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> {
     //     .toString());
     // TODO: implement initState
     super.initState();
+ WidgetsBinding.instance.addObserver(this);
 
+  }
+    void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+     setStatus('online');
+        print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    
+        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
+    } else {
+      setStatus('offline');
 
+       screenStatus = false.obs;
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+  }
+    setStatus(String status) async {
+    DocumentReference roomRef =
+        _firestore.collection("s$seekerUserId").doc("Status");
+    await roomRef.update({'status': status});
+
+    print("============================================================================================");
   }
 
   getcurrentuser() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     Getcurrentuser = sp.getString("Tokernid");
     print("$Getcurrentuser======currentuser");
+   
   }
   @override
   Widget build(BuildContext context) {
@@ -819,8 +851,7 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> {
                                                   child: Container(
                                                       child: Column(
                                                         children: [
-                                                          Expanded(
-                                                            child: Row(
+                                                         Row(
                                                               children: [
                                                                 Padding(
                                                                   padding: const EdgeInsets
@@ -844,7 +875,7 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> {
                                                                 )
                                                               ],
                                                             ),
-                                                          ),
+                                                         
                                                           Row(
                                                             crossAxisAlignment:
                                                             CrossAxisAlignment

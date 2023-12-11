@@ -47,4 +47,12 @@ class Utils {
           message ,
       );
     }
+    static notificationsSnackBar(String title, String message, bool error){
+
+      Get.snackbar(title, message,
+       
+        backgroundColor:  Colors. pinkAccent,
+        colorText: Colors.white
+       );
+    }
 }

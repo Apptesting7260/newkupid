@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/controller/ViewMakerProfileDetailsController/ViewMakerProfileDetailscontroller.dart';
 import 'package:cupid_match/data/response/status.dart';
 import 'package:cupid_match/match_maker/Chose_Subcription.dart';
@@ -30,7 +32,7 @@ class MakerDrawer extends StatefulWidget {
 
 class _MakerDrawerState extends State<MakerDrawer> {
 final ViewMakerProfileDetailsControllerinstance=Get.put(ViewMakerMyProfileDetailsController());
-
+   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
   void initState() {
 // ViewMakerProfileDetailsControllerinstance.ViewMakerProfileDetailsApiHit();
@@ -322,6 +324,14 @@ final box = GetStorage();
                     // Delete the cached data when the user logs out
 
                     sp.remove("BarearToken");
+                                var deviceTokenRef = _firestore.collection("m${makerUserId.toString()}").doc('Device Token');
+    var deviceTokenRefsnapshot =  deviceTokenRef.get();
+  
+       deviceTokenRef.set({'device token': ""});
+  print("====================================maker id===================$makerUserId--------------------------------------------------------------------");
+  DocumentReference roomRef =
+        _firestore.collection("m$makerUserId").doc("Status");
+    await roomRef.update({'status': "offline"});
 
                     // You can also clear all data in the storage if needed
                     // box.erase();

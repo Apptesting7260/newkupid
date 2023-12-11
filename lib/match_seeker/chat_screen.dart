@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:audio_waveforms/audio_waveforms.dart';
@@ -19,6 +20,7 @@ import 'package:cupid_match/res/components/internet_exceptions_widget.dart';
 import 'package:cupid_match/widgets/audio_play%20widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
@@ -28,9 +30,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kplayer/kplayer.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:video_player/video_player.dart';
-
+String?makerName;
+String?seekerName1;
  var playerx;
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -39,7 +43,7 @@ class ChatPage extends StatefulWidget {
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   String ?textmsg;
      bool ispageloading=false;
   String url="";
@@ -50,6 +54,8 @@ class _ChatPageState extends State<ChatPage> {
   bool isplaying = false;
   bool audioplayed = false;
   late Uint8List audiobytes;
+  String? fcmToken;
+  String?maketrChatStatus;
 // Recording ?recording;
   AudioPlayer player = AudioPlayer();
   Map<String, dynamic>? messages;
@@ -66,18 +72,29 @@ class _ChatPageState extends State<ChatPage> {
     final DateFormat formatter = DateFormat('h:mm a');
     return formatter.format(dateTime);
   }
-final chatfunctions chatfunctionsinstance=chatfunctions();
-  FocusNode messageFocusNode = FocusNode();
- 
 
 
+
+  final StreamController<String> _chatStatusController = StreamController<String>();
+
+
+
+  
   @override
   void initState() {
+              WidgetsBinding.instance.addObserver(this);
+
       _getDir();
     _initialiseControllers();
+    getChatStatus();
+     setonline();
+    getFcmToken();
+    onChatScreen();
+   
     ViewRequestDetailsControllerinstance.ViewRequestDetailsApiHit();
-     
-     
+     setState(() {
+       
+     });
                 
 // ViewRequestDetailsControllerinstance.ViewRequestDetailsApiHit();
 // Timer(Duration(seconds: 3), () {
@@ -91,6 +108,121 @@ final chatfunctions chatfunctionsinstance=chatfunctions();
     super.initState();
   }
 
+final chatfunctions chatfunctionsinstance=chatfunctions();
+  FocusNode messageFocusNode = FocusNode();
+ 
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+       setonline();
+     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      setStatus('online');
+       
+         print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      if(currentRouteName == '/ChatPage'){
+getChatStatus();
+onChatScreen();
+       setonline();
+        print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      }
+      else{
+        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
+      }
+        print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    
+        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
+     
+     
+    } else {
+      setStatus('offline');
+     
+     
+      setOffline();
+      
+       screenStatus = false.obs;
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+  }
+    setOffline() async {
+    DocumentReference roomRef =
+        _firestore.collection("s${anotherCollecatinName.toString()}" ).doc(roomid);
+    await roomRef.update({"onScreen": "false"});
+    DocumentReference roomRef2 = _firestore.collection("s${Makeridchat.toString()}").doc(roomid);
+      await roomRef2.update({
+    "$collecatinName":"false"
+
+      // Add other room metadata if needed
+    });
+    print( "onScreen  false");
+  }
+
+  setonline() async {
+    // DocumentReference roomRef =
+    //     _firestore.collection("$collecatinName").doc(roomid);
+    // await roomRef.update({"onScreen": "true"});
+      DocumentReference roomRef1 = _firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid);
+      await roomRef1.update({
+    "onScreen":"true"
+
+      // Add other room metadata if needed
+    });
+    print( "onScreen  true");
+     DocumentReference roomRef2 = _firestore.collection("s${Makeridchat.toString()}").doc(roomid);
+      await roomRef2.update({
+    "$collecatinName":"true"
+
+      // Add other room metadata if needed
+    });
+    print( "onScreen  true");
+  }
+
+  setStatus(String status) async {
+    DocumentReference roomRef =
+        _firestore.collection("$collecatinName").doc("Status");
+    await roomRef.update({'status': status});
+    print("====================================================status");
+  }
+
+
+  void getFcmToken(){
+    //      var deviceTokenRef = _firestore.collection("s73").doc('');
+    // var deviceTokenRefsnapshot =  deviceTokenRef.get().then((value) =>      
+    //  fcmToken = value.data()?['']
+     _firestore.collection("s${anotherCollecatinName.toString()}").doc("Device Token").snapshots().listen((value) {
+setState(() {
+  fcmToken=value.data()!['device token'];
+});
+  print('FCM Token================================================: $fcmToken');
+     }
+  
+     
+    );
+   
+      // Assuming you have a field named 'fcmToken' in the document
+ setState(() {
+   
+ });
+    
+   _firestore.collection("s${collecatinName.toString()}").doc(roomid).snapshots().listen((value) {
+setState(() {
+  Makeridchat=value.data()!['maker_id'];
+  makerName=value.data()!['maker_name'];
+});
+  print('FCM Token================================================: $fcmToken');
+     }
+  
+     
+    );
+  }
+  
   final ViewSikerProfileDetailsControllerinstance =
       Get.put(ViewSikerProfileDetailsController());
       final SeekerMyProfileDetailsController seekerMyProfileController = Get.put(SeekerMyProfileDetailsController());
@@ -107,6 +239,11 @@ final chatfunctions chatfunctionsinstance=chatfunctions();
       setState(() {
         textmsg;
       });
+      
+       
+        //  sendNotification(textmsg.toString());
+     
+     
       messagecontroller.clear();
         Map<String, dynamic> messages = {
           "sentby": seekerMyProfileController.SeekerMyProfileDetail.
@@ -376,6 +513,10 @@ setState(() {
   messagetype="img";
 });
 onSendMessage();
+  // if(onScreen=="false"){
+        sendNotification("image");
+      // }
+
       return downloadUrl;
 
       
@@ -584,7 +725,9 @@ Future<void> _uploadAudioToFirebase(File audioFile) async {
   bool isRecordingCompleted = false;
   bool isLoading = true;
   late Directory appDirectory;
-
+ String chatStatus="";
+ String onScreen="";
+ String? MakeronScreen;
 
 
   void _getDir() async {
@@ -602,6 +745,152 @@ Future<void> _uploadAudioToFirebase(File audioFile) async {
       ..sampleRate = 44100;
   }
 
+
+void getChatStatus(){
+ _firestore.collection("s${anotherCollecatinName.toString()}").doc("Status").snapshots().listen((value) {
+setState(() {
+   chatStatus=value.data()!['status'];
+});
+
+
+ } 
+ 
+
+
+ 
+ );
+
+  _firestore.collection("m${Makeridchat.toString()}").doc("Status").snapshots().listen((value) {
+setState(() {
+   maketrChatStatus=value.data()!['status'];
+});
+
+
+ } 
+ 
+
+
+ 
+ );
+
+ setState(() {
+   
+ });
+ 
+}
+
+
+
+
+void onChatScreen(){
+ _firestore.collection("s${collecatinName.toString()}").doc(roomid).snapshots().listen((value) {
+setState(() {
+   onScreen=value.data()!['onScreen'];
+});});
+ _firestore.collection("s${collecatinName.toString()}").doc(roomid).snapshots().listen((value) {
+setState(() {
+   MakeronScreen=value.data()!['makerOnScreen'];
+});
+print("============================================makerOnScreen  ${value.data()!['makerOnScreen']}=======================================================================");
+ } 
+ 
+
+
+ 
+ );
+    var gettingDeviceToken2;
+  var gettingDeviceTokenSnapshot2 =  _firestore.collection("m${Makeridchat.toString()}").doc('Device Token').get().then((value) =>
+  gettingDeviceToken2=value.data()!['device token'] 
+  );
+                                     
+print("========================device token=====${gettingDeviceToken2}======================================================================");
+                                       print("Maker Fcm Token    ${Makeridchat}");
+ 
+ setState(() {
+   
+ });
+ 
+}
+
+
+ sendNotification(String body) async {
+
+  print("notification data ");
+      var gettingDeviceTokenSnapshot = await _firestore.collection("s${anotherCollecatinName.toString()}").doc('Device Token').get();
+                                        var gettingDeviceToken = gettingDeviceTokenSnapshot.data();
+                                          print(gettingDeviceToken!['device token']);
+      
+        if(onScreen=="false"&&gettingDeviceToken!=null){                               
+    var notificationContent = {
+      'to': gettingDeviceToken['device token'],
+     
+      'notification': {
+        'title': '${chatname}',
+        'body': '${body}',
+        "image": "${chatimage1}"
+      },
+      'data':{
+        
+        'what': 'chat',
+       
+      }
+    };
+    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        body: jsonEncode(notificationContent),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
+        }).then((value) {
+      if (kDebugMode) {
+        print("================================send notification    =======${value.body.toString()}===============================");
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error);
+      }
+    });
+
+        }
+          var gettingDeviceTokenSnapshot2 = await _firestore.collection("m${Makeridchat}").doc('Device Token').get();
+                                        var gettingDeviceToken2 = gettingDeviceTokenSnapshot2.data();
+print("========================device token=====${gettingDeviceToken2!['device token']}======================================================================");
+                                       print("Maker Fcm Token    ${Makeridchat}");
+             if(MakeronScreen=="false"&&gettingDeviceToken2!=null){                               
+    var notificationContent = {
+      'to': gettingDeviceToken2['device token'],
+     
+      'notification': {
+        'title': '${chatname}',
+        'body': '${body}',
+        "image": "${chatimage1}"
+      },
+      'data':{
+        
+        'what': 'chat',
+       
+      }
+    };
+    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        body: jsonEncode(notificationContent),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
+        }).then((value) {
+      if (kDebugMode) {
+        print("================================maker send notification    =======${value.body.toString()}===============================");
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error);
+      }
+    });
+
+        }
+  }
+  
+  
   void _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
@@ -657,6 +946,7 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
 }
   @override
   Widget build(BuildContext context) {
+    currentRouteName = ModalRoute.of(context)!.settings.name;
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
@@ -670,12 +960,66 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
 
         actions: [
           Container(
-            child: Image.asset("assets/icons/menuu.png"),
+            child: GestureDetector(
+              child: Image.asset("assets/icons/menuu.png"),
+              onTap: () {
+
+                     print(Makeridchat);
+                if(Makeridchat!=null)  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+                  // Color(0xffFFFFFF)
+            backgroundColor: Color(0xffFFFFFF),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),),
+          title: Center(child: Text('Chat Info')),
+          content: SingleChildScrollView(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+               Column(
+             
+
+
+                 children: [
+
+                   Text(makerName.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
+                   Text(seekerName1.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
+                 ],
+               ),
+               Column(
+                  
+                 children: [
+                  
+                    Text(maketrChatStatus.toString(),style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color:maketrChatStatus!="online"? Colors.red:Colors.green),),
+                    Text(chatStatus.toString(),style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color:chatStatus!="online"? Colors.red:Colors.green),),
+                 ],
+               ),
+
+              ],
+            ),
+          ),
+       );
+      },
+    );
+  
+              
+              },
+
+              ) ,
           )
         ],
         leading: GestureDetector(
           onTap: () {
             Get.back();
+            setOffline();
           },
           child: Icon(
             Icons.arrow_back_ios,
@@ -712,12 +1056,12 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
                   SizedBox(
                     height: height * .01,
                   ),
-                  Text(
-                    "Hey! How\'s it going?",
+                if(Makeridchat==null)  Text(
+                    "$chatStatus",
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
-                        .copyWith(color: Colors.grey),
+                        .copyWith(color:chatStatus!="online"? Colors.red:Colors.green),
                   ),
                 ],
               ),
@@ -1211,6 +1555,7 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
                                       String userMessage = messagecontroller.text.trim();
                                       if(userMessage.isNotEmpty){
                                         onSendMessage();
+                                         sendNotification(userMessage);
                                       }
                                     } ,
                                     icon: Icon(
@@ -1247,12 +1592,12 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
       if (linesBreak.length == 30) {
         linesBreak="";
         lines += '\n';
-        print(lines);// Add a line break for each non-space character
+        // print(lines);// Add a line break for each non-space character
       }
 
         lines += message[i];
       linesBreak += message[i];
-        print(lines);
+        // print(lines);
 
     }
     // List<String> words = message.split(' ');
@@ -1298,6 +1643,21 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
   void _refreshWave() {
     if (isRecording) recorderController.refresh();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 }

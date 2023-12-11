@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,6 +22,7 @@ import 'package:cupid_match/res/components/internet_exceptions_widget.dart';
 import 'package:cupid_match/widgets/audio_play%20widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
@@ -38,6 +41,8 @@ String ?messageimgurl;
 String ?messagaudiourl;
 String? seeker1;
 String? seeker2;
+String? seekerName;
+String? seeker2Name;
 var playerx;
 bool ismessage=false;
 
@@ -48,7 +53,7 @@ class MakerChatScreen extends StatefulWidget {
   State<MakerChatScreen> createState() => _MakerChatScreenState();
 }
 
-class _MakerChatScreenState extends State<MakerChatScreen> {
+class _MakerChatScreenState extends State<MakerChatScreen>  with WidgetsBindingObserver{
   bool ispageloading=false;
   final ViewMakerProfileDetailsControllerinstance=Get.put(ViewMakerProfileDetailsController());
   String url="";
@@ -58,6 +63,13 @@ class _MakerChatScreenState extends State<MakerChatScreen> {
   String audioasset = "assets/audio/red-indian-music.mp3";
   bool isplaying = false;
   bool audioplayed = false;
+    String? fcmToken;
+    String?onScreen;
+        String?onScreen2;
+
+    String?chatStatus;
+        String seeker1ChatStatus="offline";
+    String Seeker2chatStatus="offline";
   late Uint8List audiobytes;
 // Recording ?recording;
   AudioPlayer player = AudioPlayer();
@@ -146,17 +158,253 @@ class _MakerChatScreenState extends State<MakerChatScreen> {
   @override
   void initState() {
     _getDir();
+    getChatStatus();
     _initialiseControllers();
-
-
+    setonline();
+onChatScreen();
+  WidgetsBinding.instance.addObserver(this);
     ViewMakerProfileDetailsControllerinstance.ViewMakerProfileDetailsApiHit();
 
 
     Timer(Duration(seconds: 3), () {setState(() {
       ispageloading=true;
+
     }); });
     super.initState();
   }
+
+
+
+
+   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+       setonline();
+     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      setStatus('online');
+       
+         print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      if(currentRouteName == '/MakerChatScreen'){
+getChatStatus();
+onChatScreen();
+       setonline();
+        print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      }
+      else{
+        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
+      }
+        print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    
+        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
+     
+     
+    } else {
+      setStatus('offline');
+     
+     
+      setOffline();
+      
+       screenStatus = false.obs;
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+  }
+    setOffline() async {
+    DocumentReference roomRef =
+        _firestore.collection("s${seeker2.toString()}" ).doc(roomid);
+    await roomRef.update({"makerOnScreen": "false"});
+       DocumentReference roomRef2 = _firestore.collection("s${seeker1.toString()}" ).doc(roomid);
+    await roomRef2.update({"makerOnScreen": "false"});
+
+  }
+
+  setonline() async {
+    
+      DocumentReference roomRef1 = _firestore.collection("s${seeker2.toString()}").doc(roomid);
+      await roomRef1.update({
+    "makerOnScreen":"true"
+
+      // Add other room metadata if needed
+    });
+      DocumentReference roomRef2 =   _firestore.collection("s${seeker1.toString()}").doc(roomid);
+      await roomRef2.update({
+    "makerOnScreen":"true"
+
+      // Add other room metadata if needed
+    });
+    print( "=====================================================================onScreen === true============================================");
+  }
+
+  setStatus(String status) async {
+    DocumentReference roomRef =
+        _firestore.collection( "m"+makeridchat.toString()).doc("Status");
+    await roomRef.update({'status': status});
+    print("====================================================status");
+  }
+
+void getChatStatus(){
+ _firestore.collection("s${seeker1.toString()}").doc("Status").snapshots().listen((value) {
+setState(() {
+   seeker1ChatStatus=value.data()!['status'];
+});
+
+ } 
+ 
+ );
+
+  _firestore.collection("s${seeker2.toString()}").doc("Status").snapshots().listen((value) {
+setState(() {
+   Seeker2chatStatus=value.data()!['status'];
+   print("-===============$seeker1========$seeker2=====${value.data()!['status']}==$Seeker2chatStatus==================================================");
+});});
+print("-===============$seeker1========$seeker2=======$Seeker2chatStatus==================================================");
+ setState(() {
+   
+ });
+ 
+}
+
+
+  void getFcmToken(){
+    //      var deviceTokenRef = _firestore.collection("s73").doc('');
+    // var deviceTokenRefsnapshot =  deviceTokenRef.get().then((value) =>      
+    //  fcmToken = value.data()?['']
+     _firestore.collection("s${anotherCollecatinName.toString()}").doc("Device Token").snapshots().listen((value) {
+setState(() {
+  fcmToken=value.data()!['device token'];
+});
+  print('FCM Token================================================: $fcmToken');
+     }
+  
+     
+    );
+   
+      // Assuming you have a field named 'fcmToken' in the document
+ setState(() {
+   
+ });
+    
+   
+  }
+  
+
+
+void onChatScreen() {
+ 
+  _firestore.collection("m$makeridchat").doc(roomid).snapshots().listen((value) {
+    
+    setState(() {
+      onScreen = value.data()!['$seeker1'];
+      print("onScreen: $onScreen");
+    });
+  });
+
+  _firestore.collection("m$makeridchat").doc(roomid).snapshots().listen((value) {
+    setState(() {
+      onScreen2 = value.data()!['$seeker2'];
+      print("onScreen2: $onScreen2");
+    });
+    print("onScreen2 function: $onScreen2===================================");
+  });
+ print("onScreen2 function: $onScreen2===================================");
+
+}
+ sendNotification(String body) async {
+
+ 
+       var gettingDeviceTokenSnapshot = await _firestore.collection("s${seeker2.toString()}").doc('Device Token').get();
+                                      
+                                       var    gettingDeviceToken = gettingDeviceTokenSnapshot.data();
+                                       
+                                        print(gettingDeviceToken!['device token']);
+  var gettingDeviceTokenSnapshot1 = await _firestore.collection("s${seeker1.toString()}").doc('Device Token').get();
+                                      
+                                       var    gettingDeviceToken1 = gettingDeviceTokenSnapshot.data();
+                                       
+                                        print(gettingDeviceToken!['device token']);
+   
+  setState(() {
+    gettingDeviceToken;
+  });
+  print("=========================devicr token=======$gettingDeviceToken==========nnbvnv=================================================");
+
+  if(gettingDeviceToken!=null&&onScreen2=="false"){
+      var notificationContent = {
+      'to': gettingDeviceToken['device token'],
+     
+      'notification': {
+        'title': '${chatname}',
+        'body': '${body}',
+        "image": "${makeridchatimage}"
+      },
+      'data':{
+        
+        'what': 'chat',
+       
+      }
+    };
+     print("=========================devicr token=======$gettingDeviceToken==========nnbvnv=================================================");
+  
+  await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        body: jsonEncode(notificationContent),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
+        }).then((value) {
+      if (kDebugMode) {
+        print("================================send notification    =======${value.body.toString()}===============================");
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error);
+      }
+    });
+  }
+  
+    if(gettingDeviceToken1!=null&&onScreen=="false"){
+      var notificationContent = {
+      'to': gettingDeviceToken1['device token'],
+     
+      'notification': {
+        'title': '${chatname}',
+        'body': '${body}',
+        "image": "${makeridchatimage}"
+      },
+      'data':{
+        
+        'what': 'chat',
+       
+      }
+    };
+     print("=========================devicr token=======$gettingDeviceToken==========nnbvnv=================================================");
+  
+  await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        body: jsonEncode(notificationContent),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':
+              'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
+        }).then((value) {
+      if (kDebugMode) {
+        print("================================send notification    =======${value.body.toString()}===============================");
+      }
+    }).onError((error, stackTrace) {
+      if (kDebugMode) {
+        print(error);
+      }
+    });
+  }
+  
+  }
+  
 
 final ChatFunction ChatFunctioninstance=ChatFunction();
   final ScrollController _scrollController = ScrollController();
@@ -318,6 +566,7 @@ ChatFunctioninstance.Seekersender(textmsg,seeker2.toString(),roomid.toString(),m
       setState(() {
         textmsg;
       });
+      
       messagecontroller.clear();
         // DocumentReference roomRef1 = _firestore.collection("s"+seeker1.toString()).doc(roomid);
         // DocumentReference roomRef2 = _firestore.collection("s"+seeker2.toString()).doc(roomid);
@@ -703,12 +952,63 @@ ChatFunctioninstance.Seekersender(textmsg,seeker2.toString(),roomid.toString(),m
             toolbarHeight: Get.height*0.1,
             actions: [
               Container(
-                child: Image.asset("assets/icons/menuu.png"),
+                child: GestureDetector(child: Image.asset("assets/icons/menuu.png"),
+                onTap: () {
+                  getChatStatus();
+ 
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+                  // Color(0xffFFFFFF)
+            backgroundColor: Color(0xffFFFFFF),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),),
+          title: Center(child: Text('Chat Info')),
+          content: SingleChildScrollView(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+               Column(
+             
+
+
+                 children: [
+
+                   Text(seekerName.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
+                   Text(seeker2Name.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
+                 ],
+               ),
+               Column(
+                  
+                 children: [
+                  
+                    Text(seeker1ChatStatus.toString(),style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color:seeker1ChatStatus!="online"? Colors.red:Colors.green),),
+                    Text(Seeker2chatStatus.toString(),style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(color:Seeker2chatStatus!="online"? Colors.red:Colors.green),),
+                 ],
+               ),
+
+              ],
+            ),
+          ),
+       );
+      },
+    );
+  
+                },
+                ),
               )
             ],
             leading: GestureDetector(
               onTap: () {
                 Get.back();
+                   setOffline();
               },
               child: Icon(
                 Icons.arrow_back_ios,
@@ -1298,6 +1598,10 @@ ChatFunctioninstance.Seekersender(textmsg,seeker2.toString(),roomid.toString(),m
                     onPressed:(){{
                        String userMessage = messagecontroller.text.trim();
                                       if(userMessage.isNotEmpty){
+                                        sendNotification(userMessage);
+
+
+                                        print("======================================messege=================");
                       onSendMessage();
                     }
                     }
@@ -1337,12 +1641,12 @@ ChatFunctioninstance.Seekersender(textmsg,seeker2.toString(),roomid.toString(),m
       if (linesBreak.length == 30) {
         linesBreak="";
         lines += '\n';
-        print(lines);// Add a line break for each non-space character
+        // print(lines);// Add a line break for each non-space character
       }
 
       lines += message[i];
       linesBreak += message[i];
-      print(lines);
+      // print(lines);
 
     }
     // List<String> words = message.split(' ');

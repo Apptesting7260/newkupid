@@ -4,6 +4,8 @@ import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 String ?SelectedGender;
 String ?SelectedLocation;
 String ?SelectedMtachMakerExperience;
@@ -33,11 +35,19 @@ List <String>  interests=[];
   String? selectchildren;
   String? selectEducation;
   String? selectHopping;
-
+ RxBool screenStatus = true.obs;
+ String? currentRouteName ;
+ String?  fcmToken;
   String? selectSmoke;
+  String?collecatinName;
+    String?anotherCollecatinName;
+RxBool notificationBell = false.obs;
   String? selectDrink;
     bool isVisible = true;
   bool isNotVisible = false;
+  String? seekerUserId;
+    String? makerUserId;
+
 int rolevalue=1;
 File? videoFile;
  int ? selectedseekerid;

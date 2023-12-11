@@ -1,4 +1,6 @@
 
+import 'package:get/get.dart';
+
 import '../match_maker/match_maker_profile_update.dart';
 import '../match_seeker/Requests/SeekeerIncominSingalRequestPage.dart';
 import '../match_seeker/lever/StaticLiverPool.dart';
@@ -8,12 +10,17 @@ import 'GlobalVariable.dart';
 
 class GlobalVarribalNull{
   void NullFunction(){
-
+screenStatus = true.obs;
+  collecatinName;
+  anotherCollecatinName;
+currentRouteName;
     SelectedGender=null;
    SelectedLocation=null;
    SelectedMtachMakerExperience=null;
    SelectedDate=null;
     startdate=null;
+ seekerUserId;
+
      datestring=null;
    imgFile=null;
    Matchtype=null;

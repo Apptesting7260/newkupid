@@ -1,9 +1,12 @@
+import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/match_maker/Create_Match/Create_Match.dart';
 import 'package:cupid_match/match_maker/bottom_view.dart';
 import 'package:cupid_match/match_maker/chatScreenaMaker.dart';
 import 'package:cupid_match/match_maker/home_screen_maker.dart';
 import 'package:cupid_match/match_maker/MakerLikes.dart';
 import 'package:cupid_match/match_maker/profile_maker.dart';
+import 'package:cupid_match/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +36,19 @@ class _Maker_TabViewState extends State<Maker_TabView> {
     // TODO: implement initState
     bottomSelectedIndex = widget.index;
     pageController = PageController(initialPage: widget.index, keepPage: true);
-
+ FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print("yayayayayayayayayayayayayayayayayayayayayayayayayayayayayyayayay");
+      print("%%%%%%%%%%%%%%%%%%%%%%%%");
+      notificationBell.value = true;
+      print(notificationBell.value);
+      print("%%%%%%%%%%%%%%%%%%%%%%%%");
+     
+      
+     
+      Utils.notificationsSnackBar(message.notification!.title!,message.notification!.body!, false);
+     
+     
+      });
     super.initState();
     // studentType = MySharedPreferences.localStorage?.getString(MySharedPreferences.studentType) ?? "";
   }

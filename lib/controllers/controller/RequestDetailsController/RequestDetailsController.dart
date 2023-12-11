@@ -71,7 +71,14 @@ Future<bool> doesDocumentExist(String collectionPath, String documentPath) async
 final collectionPath = "s"+value.data!.getseeker!.id.toString();
 final documentPath = value.data!.roomid.toString();
 final exists = await doesDocumentExist(collectionPath, documentPath);
-
+var image=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()== value.data!.getseeker!.id.toString()?value.data!.getanotherseeker!
+.imgPath.toString():value.data!.getseeker!.imgPath.toString();
+  var image2=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()!= value.data!.getseeker!.id.toString()?value.data!.getanotherseeker!
+.imgPath.toString():value.data!.getseeker!.imgPath.toString();
+var seekerId=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()== value.data!.getseeker!.id.toString()?value.data!.getanotherseeker!
+.id.toString():value.data!.getseeker!.id.toString();
+  var seekerId2=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()!= value.data!.getseeker!.id.toString()?value.data!.getanotherseeker!
+.id.toString():value.data!.getseeker!.id.toString();
 if (exists) {
    anotherchatuser= seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()== value.data!.getseeker!.id.toString()?value.data!.getanotherseeker!.id.toString():value.data!.getseeker!.id.toString();
    roomid=value.data!.roomid.toString();
@@ -90,13 +97,16 @@ if (exists) {
           "seeker_id2": value.data!.getanotherseeker!.id.toString(),
            'timestamp': FieldValue.serverTimestamp(),
       "lastmsg": "",
+      "status":"online",
+      "onScreen":"false",
+      "makerOnScreen": "false",
      if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")     "maker_id": value.data!.getmaker!.id.toString(),
       if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")    "maker_name": value.data!.getmaker!.name.toString(),
 if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")   "maker_image": value.data!.getmaker!.imgPath.toString(),
         
 
-          "seeker_inage1": value.data!.getseeker!.imgPath.toString(),
-          "seeker_inage2": value.data!.getanotherseeker!.imgPath.toString(),
+          "seeker_inage1": image,
+          "seeker_inage2": image2,
        if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")  "roomname":  value.data!.getseeker!.id.toString()==seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()?
 
               value.data!.getanotherseeker!.name.toString()+" & "+ value.data!.getmaker!.name.toString():value.data!.getseeker!.name.toString()+" & "+ value.data!.getmaker!.name.toString(),
@@ -112,14 +122,18 @@ if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"|
           "seeker_id1": value.data!.getseeker!.id.toString(),
  "lastmsg": "",
  'timestamp': FieldValue.serverTimestamp(),
+   "status":"online",
+      "onScreen":"false",
+      "makerOnScreen": "false",
           "seeker_id2": value.data!.getanotherseeker!.id.toString(),
     if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")    "maker_id": value.data!.getmaker!.id.toString(),
       if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")   "maker_name": value.data!.getmaker!.name.toString(),
       if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")   "maker_image": value.data!.getmaker!.imgPath.toString(),
       
 
-          "seeker_inage1": value.data!.getseeker!.imgPath.toString(),
-          "seeker_inage2": value.data!.getanotherseeker!.imgPath.toString(),
+          "seeker_inage1": image2,
+          "seeker_inage2": image,
+  
 
        if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"||value.data!.matchType.toString()=="3")  "roomname":  value.data!.getseeker!.id.toString()!=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()?
 
@@ -143,13 +157,15 @@ if(value.data!.matchType.toString()=="0"||value.data!.matchType.toString()=="2"|
       "maker_name": value.data!.getmaker!.name.toString(),
     "maker_image": value.data!.getmaker!.imgPath.toString(),
        "roomid": value.data!.roomid!.toString(),
-
-          "seeker_inage1": value.data!.getseeker!.imgPath.toString(),
-          "seeker_inage2": value.data!.getanotherseeker!.imgPath.toString(),
+   "status":"online",
+      "$seekerId":"false",
+       "$seekerId2":"false",
+          "seeker_inage1": image,
+          "seeker_inage2": image2,
       "roomname":
 
               value.data!.getanotherseeker!.name.toString()+" & "+value.data!.getseeker!.name.toString(),
-      
+     
 
            
         };

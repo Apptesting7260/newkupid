@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/SeekerMyProfileDetailsController/SeekerMyProfileController.dart';
 import 'package:cupid_match/controllers/controller/IncomingRequestController/IncomingRequestController.dart';
 import 'package:cupid_match/controllers/controller/LikeListController/LikeListController.dart';
@@ -14,6 +16,8 @@ import 'package:cupid_match/match_seeker/likes_seeker.dart';
 import 'package:cupid_match/match_seeker/Chat_list_Screen.dart';
 import 'package:cupid_match/match_seeker/profile/profile_page.dart';
 import 'package:cupid_match/match_seeker/siker_Home_Screen.dart';
+import 'package:cupid_match/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -48,13 +52,27 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
   @override
   void initState() {
     // fetchApi();
-
+           seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
     // TODO: implement initState
     bottomSelectedIndex = widget.index;
     pageController = PageController(initialPage: widget.index, keepPage: true);
     homepageapis();
     chatpageapis();
     likepagepais();
+     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        print("yayayayayayayayayayayayayayayayayayayayayayayayayayayayayyayayay");
+      print("%%%%%%%%%%%%%%%%%%%%%%%%");
+      notificationBell.value = true;
+      print(notificationBell.value);
+      print("%%%%%%%%%%%%%%%%%%%%%%%%");
+     
+      
+     
+      Utils.notificationsSnackBar(message.notification!.title!,message.notification!.body!, false);
+     
+     
+      });
+    
       // seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
       //  recentSeekerMatchesController.isrecentSeekermatchesApi();
       //      sekeerOutGoingController.seekerOutGoingRequest();
@@ -62,6 +80,7 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
     super.initState();
     // studentType = MySharedPreferences.localStorage?.getString(MySharedPreferences.studentType) ?? "";
   }
+  
 
   homepageapis() {
     // sekeerOutGoingController.seekerOutGoingRequest();

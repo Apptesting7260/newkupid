@@ -5,6 +5,7 @@ import 'package:cupid_match/controllers/SeekerMyProfileDetailsController/SeekerM
 import 'package:cupid_match/match_maker/chat_screen.dart';
 import 'package:cupid_match/match_seeker/chat_screen.dart';
 import 'package:cupid_match/match_seeker/matched_request.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -52,13 +53,14 @@ final SeekerMyProfileDetailsController seekerMyProfileController = Get.put(Seeke
 
 
   }
+  String? fcmToken;
   @override
   void initState() {
 getusers();
     // TODO: implement initState
     super.initState();
-
   }
+   
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -123,7 +125,7 @@ getusers();
                                                         // index]
                                                         //     .seekerwithImg!
                                                         //     .toString()),
-                                                    data!['seeker_inage1']
+                                                    data!['seeker_inage2']
                                                     ),
                                                     backgroundColor: Colors.transparent,
                                                   ),
@@ -147,7 +149,7 @@ getusers();
                                                         //     .seekerfromImg!
                                                         //     .toString()
 
-                                                         data['seeker_inage2']     ),
+                                                         data['seeker_inage1']     ),
                                                     backgroundColor: Colors.transparent,
                                                   ),
                                                 ),
@@ -222,22 +224,33 @@ getusers();
                               ),
                             ),
                             onTap: (){
+                            
+   
+
                                roomid=data["roomid"];
+                               setState(() {
+                                 collecatinName=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString();
+                                 anotherCollecatinName=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()==data["seeker_id1"]?data["seeker_id2"]:data["seeker_id1"];;
+                               });
                                myid=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString();
                               requestid=data["Requestid"];
                               // seeker1=data['seeker_id1'];
                               // seeker2=data['seeker_id2'];
                               chatname=data['roomname'];
+                                seekerName1=data['seeker_name1'];
                               chatimage1=data['seeker_inage2'];
-
-
-
+  print("======================================anotherseeker=================$anotherCollecatinName================================");
+          print("=======================================================$collecatinName================================");
+             print("=======================================================$roomid==========================");     
+                     
                               exist();
                              if(makeride==true){
                                 Makeridchat=data['maker_id'];
                                 chatimage=data['maker_image'];
+                                makerName=data['maker_name'];
+                                print("makwr id ${data['maker_id']}==================================================================================1222522");
                              }
-                              anotherchatuser=seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()==data["seeker_id1"]?data["seeker_id2"]:data["seeker_id1"];
+                              anotherchatuser="s"+seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString()==data["seeker_id1"]?data["seeker_id2"]:data["seeker_id1"];
                               setState(() {
                                 roomid;
                                 userIdsiker;
@@ -478,7 +491,7 @@ Future<bool> doesMakerIdExist(String collectionPath, String documentPath, String
 exist() async {
   final collectionPath = seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString();
   final documentPath = roomid.toString();
-  final makerIdToCheck = "makerid"; // Replace with the key you want to check
+  final makerIdToCheck = "maker_id"; // Replace with the key you want to check
 
   final exists = await doesMakerIdExist(collectionPath, documentPath, makerIdToCheck);
 
@@ -493,6 +506,7 @@ exist() async {
     print("The makerid key does not exist in the document.");
   }
 }
+
 
 }
 

@@ -1,8 +1,10 @@
 
+import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/utils/my_theme.dart';
 import 'package:cupid_match/views/sign_up/signup_screen.dart';
 import 'package:cupid_match/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,6 +20,18 @@ import 'match_seeker/profile/interest.dart';
 import 'match_seeker/profile/update_profile_details.dart';
 import 'match_seeker/siker_Home_Screen.dart';
 
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+
+  // print(notificationBell.value);
+  // notificationBell.value = true;
+  // print(notificationBell.value);
+  print("Handling a background message");
+  print('hello');
+  print('new');
+}
+
+
 Future main()async {
     
    WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +39,34 @@ Future main()async {
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+ 
+  // FlutterBranchSdk.validateSDKIntegration();
+  // FlutterBranchSdk.initSession();
+  // await FlutterBranchSdk.init(
+  //     useTestKey: true, enableLogging: false, disableTracking: false);
+  fcmToken = await FirebaseMessaging.instance.getToken();
+  print('FCM Token: $fcmToken');
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: true,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
+
   runApp(const MyApp());
 }
 
@@ -55,6 +97,7 @@ class MyApp extends StatelessWidget {
 
 
 
+  
 
 
 // import 'dart:io';

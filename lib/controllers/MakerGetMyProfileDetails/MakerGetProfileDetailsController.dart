@@ -1,6 +1,7 @@
 
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/data/response/status.dart';
 import 'package:cupid_match/models/AllOcupationsModel/AllOcupationsModel.dart';
@@ -16,7 +17,7 @@ import '../../models/MakerMyProfileDetailModel/GetMyPrpfileDetailsModel.dart';
 class ViewMakerMyProfileDetailsController extends GetxController {
 
   final _api = AuthRepository();
-
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final rxRequestStatus = Status.LOADING.obs ;
   final ViewProfileDetail =MakerMyprofileDetailsModel().obs ;
@@ -38,10 +39,26 @@ class ViewMakerMyProfileDetailsController extends GetxController {
     print("user id ========== ${sp.getString('Tokernid')}");
     print("user id ===================$Makerid");
 
-    _api.getMakerProfileDetails().then((value){
+    _api.getMakerProfileDetails().then((value) async {
       setRxRequestStatus(Status.COMPLETED);
       ViewProfileDetails(value);
       print(value);
+        DocumentReference roomRef =
+        _firestore.collection("m${value.requests!.id.toString()}").doc("Status");
+    await roomRef.set({'status': "online"});
+
+  
+  
+
+    // Get the toke
+
+   
+       var deviceTokenRef = _firestore.collection("m${value.requests!.id.toString()}").doc('Device Token');
+    var deviceTokenRefsnapshot =  deviceTokenRef.get();
+  
+       deviceTokenRef.set({'device token': fcmToken});
+  makerUserId=value.requests!.id.toString();
+  print("====================================maker id===================$makerUserId--------------------------------------------------------------------");
 
       print("fjksdfn");
     }).onError((error, stackTrace){

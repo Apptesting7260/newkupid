@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid_match/match_maker/Create_Match/Create_Match.dart';
 import 'package:cupid_match/match_maker/chat_screen.dart';
 import 'package:cupid_match/match_maker/invite_state.dart';
@@ -50,13 +51,13 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   // IncomingMakerRequestController incomingMakerRequestController =
   //     Get.put(IncomingMakerRequestController());
   RecentMakerMatchesController recentMakerMatchesController =
       Get.put(RecentMakerMatchesController());
 
-  //
+   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   MakerHomePageRequestController makerRequestController =
       Get.put(MakerHomePageRequestController());
   final ViewMakerProfileDetailsControllerinstance=Get.put(ViewMakerMyProfileDetailsController());
@@ -69,8 +70,36 @@ class _HomePageState extends State<HomePage> {
     ViewMakerProfileDetailsControllerinstance.ViewMakerProfileDetailsApiHit();
 
     super.initState();
-
+ WidgetsBinding.instance.addObserver(this);
     // outgoingMakerRequestController.isOutgoingMakerRequestApi();
+  }
+      void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+     setStatus('online');
+        print(currentRouteName);
+        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+    
+        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
+    } else {
+      setStatus('offline');
+
+       screenStatus = false.obs;
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      print(screenStatus.value);
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+  }
+    setStatus(String status) async {
+    DocumentReference roomRef =
+        _firestore.collection("m$makerUserId").doc("Status");
+    await roomRef.update({'status': status});
+
+    print("============================================================================================");
   }
 
   int x = 5;

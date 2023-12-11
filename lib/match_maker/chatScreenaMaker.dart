@@ -243,6 +243,9 @@ class _ChatScreenMakerState extends State<ChatScreenMaker> {
                             chatimage1=data['seeker_inage1'];
                             chatimage=data['seeker_inage2'];
                             makeridchatimage=data['maker_image'];
+                            seeker2Name=data['seeker_name2'];
+                            seekerName=data['seeker_name1'];
+
                             // anotherchatuser=["seeker_id1"]?data["seeker_id2"]:data["seeker_id1"];
                             setState(() {
                               userIdsiker;
