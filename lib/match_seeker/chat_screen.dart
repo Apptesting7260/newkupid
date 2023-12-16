@@ -90,7 +90,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
      setonline();
     getFcmToken();
     onChatScreen();
-   
+    MessengeRead();
     ViewRequestDetailsControllerinstance.ViewRequestDetailsApiHit();
      setState(() {
        
@@ -151,6 +151,20 @@ onChatScreen();
       print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
     }
   }
+      MessengeRead(){
+          _firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid).collection("massages").get().then((value) {
+               value.docs.forEach((element) {
+
+_firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid).collection("massages").doc(element.id).update({'isRead':true});
+
+
+               });
+          
+          });
+   
+      }
+
+
     setOffline() async {
     DocumentReference roomRef =
         _firestore.collection("s${anotherCollecatinName.toString()}" ).doc(roomid);
@@ -255,6 +269,8 @@ setState(() {
           "message": textmsg,
           "type": "text",
           "time": FieldValue.serverTimestamp(),
+           'isRead': false,
+          
         };
  
 
@@ -346,6 +362,7 @@ chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControlle
           "imageurl": messageimgurl,
           "type": "img",
           "time": FieldValue.serverTimestamp(),
+            'isRead': false,
         };
         String latmdg="image";
 //          DocumentReference roomRef1 = _firestore.collection(seekerMyProfileController.SeekerMyProfileDetail.
@@ -416,6 +433,7 @@ chatfunctionsinstance.Makersender(latmdg.toString(),ViewRequestDetailsController
           value.ProfileDetail!.imgPath,
         "type": "audio",
         "time": FieldValue.serverTimestamp(),
+          'isRead': false,
       };
 //         DocumentReference roomRef1 = _firestore.collection(seekerMyProfileController.SeekerMyProfileDetail.
 //           value.ProfileDetail!.id.toString()).doc(roomid);
@@ -1304,10 +1322,13 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
         
           //  CustomAudioPlayer(audioUrl:snapshot.data!.docs[index]['audiourl'].toString() ,),
               SizedBox(height: 4), // Adjust the spacing as needed
-             if (timestamp != null)  Text(
+            Row(children: [
+               if (timestamp != null)  Text(
                 formatTimestamp(timestamp), // Format timestamp as needed
                 style: TextStyle(color: Colors.grey, fontSize: 12),
               ),
+              Text( snapshot.data!.docs[index]['isRead']==false?"Sent":"Seen",style: TextStyle(color: Colors.black),)
+            ],)
             ],
           ),
         ),
