@@ -53,6 +53,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   FocusNode _dropdownFocus5 = FocusNode();
   FocusNode _dropdownFocus6 = FocusNode();
     FocusNode _dropdownFocus7 = FocusNode();
+    FocusNode _dropdownFocus8 = FocusNode();
 
   bool _isDropdownOpen1 = false;
   bool _isDropdownOpen2 = false;
@@ -61,6 +62,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   bool _isDropdownOpen5 = false;
   bool _isDropdownOpen6 = false;
   bool _isDropdownOpen7 = false;
+  bool _isDropdownOpen8 = false;
   bool _chooseAnswer1 = false;
   bool _chooseAnswer2 = false;
   bool _chooseAnswer3 = false;
@@ -199,48 +201,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
         );
       },
     );
-    
-    // showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) {
-    //       return AlertDialog(
-    //         title: Center(
-    //             child: Text(
-    //           "Choose",
-    //           style: Theme.of(context).textTheme.titleLarge,
-    //         )),
-    //         //Image Picker
-    //         content: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //             GestureDetector(
-    //               child: Cont
-    //               onTap: () {
-    //                 openCamera(ImageSource.camera);
-    //                 Navigator.of(context).pop();
-    //               },
-    //             ),
 
-    //             GestureDetector(
-    //               child: Icon(
-    //                 Icons.photo_library,
-    //                 color: Colors.pinkAccent,
-    //               ),
-    //               onTap: () {
-    //                 openCamera(ImageSource.gallery);
-    //                 Navigator.of(context).pop();
-    //               },
-    //             ),
-    //             // GestureDetector(
-    //             //   child: Text("Gallery",style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 13),),
-    //             //   onTap: () {
-    //             //     openCamera(ImageSource.gallery);
-    //             //   },
-    //             // ),
-    //           ],
-    //         ),
-    //       );
-        
+
   }
 
   File? compressedFile;
@@ -288,15 +250,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
         Get.back();
       });
 
-      // if (imgCamera != null) {
-      //   setState(() {
-      //     imgFile = File(imgCamera.path);
-      //     Get.back();
-      //   });
 
-
-      // Run compression in a background isolate
-      // await compressImageInBackground(imgFile!);
     }
 
   }
@@ -336,12 +290,28 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   var haveChildren = ["Want some day", "Have some"," Not Sure Yet","No"];
   var education = ["High School", "Trade School", "College","University Undergraduate","Graduate School"];
   var hopping = ["Something Casual", "A Relationship", "Marriage Minded","Not sure yet"];
+  List<Map<String, String>> listOfHoroScope = [
+    {"image": "assets/DropDownZodicSing/Mask group (10).png", "name": "Pisces"},
+    {"image": "assets/DropDownZodicSing/Mask group (9).png", "name": "Aries"},
+    {"image": "assets/DropDownZodicSing/Mask group (8).png", "name": "Taurus"},
+    {"image": "assets/DropDownZodicSing/Mask group (6).png", "name": "Gemini"},
+    {"image": "assets/DropDownZodicSing/Mask group (4).png", "name": "Cancer"},
+    {"image": "assets/DropDownZodicSing/Mask group (3).png", "name": "Leo"},
+    {"image": "assets/DropDownZodicSing/Mask group.png", "name": "Virgo"},
+    {"image": "assets/DropDownZodicSing/Mask group (1).png", "name": "Libra"},
+    {"image": "assets/DropDownZodicSing/Mask group (2).png", "name": "Scorpio"},
+    {"image": "assets/DropDownZodicSing/Mask group (5).png", "name": "Sagittarius"},
+    {"image": "assets/DropDownZodicSing/Mask group (7).png", "name": "Capricorn"},
+    {"image": "assets/DropDownZodicSing/Group 293.png", "name": "Aquarius"},
+  ];
+
   String? selectLocalSmoke;
   String? selectLocalDrike;
   String? selectReligion;
   String? selectLocalChildren;
   String? selectLocalEducation;
   String? selectLocakHopping;
+  String? selectLocalHorscope;
   var religionItems = ["Hindus", "Muslims", "Sikhs"];
 
   void _onDropdownFocusChange1() {
@@ -395,6 +365,13 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
       print(_isDropdownOpen7);
     });
   }
+  void _onDropdownFocusChange8() {
+    setState(() {
+      _isDropdownOpen8 = _dropdownFocus8.hasFocus;
+
+      print(_isDropdownOpen8);
+    });
+  }
 
   bool containerBoeder = false;
   bool phoneContainerBorder = false;
@@ -414,6 +391,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
       _dropdownFocus5.addListener(_onDropdownFocusChange5);
        _dropdownFocus6.addListener(_onDropdownFocusChange6);
         _dropdownFocus7.addListener(_onDropdownFocusChange7);
+        _dropdownFocus8.addListener(_onDropdownFocusChange8);
     startdate = null;
     selectGender = null;
     datestring = null;
@@ -424,6 +402,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
     selectEducation=null;
     selectHopping=null;
     selectGender=null;
+    selectZodic=null;
   }
 
   @override
@@ -473,7 +452,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                     //           showOptionsDialog(context);
                     //         },
                     //         child: Image.asset("assets/icons/cameraa.png")))
-        
+
                     Center(
                       child: SizedBox(
                         height: height * .14,
@@ -664,7 +643,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               fillColor: Colors.white),
                         ),
                         SizedBox(height: height * .03),
-        
+
                         Text(
                           "Phone Number",
                           style: Theme.of(context).textTheme.titleSmall,
@@ -720,7 +699,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        
+
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),
@@ -826,17 +805,17 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                           false
                                       ? InkWell(
                                     onTap: () {
-        
+
                                    if(UserEmailAndphone
                                         .emailAndPhoneVerifyController.value.text.isNotEmpty){
                                                     UserEmailAndphone
                                           .PhoneAndEmailVerifiyed();
                                                  showAlert();
-                                        }  
-                                     
-        
-        
-        
+                                        }
+
+
+
+
                                     },
                                           child:UserEmailAndphone.rxRequestStatus.value==Status.LOADING?
                                                       CircularProgressIndicator(): Padding(
@@ -869,7 +848,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                             ],
                           ),
                         ),
-        
+
                         SizedBox(height: height * .03),
                         Text(
                           "Email Id",
@@ -896,7 +875,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               Container(
                                 width: Get.width * 0.7,
                                 child: TextFormField(
-        
+
                                   textAlignVertical: TextAlignVertical.center,
                                   controller: SignUpControllerinstance
                                           .credentialsController.value.text
@@ -948,7 +927,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                   ),
                                   onFieldSubmitted: (value) {},
                                   validator: (value) {
-        
+
                                     if (value!.isEmpty ||
                                         !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                             .hasMatch(value)) {
@@ -964,7 +943,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                   },
                                 ),
                               ),
-        
+
                               if (!SignUpControllerinstance
                                   .credentialsController.value.text
                                   .contains("@"))
@@ -979,12 +958,12 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                                   .PhoneAndEmailVerifiyed();
                                                   showAlert();
                                         }
-                                            
-                                             
-        
-        
-        
-        
+
+
+
+
+
+
                                             },
                                             child:UserEmailAndphone.rxRequestStatus.value==Status.LOADING?
                                             CircularProgressIndicator():
@@ -1012,7 +991,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                     //                         if(UserEmailAndphone.otpsent.value==true){
                                     //        showAlert();
                                     //                         }
-        
+
                                     //                       },
                                     ),
                             ],
@@ -1020,7 +999,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         ),
                         if (containerBoeder == true)
                           Row(
-        
+
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 25),
@@ -1037,7 +1016,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                           style: Theme.of(context).textTheme.titleSmall,
                         ),
                         SizedBox(height: height * .01),
-        
+
                         if (GetAllOcupationsControllerInstanse
                             .Ocupations.isNotEmpty)
                           Focus(
@@ -1119,9 +1098,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                             ),
                           ),
-        
+
                         // ***************************   Occupation Pjdfgjdsfds ***************************
-        
+
                         SizedBox(height: height * .03),
                         // Text(
                         //   "Salary",
@@ -1130,7 +1109,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         // SizedBox(height: height * .01),
                         // TextFormField(
                         //   autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                         //   maxLength: 2,
                         //   keyboardType: TextInputType.number,
                         //   validator: (value) {
@@ -1171,7 +1150,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         //       filled: true,
                         //       fillColor: Colors.white),
                         // ),
-        
+
                         // SizedBox(height: height * .03),
                         Text(
                           "Location",
@@ -1210,7 +1189,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         // ),
                         TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                           keyboardType: TextInputType.text,
                           controller: locationcntroller,
                           validator: (value) {
@@ -1295,7 +1274,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                           ),
                         ),
                         SizedBox(height: height * .03),
-        
+
                         Text(
                           "Gender",
                           style: Theme.of(context).textTheme.titleSmall,
@@ -1792,7 +1771,101 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
 
 
                         SizedBox(height: height * .03),
-        
+                        Text(
+                          "What are your zodiac ",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        SizedBox(height: height * .01),
+                        // ****************  select children or not dropdown ***********************
+                        Focus(
+
+                          focusNode: _dropdownFocus8,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+
+                              isExpanded: true,
+                              hint: Text("Select"),
+                              items: listOfHoroScope.map((map ) {
+                                return DropdownMenuItem<String>(
+                                  alignment: Alignment.center,
+
+
+
+                                  value: map['name'],
+                                  child: Row(children: [SizedBox(width: Get.width*0.03,),Image.asset(map['image']!),SizedBox(width: Get.width*0.05,),Text(map['name']!)]),
+                                );
+                              }).toList(),
+
+                              value: selectLocalHorscope,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  print(value);
+                                  selectLocalHorscope = value;
+                                  selectZodic = value!.length.toString();
+                                  print(selectZodic);
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: Get.height * 0.07,
+
+                                padding:
+                                const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: _isDropdownOpen8 == false
+                                        ? Colors.grey
+                                        : Colors.pink,
+                                  ),
+                                  color: Colors.white,
+                                ),
+                              ),
+                              iconStyleData: selectLocalHorscope == null
+                                  ? IconStyleData(
+                                icon: Icon(Icons.keyboard_arrow_down),
+                                // Change to up arrow icon
+                                iconSize: 30,
+                                iconEnabledColor: Colors.black,
+                              )
+                                  : IconStyleData(
+                                icon: InkWell(
+                                  child: Icon(Icons.close),
+                                  onTap: () {
+                                    setState(() {
+                                      selectLocalHorscope = null;
+                                    });
+                                  },
+                                ), // Change to down arrow icon
+                                iconSize: 25,
+                                //iconEnabledColor: Colors.black,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                width: Get.width * 0.89,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: Colors.white,
+                                ),
+                                offset: const Offset(10, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                  MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+
+                        SizedBox(height: height * .03),
+
+
                         // // ****************  select Religion dropdown ***********************
                         // Text(
                         //   "Religion",
@@ -1875,7 +1948,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         // ),
                         //
                         // SizedBox(height: height * .03),
-        
+
                         Text(
                           "Height",
                           style: Theme.of(context).textTheme.titleSmall,
@@ -1888,7 +1961,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               width: width * .45,
                               child: TextFormField(
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                                 keyboardType: TextInputType.number,
                                 controller: SeekerProfileControllerInstanse
                                     .HeightController.value,
@@ -1934,7 +2007,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               width: width * .45,
                               child: TextFormField(
                                 autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                                 keyboardType: TextInputType.number,
                                 controller: SeekerProfileControllerInstanse
                                     .InchesController.value,
@@ -1979,7 +2052,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                           ],
                         ),
                         SizedBox(height: height * .03),
-        
+
                         //no changes **********************************
                         Container(
                           height: height * .08,
@@ -2029,7 +2102,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                           .format(DateTime.parse(
                                               startdate.toString()));
                                       print(datestring);
-        
+
                                       setState(() {
                                         datestring;
                                       });
@@ -2043,9 +2116,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                             ],
                           ),
                         ),
-        
+
                         SizedBox(height: height * .03),
-        
+
                         Text(
                           "Add Question",
                           style: Theme.of(context).textTheme.titleSmall,
@@ -2055,7 +2128,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                           width: width * .9,
                           child: TextFormField(
                             autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                             keyboardType: TextInputType.emailAddress,
                             controller: SeekerProfileControllerInstanse
                                 .QuestionController.value,
@@ -2137,7 +2210,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 Flexible(
                                   child: TextFormField(
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                                     controller: SeekerProfileControllerInstanse
                                         .FirstanswerController.value,
                                     textAlign: TextAlign.center,
@@ -2193,7 +2266,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 Flexible(
                                   child: TextFormField(
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                                     controller: SeekerProfileControllerInstanse
                                         .SecondanswerController.value,
                                     textAlign: TextAlign.center,
@@ -2250,7 +2323,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 Flexible(
                                   child: TextFormField(
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
-        
+
                                     controller: SeekerProfileControllerInstanse
                                         .ThirdanswerController.value,
                                     textAlign: TextAlign.center,
@@ -2375,7 +2448,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: 5),
                       ],
                     )),
-        
+
                 // Padding(
                 //   padding: const EdgeInsets.only(right: 40, left: 40),
                 //   child: Row(
@@ -2572,6 +2645,15 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
     } else if (datestring == null) {
       Fluttertoast.showToast(
           msg: "Pless Select birth date",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else if (selectZodic == null) {
+      Fluttertoast.showToast(
+          msg: "Pless Select Zodic Sing",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,

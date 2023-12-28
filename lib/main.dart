@@ -3,6 +3,7 @@ import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/utils/my_theme.dart';
 import 'package:cupid_match/views/sign_up/signup_screen.dart';
 import 'package:cupid_match/views/splash_screen.dart';
+import 'package:cupid_match/widgets/ZodicSingWiget/ZodicSingSpinWheel.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +91,7 @@ class MyApp extends StatelessWidget {
 
    
 
-      home:  SplashScreen(),
+      home:  SpinWheel(),
     );
   }
 }

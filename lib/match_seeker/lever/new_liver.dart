@@ -888,7 +888,7 @@ class _SlotMachineState extends State<SlotMachine> {
     return Obx(() {
       switch (MagicProfileControllerinstance.rxRequestStatus.value) {
         case Status.LOADING:
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
         case Status.ERROR:
           if (MagicProfileControllerinstance.error.value == 'No internet') {
             return InterNetExceptionWidget(

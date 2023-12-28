@@ -92,7 +92,7 @@ class _DomatchscreenSikerState extends State<DomatchscreenSiker> {
             return Text("Error ");
           } else if (ListAllMakerControllerstatus == Status.LOADING ||
               MagicProfileControllerstatus == Status.LOADING) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(  color: Colors.pink,));
           } else {
             return SingleChildScrollView(
               child: Column(

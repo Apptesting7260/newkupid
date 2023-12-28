@@ -52,6 +52,7 @@ import '../../models/SeekerHomePageRequestModel/SeekerHomePageRequest.dart';
 import '../../models/SeekerProfileModel/SeekerProfileModel.dart';
 import '../../models/SeekerRequestModel.dart';
 import '../../models/SetRoleModel/SetRoleModel.dart';
+import '../../models/SpeenWhellModel/SpeenWheelModel/SpeenWheelModel.dart';
 import '../../models/ViewProfileDetailsModel/EditProfileDetailsModel.dart';
 
 class AuthRepository {
@@ -438,7 +439,13 @@ class AuthRepository {
     print(response);
     return SeekerToMakerRequestModel.fromJson(response);
   }
-
+  Future<SpeenWheelModel> SpeenWheellApi(var data ) async {
+    print("IncomingMakerRequestApi");
+    dynamic response =
+    await _apiService.postApi2(data,AppUrl.SppenwheelDetails);
+    print(response);
+    return SpeenWheelModel.fromJson(response);
+  }
   
 }
 

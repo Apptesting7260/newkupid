@@ -35,6 +35,8 @@ List <String>  interests=[];
   String? selectchildren;
   String? selectEducation;
   String? selectHopping;
+  String? selectZodic;
+  String ? zodiac_id;
  RxBool screenStatus = true.obs;
  String? currentRouteName ;
  String?  fcmToken;

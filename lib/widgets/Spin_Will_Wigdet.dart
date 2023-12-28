@@ -1098,7 +1098,7 @@ class _SpinWillWidgetState extends State<SpinWillWidget> {
       if (MagicProfileControllerinstance.rxRequestStatus.value==Status.LOADING && 
          SpeendReqestControllerinstance.rxRequestStatus.value==Status.LOADING) {
         
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
          }
     if (MagicProfileControllerinstance.rxRequestStatus.value==Status.ERROR && 
          SpeendReqestControllerinstance.rxRequestStatus.value==Status.ERROR) {

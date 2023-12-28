@@ -69,4 +69,5 @@ class AppUrl {
   static const String RequestAcceptApi  = '$baseUrl/seeker/seeker-accept-incoming-request';
   static const String SeekerToMakerRequest  = '$baseUrl/seeker/request-seeker-to-maker';
   static const String MakerGetDetails  = '$baseUrl/maker/maker-view-my-profile';
+  static const String SppenwheelDetails  = '$baseUrl/seeker/seeker-spin-request-data-by-zodiac';
 }

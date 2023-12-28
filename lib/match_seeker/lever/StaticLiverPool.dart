@@ -69,7 +69,7 @@ class _LiverPooledWidgetState extends State<LiverPooledWidget> {
     return Obx(() {
       switch (staticLiverpullController.rxRequestStatus.value) {
         case Status.LOADING:
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
         case Status.ERROR:
           if (staticLiverpullController.error.value == 'No internet') {
             return InterNetExceptionWidget(

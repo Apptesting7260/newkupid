@@ -49,7 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Scaffold(body: Obx(() {
         switch (seekerMyProfileDetailsController.rxRequestStatus.value) {
           case Status.LOADING:
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
           case Status.ERROR:
             if (seekerMyProfileDetailsController.error.value == 'No internet') {
               return InterNetExceptionWidget(
@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
                                 placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
+                                    Center(child: CircularProgressIndicator(  color: Colors.pink,)),
                                 fit: BoxFit.cover,
                                 imageUrl:  seekerMyProfileDetailsController
                                     .SeekerMyProfileDetail

@@ -13,7 +13,7 @@ import 'dart:io';
 // import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
+// import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
@@ -221,19 +221,19 @@ class _PhotosScreenState extends State<PhotosScreen> {
 
 
   List<File> selectedImagesFiles = [];
-
-  Future<void> convertAssetsToFiles(List<Asset> assets) async {
-    for (var asset in assets) {
-      final byteData = await asset.getByteData();
-      final buffer = byteData.buffer.asUint8List();
-
-      final compressedFile = await compressImage(buffer);
-
-      setState(() {
-        selectedImagesFiles.add(compressedFile);
-      });
-    }
-  }
+  //
+  // Future<void> convertAssetsToFiles(List<Asset> assets) async {
+  //   for (var asset in assets) {
+  //     final byteData = await asset.getByteData();
+  //     final buffer = byteData.buffer.asUint8List();
+  //
+  //     final compressedFile = await compressImage(buffer);
+  //
+  //     setState(() {
+  //       selectedImagesFiles.add(compressedFile);
+  //     });
+  //   }
+  // }
 
   Future<File> compressImage(Uint8List uint8List) async {
     final tempDir = await getTemporaryDirectory();

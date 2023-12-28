@@ -153,7 +153,7 @@ SpeendReqestControllerinstance.startTimer();
     return Obx(() {
       switch (SpeendReqestControllerinstance.rxRequestStatus.value) {
         case Status.LOADING:
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
         case Status.ERROR:
           if (SpeendReqestControllerinstance.error.value == 'No internet') {
             return InterNetExceptionWidget(

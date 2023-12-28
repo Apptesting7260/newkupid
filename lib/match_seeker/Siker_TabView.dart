@@ -105,6 +105,7 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        shape:CircleBorder(),
         backgroundColor: Colors.white,
         onPressed: () {
           Get.to(Chose_Role_Type());

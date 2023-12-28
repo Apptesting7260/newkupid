@@ -112,6 +112,7 @@ class SeekerProfileController extends GetxController {
       request.fields['do_you_smoke'] = selectSmoke.toString();
       request.fields['education'] =  selectEducation.toString();
       request.fields['hoping_to_find'] = selectHopping.toString();
+      request.fields['zodiac'] = selectZodic.toString();
 
 
       request.headers['Authorization'] =
@@ -148,7 +149,7 @@ class SeekerProfileController extends GetxController {
         SecondanswerController.value.clear();
         FirstanswerController.value.clear();
         ThirdanswerController.value.clear();
-
+        selectZodic=null;
         CorrectanswerController.value.clear();
         QuestionController.value.clear();
         AddressController.value.clear();
