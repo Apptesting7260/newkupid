@@ -13,14 +13,13 @@ class ListAllMakerController extends GetxController {
   final rxRequestStatus = Status.LOADING.obs ;
   final userList =AllMakerModel().obs ;
   RxString error = ''.obs;
-
   void setRxRequestStatus(Status _value) => rxRequestStatus.value = _value ;
   void getAllmakerList(AllMakerModel _value) => userList.value = _value ;
   void setError(String _value) => error.value = _value ;
 
 
   void ListAllMakerApi(){
-   // setRxRequestStatus(Status.LOADING);
+   setRxRequestStatus(Status.LOADING);
 
     _api.ListAllMakerApi().then((value){
       setRxRequestStatus(Status.COMPLETED);
@@ -30,6 +29,8 @@ class ListAllMakerController extends GetxController {
       setError(error.toString());
       print("error");
       setRxRequestStatus(Status.ERROR);
+      setRxRequestStatus(Status.COMPLETED);
+
 
     });
   }

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cupid_match/res/colors/app_color.dart';
 import 'package:cupid_match/widgets/my_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../GlobalVariable/GlobalVariable.dart';
+import '../../controllers/SeekerMyProfileDetailsController/SeekerMyProfileController.dart';
 import '../../controllers/SpinWheelController/SpeenWhhelController.dart';
 import '../../controllers/controller/SeekerToSeekerRequestController/SeekerToSeekerRequestController.dart';
 import '../../controllers/controller/liver_Pooled_Request_Controller/Liver_Pooled_Request_controller.dart';
@@ -45,14 +47,19 @@ class SpinWheel extends StatefulWidget {
   @override
   State<SpinWheel> createState() => _SpinWheelState();
 }
-List spinedprofilelist=[];
+
+List spinedprofilelist = [];
+
 class _SpinWheelState extends State<SpinWheel>
     with SingleTickerProviderStateMixin {
   late int randomIndex = 0;
   late bool spinning = false;
+  final seekerMyProfileDetailsController =
+      Get.put(SeekerMyProfileDetailsController());
 
   late AnimationController rotationController;
-  var totalData=0;
+  var totalData = 0;
+  var staticTotalLength = 0;
 
   AudioPlayer audioPlayer = AudioPlayer();
   var bytes;
@@ -129,13 +136,16 @@ class _SpinWheelState extends State<SpinWheel>
   SpeenWheelDataController speenWheelDataController =
       Get.put(SpeenWheelDataController());
   final SpeendReqestControllerinstance = Get.put(SpeendReqestController());
+
   // final SpinwillTimerControllerinstance = Get.put(SpinwillTimerController());
-  final spinRequestController=Get.put(SpinRequestController());
+  final spinRequestController = Get.put(SpinRequestController());
   final SeekerToSeekerRequestControllerinstance =
-  Get.put(SeekerToSeekerRequestController());
+      Get.put(SeekerToSeekerRequestController());
 
   @override
   void initState() {
+    seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
+    SpeendReqestControllerinstance.SpeendRequestApihit();
     super.initState();
     audioChangeInByte();
     rotationController = AnimationController(
@@ -144,6 +154,7 @@ class _SpinWheelState extends State<SpinWheel>
         seconds: 1,
       ),
     );
+    SpeendReqestControllerinstance.startTimer();
   }
 
   bool isButton = false;
@@ -166,358 +177,402 @@ class _SpinWheelState extends State<SpinWheel>
 
   @override
   Widget build(BuildContext context) {
+    print("time" + SpeendReqestControllerinstance.remainingMinutes.toString());
 
     return SafeArea(
+
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Wheel of Match",
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          centerTitle: true,
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               SizedBox(
-                height: Get.height  * .05,
+                height: Get.height * .05,
               ),
-              Image.asset(
-                  'assets/images/match.png'),
+              Image.asset('assets/images/match.png'),
               SizedBox(
-                height: Get.height  * .03,
+                height: Get.height * .03,
               ),
-
               if (isButton)
+                Obx(() {
+                  switch (speenWheelDataController.rxRequestStatus.value) {
+                    case Status.LOADING:
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.pink,
+                      ));
+                    case Status.ERROR:
+                      if (speenWheelDataController.error.value ==
+                          'No internet') {
+                        return InterNetExceptionWidget(
+                          onPress: () {},
+                        );
+                      } else {
+                        return GeneralExceptionWidget(onPress: () {});
+                      }
+                    case Status.COMPLETED:
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: Get.height * .03,
+                          ),
+                          Text(
+                            '${totalData + 1}/${staticTotalLength + 1}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
 
-    Obx(() {
-    switch (speenWheelDataController.rxRequestStatus.value) {
-    case Status.LOADING:
-    return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
-    case Status.ERROR:
-    if (speenWheelDataController.error.value == 'No internet') {
-    return InterNetExceptionWidget(
-    onPress: () {},
-    );
-    } else {
-    return GeneralExceptionWidget(onPress: () {});
-    }
-    case Status.COMPLETED:
-             return   Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                          SizedBox(
+                            height: Get.height * .03,
+                          ),
+                          Container(
+                            height: Get.height * 0.6,
+                            width: Get.width * 0.9,
+                            child: speenWheelDataController
+                                            .SpeenWheelData.value.seekerData !=
+                                        [] ||
+                                    speenWheelDataController.SpeenWheelData
+                                            .value.seekerData!.length !=
+                                        0
+                                ? CardSwiper(
+                                    cardsCount: speenWheelDataController
+                                        .SpeenWheelData
+                                        .value
+                                        .seekerData!
+                                        .length,
+                                    numberOfCardsDisplayed: 2,
+                                    backCardOffset: const Offset(0, -50),
+                                    padding: const EdgeInsets.all(24.0),
+                                    allowedSwipeDirection:
+                                        AllowedSwipeDirection.only(
+                                      left: true,
+                                      right: true,
+                                    ),
+                                    onSwipe: _onSwipe,
+                                    cardBuilder: (context,
+                                        index,
+                                        horizontalThresholdPercentage,
+                                        verticalThresholdPercentage) {
+                                      print(
+                                          "horigental${horizontalThresholdPercentage}");
+                                      print(
+                                          "vertical${verticalThresholdPercentage}");
 
-                    SizedBox(
-                      height: Get.height * .03,
-                    ),
-                    Text(
-                      '${totalData + 1}/12',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w600,
+                                      final userProfile = userProfiles[index];
+                                      var data = listOfZodic[
+                                          speenWheelDataController
+                                                  .SpeenWheelData
+                                                  .value
+                                                  .seekerData![index]
+                                                  .zodiacId -
+                                              1];
+                                      print(speenWheelDataController
+                                          .SpeenWheelData
+                                          .value
+                                          .seekerData![index]
+                                          .zodiacId);
+                                      return Card(
+                                        elevation: 5,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25.0),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            // Image goes here
 
-                      ),
-                    ),
+                                            horizontalThresholdPercentage == 0
+                                                ? Container(
+                                                    height: Get.height * 0.4,
+                                                    // Adjust the height as needed
+                                                    // child: Align(
+                                                    //   alignment: Alignment.topLeft,
+                                                    //   child: Padding(
+                                                    //     padding:
+                                                    //         const EdgeInsets.only(
+                                                    //             top: 20, left: 20),
+                                                    //     child: Container(
+                                                    //       width: 61,
+                                                    //       height: 34,
+                                                    //       child: Row(children: [
+                                                    //         SizedBox(
+                                                    //           width: Get.width * .03,
+                                                    //         ),
+                                                    //         Image.asset(
+                                                    //           "assets/icons/LOCATION.png",
+                                                    //           height: 15,
+                                                    //         ),
+                                                    //         SizedBox(
+                                                    //           width: Get.width * .01,
+                                                    //         ),
+                                                    //         Text(
+                                                    //           '1 km',
+                                                    //           style: TextStyle(
+                                                    //             color: Colors.white,
+                                                    //             fontSize: 12,
+                                                    //             fontFamily: 'Inter',
+                                                    //             fontWeight:
+                                                    //                 FontWeight.w500,
+                                                    //             height: 0.12,
+                                                    //           ),
+                                                    //         )
+                                                    //       ]),
+                                                    //       decoration: ShapeDecoration(
+                                                    //         color: Color(0x33F4F4F4),
+                                                    //         shape:
+                                                    //             RoundedRectangleBorder(
+                                                    //                 borderRadius:
+                                                    //                     BorderRadius
+                                                    //                         .circular(
+                                                    //                             7)),
+                                                    //       ),
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
 
-                    SizedBox(
-                      height: Get.height * .03,
-                    ),
-                    Container(
-                      height: Get.height * 0.6,
-                      width: Get.width * 0.9,
-                      child: speenWheelDataController.SpeenWheelData.value.seekerData !=
-                              [] || speenWheelDataController.SpeenWheelData.value.seekerData!.length != 0
-                          ? CardSwiper(
-                              cardsCount: speenWheelDataController
-                                  .SpeenWheelData.value.seekerData!.length,
-                              numberOfCardsDisplayed: 2,
-                              backCardOffset: const Offset(0, -50),
-                              padding: const EdgeInsets.all(24.0),
-                              allowedSwipeDirection: AllowedSwipeDirection.only(
-                                left: true,
-                                right: true,
-                              ),
-                              onSwipe: _onSwipe,
-                              cardBuilder: (context,
-                                  index,
-                                  horizontalThresholdPercentage,
-                                  verticalThresholdPercentage) {
-                                print(
-                                    "horigental${horizontalThresholdPercentage}");
-                                print("vertical${verticalThresholdPercentage}");
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                      image: DecorationImage(
+                                                        image: CachedNetworkImageProvider(
+                                                            speenWheelDataController
+                                                                .SpeenWheelData
+                                                                .value
+                                                                .seekerData![
+                                                                    index]
+                                                                .imgPath),
 
-                                final userProfile = userProfiles[index];
-                                var data = listOfZodic[speenWheelDataController
-                                    .SpeenWheelData
-                                    .value
-                                    .seekerData![index]
-                                    .zodiacId-1];
-                                print(speenWheelDataController
-                                    .SpeenWheelData
-                                    .value
-                                    .seekerData![index]
-                                    .zodiacId);
-                                return Card(
-                                  elevation: 5,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      // Image goes here
+                                                        // NetworkImage(
+                                                        //     speenWheelDataController
+                                                        //         .SpeenWheelData
+                                                        //         .value
+                                                        //         .seekerData![
+                                                        //             index]
+                                                        //         .imgPath),
+                                                        // Replace with your image path
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    height: Get.height * 0.4,
+                                                    child:
+                                                        horizontalThresholdPercentage >
+                                                                0
+                                                            ? Center(
+                                                                child: Align(
+                                                                  child: Image
+                                                                      .asset(
+                                                                          "assets/image/like.png"),
+                                                                  alignment:
+                                                                      FractionalOffset
+                                                                          .center,
+                                                                ),
+                                                              )
+                                                            : Center(
+                                                                child: Align(
+                                                                  child: Image
+                                                                      .asset(
+                                                                          "assets/image/cancel.png"),
+                                                                  alignment:
+                                                                      FractionalOffset
+                                                                          .center,
+                                                                ),
+                                                              ),
 
-                                      horizontalThresholdPercentage == 0
-                                          ? Container(
-                                              height: Get.height * 0.4,
-                                              // Adjust the height as needed
-                                              // child: Align(
-                                              //   alignment: Alignment.topLeft,
-                                              //   child: Padding(
-                                              //     padding:
-                                              //         const EdgeInsets.only(
-                                              //             top: 20, left: 20),
-                                              //     child: Container(
-                                              //       width: 61,
-                                              //       height: 34,
-                                              //       child: Row(children: [
-                                              //         SizedBox(
-                                              //           width: Get.width * .03,
-                                              //         ),
-                                              //         Image.asset(
-                                              //           "assets/icons/LOCATION.png",
-                                              //           height: 15,
-                                              //         ),
-                                              //         SizedBox(
-                                              //           width: Get.width * .01,
-                                              //         ),
-                                              //         Text(
-                                              //           '1 km',
-                                              //           style: TextStyle(
-                                              //             color: Colors.white,
-                                              //             fontSize: 12,
-                                              //             fontFamily: 'Inter',
-                                              //             fontWeight:
-                                              //                 FontWeight.w500,
-                                              //             height: 0.12,
-                                              //           ),
-                                              //         )
-                                              //       ]),
-                                              //       decoration: ShapeDecoration(
-                                              //         color: Color(0x33F4F4F4),
-                                              //         shape:
-                                              //             RoundedRectangleBorder(
-                                              //                 borderRadius:
-                                              //                     BorderRadius
-                                              //                         .circular(
-                                              //                             7)),
-                                              //       ),
-                                              //     ),
-                                              //   ),
-                                              // ),
+                                                    // Row(
+                                                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                                                    //
+                                                    //   children: [
+                                                    //     Align(
+                                                    //       alignment:
+                                                    //           Alignment.topLeft,
+                                                    //       child: Padding(
+                                                    //         padding:
+                                                    //             const EdgeInsets.only(
+                                                    //                 top: 20,
+                                                    //                 left: 20),
+                                                    //         child: Container(
+                                                    //           width: 61,
+                                                    //           height: 34,
+                                                    //           child: Row(children: [
+                                                    //             SizedBox(
+                                                    //               width:
+                                                    //                   Get.width * .03,
+                                                    //             ),
+                                                    //             Image.asset(
+                                                    //               "assets/icons/LOCATION.png",
+                                                    //               height: 15,
+                                                    //             ),
+                                                    //             SizedBox(
+                                                    //               width:
+                                                    //                   Get.width * .01,
+                                                    //             ),
+                                                    //             Text(
+                                                    //               '1 km',
+                                                    //               style: TextStyle(
+                                                    //                 color:
+                                                    //                     Colors.white,
+                                                    //                 fontSize: 12,
+                                                    //                 fontFamily:
+                                                    //                     'Inter',
+                                                    //                 fontWeight:
+                                                    //                     FontWeight
+                                                    //                         .w500,
+                                                    //                 height: 0.12,
+                                                    //               ),
+                                                    //             )
+                                                    //           ]),
+                                                    //           decoration:
+                                                    //               ShapeDecoration(
+                                                    //             color:
+                                                    //                 Color(0x33F4F4F4),
+                                                    //             shape: RoundedRectangleBorder(
+                                                    //                 borderRadius:
+                                                    //                     BorderRadius
+                                                    //                         .circular(
+                                                    //                             7)),
+                                                    //           ),
+                                                    //         ),
+                                                    //       ),
+                                                    //     ),
+                                                    //     horizontalThresholdPercentage >
+                                                    //             0
+                                                    //         ? Center(
+                                                    //           child: Align(
+                                                    //               child: Image.asset(
+                                                    //                   "assets/image/like.png"),
+                                                    //               alignment:
+                                                    //                   FractionalOffset
+                                                    //                       .center,
+                                                    //             ),
+                                                    //         )
+                                                    //         : Center(
+                                                    //           child: Align(
+                                                    //               child: Image.asset(
+                                                    //                   "assets/image/cancel.png"),
+                                                    //               alignment:
+                                                    //                   FractionalOffset
+                                                    //                       .center,
+                                                    //             ),
+                                                    //         ),
+                                                    //   ],
+                                                    // ),
 
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15.0),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      speenWheelDataController
-                                                          .SpeenWheelData
-                                                          .value
-                                                          .seekerData![index]
-                                                          .imgPath),
-                                                  // Replace with your image path
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )
-                                          : Container(
-                                              height: Get.height * 0.4,
-                                              child:    horizontalThresholdPercentage >
-                                                  0
-                                                  ? Center(
-                                                child: Align(
-                                                  child: Image.asset(
-                                                      "assets/image/like.png"),
-                                                  alignment:
-                                                  FractionalOffset
-                                                      .center,
-                                                ),
-                                              )
-                                                  : Center(
-                                                child: Align(
-                                                  child: Image.asset(
-                                                      "assets/image/cancel.png"),
-                                                  alignment:
-                                                  FractionalOffset
-                                                      .center,
-                                                ),
-                                              ),
-
-                                              // Row(
-                                              //   crossAxisAlignment: CrossAxisAlignment.center,
-                                              //
-                                              //   children: [
-                                              //     Align(
-                                              //       alignment:
-                                              //           Alignment.topLeft,
-                                              //       child: Padding(
-                                              //         padding:
-                                              //             const EdgeInsets.only(
-                                              //                 top: 20,
-                                              //                 left: 20),
-                                              //         child: Container(
-                                              //           width: 61,
-                                              //           height: 34,
-                                              //           child: Row(children: [
-                                              //             SizedBox(
-                                              //               width:
-                                              //                   Get.width * .03,
-                                              //             ),
-                                              //             Image.asset(
-                                              //               "assets/icons/LOCATION.png",
-                                              //               height: 15,
-                                              //             ),
-                                              //             SizedBox(
-                                              //               width:
-                                              //                   Get.width * .01,
-                                              //             ),
-                                              //             Text(
-                                              //               '1 km',
-                                              //               style: TextStyle(
-                                              //                 color:
-                                              //                     Colors.white,
-                                              //                 fontSize: 12,
-                                              //                 fontFamily:
-                                              //                     'Inter',
-                                              //                 fontWeight:
-                                              //                     FontWeight
-                                              //                         .w500,
-                                              //                 height: 0.12,
-                                              //               ),
-                                              //             )
-                                              //           ]),
-                                              //           decoration:
-                                              //               ShapeDecoration(
-                                              //             color:
-                                              //                 Color(0x33F4F4F4),
-                                              //             shape: RoundedRectangleBorder(
-                                              //                 borderRadius:
-                                              //                     BorderRadius
-                                              //                         .circular(
-                                              //                             7)),
-                                              //           ),
-                                              //         ),
-                                              //       ),
-                                              //     ),
-                                              //     horizontalThresholdPercentage >
-                                              //             0
-                                              //         ? Center(
-                                              //           child: Align(
-                                              //               child: Image.asset(
-                                              //                   "assets/image/like.png"),
-                                              //               alignment:
-                                              //                   FractionalOffset
-                                              //                       .center,
-                                              //             ),
-                                              //         )
-                                              //         : Center(
-                                              //           child: Align(
-                                              //               child: Image.asset(
-                                              //                   "assets/image/cancel.png"),
-                                              //               alignment:
-                                              //                   FractionalOffset
-                                              //                       .center,
-                                              //             ),
-                                              //         ),
-                                              //   ],
-                                              // ),
-
-                                              // Adjust the height as needed
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15.0),
-                                                image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      speenWheelDataController
-                                                          .SpeenWheelData
-                                                          .value
-                                                          .seekerData![index]
-                                                          .imgPath),
-                                                  // Replace with your image path
-                                                  fit: BoxFit.cover,
+                                                    // Adjust the height as needed
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0),
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            speenWheelDataController
+                                                                .SpeenWheelData
+                                                                .value
+                                                                .seekerData![
+                                                                    index]
+                                                                .imgPath),
+                                                        // Replace with your image path
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                            SizedBox(height: 10),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 20, bottom: 10),
+                                              child: Container(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Row(children: [
+                                                      Image.asset(
+                                                        data['image']!,
+                                                        height: 20,
+                                                      ),
+                                                      SizedBox(
+                                                        width:
+                                                            Get.width * 0.003,
+                                                      ),
+                                                      Text(
+                                                        data['name']!,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 14,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      )
+                                                    ]),
+                                                    Text(
+                                                      ' ${speenWheelDataController.SpeenWheelData.value.seekerData![index].name}',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      ' ${speenWheelDataController.SpeenWheelData.value.seekerData![index].address}',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFF777777),
+                                                        fontSize: 14,
+                                                        fontFamily: 'Inter',
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
-                                      SizedBox(height: 10),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 20,bottom: 10),
-                                        child: Container(
-
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(children: [
-                                                Image.asset(data['image']!,height: 20,),
-                                                SizedBox(
-                                                  width: Get.width * 0.003,
-                                                ),
-                                                Text(data['name']!,  style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w500,
-
-                                                ),)
-                                              ]),
-
-                                              Text(
-                                                ' ${speenWheelDataController.SpeenWheelData.value.seekerData![index].name}',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-
-                                              Text(
-                                                ' ${speenWheelDataController.SpeenWheelData.value.seekerData![index].address}',
-
-                                                style: TextStyle(
-                                                  color: Color(0xFF777777),
-                                                  fontSize: 14,
-                                                  fontFamily: 'Inter',
-                                                  fontWeight: FontWeight.w400,
-
-                                                ),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ],
-                                          ),
+                                          ],
                                         ),
-                                      ),
-
-                                    ],
+                                      );
+                                    },
+                                  )
+                                : Text(
+                                    "No Data ",
+                                    style: TextStyle(color: Colors.black),
                                   ),
-                                );
-                              },
-                            )
-                          : Text(
-                              "No Data ",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                    ),
-                    // Row(
-                    //   children: [
-                    //     Expanded(child: Image.asset("assets/image/cancel.png")),
-                    //     Expanded(child: Image.asset("assets/image/like.png"))
-                    //   ],
-                    // ),
-                  ],
-                );}}),
+                          ),
+                          // Row(
+                          //   children: [
+                          //     Expanded(child: Image.asset("assets/image/cancel.png")),
+                          //     Expanded(child: Image.asset("assets/image/like.png"))
+                          //   ],
+                          // ),
+                        ],
+                      );
+                  }
+                }),
               SizedBox(
-                height: Get.height  * .03,
+                height: Get.height * .03,
               ),
               Text(
                 'spin and select your match',
@@ -531,21 +586,191 @@ class _SpinWheelState extends State<SpinWheel>
                 ),
               ),
               SizedBox(
-                height: Get.height  * .03,
+                height: Get.height * .03,
               ),
               Center(
                 child: SpinWheelWidget(),
               ),
-              SizedBox(height: Get.height*0.05,),
+              SizedBox(
+                height: Get.height * 0.05,
+              ),
               Center(
-                child:MyButton(title: 'Spin Now', onTap: () {
-                  if (!spinning) {
-                    startRotation();
-                  }
-                },),
+                child: !isButton
+                    ? (seekerMyProfileDetailsController.SeekerMyProfileDetail
+                                .value.SpinLeverRequestedDat!.spin ==
+                            false)
+                        ? MyButton(
+                            title: 'Spin Now',
+                            onTap: () {
+                              if (!spinning) {
+                                startRotation();
+                              }
+                            },
+                          )
+                        : Obx(
+                            () => Column(
+                              children: [
+                                Text(
+                                  "Next Spin",
+                                  style: Get.theme.textTheme.headlineSmall!
+                                      .copyWith(
+                                    color: Color(0xff000CAA),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: Get.height * 0.02),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    //&************ for hours
+                                    Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue[50],
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Text(
+                                              SpeendReqestControllerinstance
+                                                  .remainingHours
+                                                  .toString(),
+                                              style: Get.theme.textTheme
+                                                  .headlineSmall!
+                                                  .copyWith(
+                                                color: Color(0xff000CAA),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: Get.height * 0.0105),
+                                          Text(
+                                            "Hour",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, bottom: 25),
+                                      child: Text(
+                                        ":",
+                                        style: Get
+                                            .theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                          color: Color(0xff000CAA),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: Get.width * 0.025),
+
+                                    //&************ for minutes
+                                    Container(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue[50],
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Text(
+                                              SpeendReqestControllerinstance
+                                                  .remainingMinutes
+                                                  .toString(),
+                                              style: Get.theme.textTheme
+                                                  .headlineSmall!
+                                                  .copyWith(
+                                                color: Color(0xff000CAA),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: Get.height * 0.0105),
+                                          Text(
+                                            "Minute",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, bottom: 25),
+                                      child: Text(
+                                        ":",
+                                        style: Get
+                                            .theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                          color: Color(0xff000CAA),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(width: Get.width * 0.025),
+                                    //&************ for second
+                                    Container(
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.all(15),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue[50],
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: Text(
+                                              SpeendReqestControllerinstance
+                                                  .remainingSeconds
+                                                  .toString(),
+                                              style: Get.theme.textTheme
+                                                  .headlineSmall!
+                                                  .copyWith(
+                                                color: Color(0xff000CAA),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: Get.height * 0.0105),
+                                          Text(
+                                            "Second",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall!
+                                                .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                    : SizedBox(),
               ),
               SizedBox(
-                height: Get.height  * .05,
+                height: Get.height * .05,
               ),
             ],
           ),
@@ -564,21 +789,21 @@ class _SpinWheelState extends State<SpinWheel>
 
       if (direction.name == "left") {
         print("swiped left");
-     // speenWheelDataController
-     //        .SpeenWheelData
-     //        .value
-     //        .seekerData!.remove(previousIndex);
+        // speenWheelDataController
+        //        .SpeenWheelData
+        //        .value
+        //        .seekerData!.remove(previousIndex);
         totalData--;
 
         print("TotalData  === $totalData");
-        if( totalData==-1){
+        if (totalData == -1) {
           setState(() {
-            isButton=false;
+            seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
+            SpeendReqestControllerinstance.SpeendRequestApihit();
+            isButton = false;
           });
         }
-        setState(() {
-
-        });
+        setState(() {});
 
         swipeDirection = SwipeDirection.left;
       } else if (direction.name == "right") {
@@ -587,29 +812,27 @@ class _SpinWheelState extends State<SpinWheel>
         //     .SpeenWheelData
         //     .value
         //     .seekerData!.remove(previousIndex);
-        selectedseekerid =speenWheelDataController.SpeenWheelData.value.seekerData![previousIndex]!.id;
+        selectedseekerid = speenWheelDataController
+            .SpeenWheelData.value.seekerData![previousIndex]!.id;
         if (selectedseekerid != null) {
           showdilog(previousIndex, selectedseekerid!);
         }
 
         totalData--;
-        if( totalData==-1){
+        if (totalData == -1) {
           setState(() {
-            isButton=false;
+            seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
+            SpeendReqestControllerinstance.SpeendRequestApihit();
+            isButton = false;
           });
         }
         print("TotalData  === $totalData");
-        setState(() {
-
-        });
+        setState(() {});
         swipeDirection = SwipeDirection.right;
       } else if (direction.name == "top") {
         print("swiped top");
         swipeDirection = SwipeDirection.top;
       }
-
-
-
 
       debugPrint(
         'The card $previousIndex was swiped to the ${direction.name}. Now the card $currentIndex is on top',
@@ -617,7 +840,6 @@ class _SpinWheelState extends State<SpinWheel>
     }
     return true;
   }
-
 
   Widget SpinWheelWidget() {
     return Stack(
@@ -702,7 +924,7 @@ class _SpinWheelState extends State<SpinWheel>
                 child: InkWell(
                   onTap: () {
                     if (!spinning) {
-                      startRotation();
+                      // startRotation();
                     }
                   },
                   child: Container(
@@ -727,17 +949,20 @@ class _SpinWheelState extends State<SpinWheel>
       randomIndex = Random().nextInt(12);
       rotationController.repeat(); // Start rotating the arrow
     });
-    var id=randomIndex+1;
+    var id = randomIndex + 1;
     zodiac_id = id.toString();
     speenWheelDataController.SpeenWheelApi();
+    seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
+    SpeendReqestControllerinstance.SpeendRequestApihit();
     Future.delayed(Duration(seconds: randomIndex == 0 ? 12 : randomIndex), () {
       audioPlayer.stop();
       setState(() {
         spinning = false;
-        totalData= speenWheelDataController
-            .SpeenWheelData
-            .value
-            .seekerData!.length;
+        SpeendReqestControllerinstance.SpeendRequestApihit();
+        totalData =
+            speenWheelDataController.SpeenWheelData.value.seekerData!.length;
+        staticTotalLength =
+            speenWheelDataController.SpeenWheelData.value.seekerData!.length;
         print(totalData);
         rotationController.reset(); // Stop rotating the arrow
         print('Stopped at index: $randomIndex');
@@ -760,8 +985,6 @@ class _SpinWheelState extends State<SpinWheel>
     rotationController.dispose();
     super.dispose();
   }
-
-
 
   showdilog(int index, int id) {
     final height = MediaQuery.of(context).size.height;
@@ -795,7 +1018,8 @@ class _SpinWheelState extends State<SpinWheel>
                         color: Colors.green,
                         image: DecorationImage(
                           image: CachedNetworkImageProvider(
-                              speenWheelDataController.SpeenWheelData.value.seekerData![index].imgPath),
+                              speenWheelDataController.SpeenWheelData.value
+                                  .seekerData![index].imgPath),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -809,7 +1033,8 @@ class _SpinWheelState extends State<SpinWheel>
                 ],
               ),
               Text(
-                speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.question
+                speenWheelDataController
+                    .SpeenWheelData.value.seekerData![index].questions!.question
                     .toString(),
                 style: Theme.of(context).textTheme.titleSmall,
               ),
@@ -817,51 +1042,30 @@ class _SpinWheelState extends State<SpinWheel>
                 height: height * .01,
               ),
               Obx(
-                    () => Column(
+                () => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("Select an Answer",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black
-                            )),
+                            style:
+                                TextStyle(fontSize: 15, color: Colors.black)),
                       ],
                     ),
                     RadioListTile<String>(
-                      title: Text(                         speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.firstAnswer
-
+                      title: Text(speenWheelDataController.SpeenWheelData.value
+                          .seekerData![index].questions!.firstAnswer
                           .toString()),
-                      value: speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.firstAnswer
+                      value: speenWheelDataController.SpeenWheelData.value
+                          .seekerData![index].questions!.firstAnswer
                           .toString(),
                       groupValue: SpeendReqestControllerinstance
                           .selectedAnswer.value
                           .toString(),
                       onChanged: (value) {
                         SpeendReqestControllerinstance.selectedAnswer.value =
-                        value!;
-
-                        SpeendReqestControllerinstance.selectedAnswer.value
-                            .toString();
-                        print(SpeendReqestControllerinstance
-                            .selectedAnswer.value
-                            .toString());
-                      },
-                    ),
-                    RadioListTile<String>(
-                      title: Text( speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!
-                          .secondAnswer
-                          .toString()),
-                      value:  speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.secondAnswer
-                          .toString(),
-                      groupValue: SpeendReqestControllerinstance
-                          .selectedAnswer.value
-                          .toString(),
-                      onChanged: (value) {
-                        SpeendReqestControllerinstance.selectedAnswer.value =
-                        value!;
+                            value!;
 
                         SpeendReqestControllerinstance.selectedAnswer.value
                             .toString();
@@ -871,17 +1075,39 @@ class _SpinWheelState extends State<SpinWheel>
                       },
                     ),
                     RadioListTile<String>(
-                      title: Text( speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!
-                          .thirdAnswer
+                      title: Text(speenWheelDataController.SpeenWheelData.value
+                          .seekerData![index].questions!.secondAnswer
                           .toString()),
-                      value: speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.thirdAnswer
+                      value: speenWheelDataController.SpeenWheelData.value
+                          .seekerData![index].questions!.secondAnswer
                           .toString(),
                       groupValue: SpeendReqestControllerinstance
                           .selectedAnswer.value
                           .toString(),
                       onChanged: (value) {
                         SpeendReqestControllerinstance.selectedAnswer.value =
-                        value!;
+                            value!;
+
+                        SpeendReqestControllerinstance.selectedAnswer.value
+                            .toString();
+                        print(SpeendReqestControllerinstance
+                            .selectedAnswer.value
+                            .toString());
+                      },
+                    ),
+                    RadioListTile<String>(
+                      title: Text(speenWheelDataController.SpeenWheelData.value
+                          .seekerData![index].questions!.thirdAnswer
+                          .toString()),
+                      value: speenWheelDataController.SpeenWheelData.value
+                          .seekerData![index].questions!.thirdAnswer
+                          .toString(),
+                      groupValue: SpeendReqestControllerinstance
+                          .selectedAnswer.value
+                          .toString(),
+                      onChanged: (value) {
+                        SpeendReqestControllerinstance.selectedAnswer.value =
+                            value!;
 
                         SpeendReqestControllerinstance.selectedAnswer.value
                             .toString();
@@ -896,42 +1122,47 @@ class _SpinWheelState extends State<SpinWheel>
               GestureDetector(
                 onTap: () {
                   setState(() {
-
-                    isboxloading=true;
+                    isboxloading = true;
                   });
                   print("index============================$index");
                   // spinedprofilelist[index]['is_requested'] = "true";
                   // spinRequestController.apihit();
 
-                  if(isboxloading==true){
-
+                  if (isboxloading == true) {
                     _showProgressDialog(context);
                   }
 
                   Timer(Duration(seconds: 2), () {
                     setState(() {
-                      isboxloading=false;
+                      isboxloading = false;
                       Get.back();
                       Get.back();
-                      // if (speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!
-                      //     .correctAnswer.toString() ==
-                      //     SpeendReqestControllerinstance.selectedAnswer.value
-                      //         .toString()) {
-                      //   print("index============================$index");
-                      //   match_withid =  speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.id
-                      //       .toString();
-                      //   print("match_withid===========================$match_withid");
-                      //   SeekerToSeekerRequestControllerinstance
-                      //       .SikerTOSikerRequestApiHit(); // T
-                      //   showdiog2(index);
-                      // }
-                      // if (speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!
-                      //     .correctAnswer.toString() !=
-                      //     SpeendReqestControllerinstance.selectedAnswer.value
-                      //         .toString()) {
-                      //   print("match_withid===========================$match_withid");
-                      //   showdiologwronganswer(index);
-                      // }
+                      if (speenWheelDataController.SpeenWheelData.value
+                              .seekerData![index].questions!.correctAnswer
+                              .toString() ==
+                          SpeendReqestControllerinstance.selectedAnswer.value
+                              .toString()) {
+                        print(
+                            "index============================$index ${SpeendReqestControllerinstance.selectedAnswer.value.toString()}");
+                        match_withid = speenWheelDataController
+                            .SpeenWheelData.value.seekerData![index].id
+                            .toString();
+                        print(
+                            "match_withid===========================$match_withid");
+                        SeekerToSeekerRequestControllerinstance
+                            .SikerTOSikerRequestApiHit(); // T
+                        showdiog2(index);
+                      } else if (speenWheelDataController.SpeenWheelData.value
+                              .seekerData![index].questions!.correctAnswer
+                              .toString() !=
+                          SpeendReqestControllerinstance.selectedAnswer.value
+                              .toString()) {
+                        print(
+                            "${speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.correctAnswer.toString()} correct ans");
+                        print(
+                            "match_withid===========================$match_withid ${SpeendReqestControllerinstance.selectedAnswer.value.toString()}");
+                        showdiologwronganswer(index);
+                      }
                       // showdiologwronganswer(index);
                     });
                   });
@@ -948,7 +1179,7 @@ class _SpinWheelState extends State<SpinWheel>
                   //         .data![index].spinLeverpoolRequestedData!.spinRequestData![index].seekerData!.questions!.correctAnswer !=
                   //     SpeendReqestControllerinstance.selectedAnswer.value
                   //         .toString()) {
-                    showdiologwronganswer(index);
+
                   // }
                 },
                 child: Container(
@@ -1008,9 +1239,9 @@ class _SpinWheelState extends State<SpinWheel>
                       width: width * .3,
                       child: CircleAvatar(
                         radius: 30.0,
-                        backgroundImage: NetworkImage(
-                            speenWheelDataController.SpeenWheelData.value.seekerData![index].imgPath
-                                .toString()),
+                        backgroundImage: NetworkImage(speenWheelDataController
+                            .SpeenWheelData.value.seekerData![index].imgPath
+                            .toString()),
                         backgroundColor: Colors.transparent,
                       ),
                     ),
@@ -1108,9 +1339,9 @@ class _SpinWheelState extends State<SpinWheel>
                       width: width * .3,
                       child: CircleAvatar(
                         radius: 30.0,
-                        backgroundImage: NetworkImage(
-                            speenWheelDataController.SpeenWheelData.value.seekerData![index].imgPath
-                                .toString()),
+                        backgroundImage: NetworkImage(speenWheelDataController
+                            .SpeenWheelData.value.seekerData![index].imgPath
+                            .toString()),
                         backgroundColor: Colors.transparent,
                       ),
                     ),
@@ -1175,14 +1406,13 @@ class _SpinWheelState extends State<SpinWheel>
                   child: Center(
                     child: Text("Request To Maker",
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Color(0xffFE0091),
-                        )),
+                              color: Color(0xffFE0091),
+                            )),
                   ),
                 ),
                 onTap: () {
-
-
-                  userIdsiker =  speenWheelDataController.SpeenWheelData.value.seekerData![index].questions!.id
+                  userIdsiker = speenWheelDataController
+                      .SpeenWheelData.value.seekerData![index].id
                       .toString();
 
                   setState(() {
@@ -1209,12 +1439,18 @@ class _SpinWheelState extends State<SpinWheel>
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
+              CircularProgressIndicator(
+                color: Color(0xffFE0091),
+              ),
               SizedBox(height: 16.0),
-              Text("Loading..."),
+              Text(
+                "Loading...",
+                style: TextStyle(color: Colors.black),
+              ),
             ],
           ),
         );
       },
-    );}
+    );
+  }
 }

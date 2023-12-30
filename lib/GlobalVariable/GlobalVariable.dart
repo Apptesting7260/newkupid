@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
 String ?SelectedGender;
@@ -79,6 +80,7 @@ String?actiontype;
 Bool ?liverpullrequested;
 Bool ?spinnwillrequested;
   DateTime? startTime;
+  String? timeString;
   DateTime? endTime;
 int selectedRadioTile=0;
 String messagetype="text";
@@ -98,3 +100,17 @@ bool islivierpooled=false;
 bool isspinedwill=false;
 String? myid;
 bool ?makeride;
+GlobalKey keyButton = GlobalKey();
+GlobalKey keyButton1 = GlobalKey();
+GlobalKey keyButton2 = GlobalKey();
+GlobalKey keyButton3 = GlobalKey();
+GlobalKey keyButton4 = GlobalKey();
+GlobalKey keyButton5 = GlobalKey();
+GlobalKey keyButton6 = GlobalKey();
+GlobalKey keyButton7 = GlobalKey();
+GlobalKey keyButton8 = GlobalKey();
+GlobalKey keyButton9 = GlobalKey();
+
+GlobalKey keyBottomNavigation1 = GlobalKey();
+GlobalKey keyBottomNavigation2 = GlobalKey();
+GlobalKey keyBottomNavigation3 = GlobalKey();

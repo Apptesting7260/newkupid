@@ -604,6 +604,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         ),
                         SizedBox(height: height * .01),
                         TextFormField(
+                          cursorColor:Color(0xffFE0091) ,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           controller: SeekerProfileControllerInstanse
@@ -706,6 +707,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 child: Container(
                                   width: Get.width * 0.7,
                                   child: TextFormField(
+                                    cursorColor:Color(0xffFE0091) ,
                                     maxLength: 15,
                                     controller: SignUpControllerinstance
                                             .credentialsController.value.text
@@ -843,7 +845,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                                 color: Colors.green,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                      ),
+                                        ),
                                 ),
                             ],
                           ),
@@ -875,6 +877,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               Container(
                                 width: Get.width * 0.7,
                                 child: TextFormField(
+
+
+                                  cursorColor:Color(0xffFE0091) ,
 
                                   textAlignVertical: TextAlignVertical.center,
                                   controller: SignUpControllerinstance
@@ -1189,6 +1194,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         // ),
                         TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
+                          cursorColor:Color(0xffFE0091) ,
 
                           keyboardType: TextInputType.text,
                           controller: locationcntroller,
@@ -1985,8 +1991,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xffBABABA))),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffBABABA))),
                                     errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
@@ -2127,6 +2133,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         Container(
                           width: width * .9,
                           child: TextFormField(
+                            cursorColor:Color(0xffFE0091) ,
+
                             autovalidateMode: AutovalidateMode.onUserInteraction,
 
                             keyboardType: TextInputType.emailAddress,
@@ -2177,7 +2185,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               fontWeight: FontWeight.w900,
                               color: Colors.black),
                         ),
-                        SizedBox(height: Get.height*0.01,),
+                        SizedBox(
+                          height: Get.height * 0.01,
+                        ),
                         Text(
                           "Give The Three Option And Choose The Currect Option",
                           style: TextStyle(fontSize: 12, color: Colors.black),
@@ -2209,6 +2219,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 ),
                                 Flexible(
                                   child: TextFormField(
+                                    cursorColor:Color(0xffFE0091) ,
+
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
 
                                     controller: SeekerProfileControllerInstanse
@@ -2265,6 +2277,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 ),
                                 Flexible(
                                   child: TextFormField(
+                                    cursorColor:Color(0xffFE0091) ,
+
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
 
                                     controller: SeekerProfileControllerInstanse
@@ -2322,6 +2336,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 ),
                                 Flexible(
                                   child: TextFormField(
+                                    cursorColor:Color(0xffFE0091) ,
+
                                     autovalidateMode: AutovalidateMode.onUserInteraction,
 
                                     controller: SeekerProfileControllerInstanse

@@ -91,7 +91,7 @@ class MyApp extends StatelessWidget {
 
    
 
-      home:  SpinWheel(),
+      home:  SplashScreen(),
     );
   }
 }

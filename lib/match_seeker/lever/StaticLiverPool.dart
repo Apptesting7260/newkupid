@@ -64,6 +64,7 @@ class _LiverPooledWidgetState extends State<LiverPooledWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Obx(() {
@@ -80,6 +81,7 @@ class _LiverPooledWidgetState extends State<LiverPooledWidget> {
           }
 
         case Status.COMPLETED:
+          print("satatsudbhuh  ${staticLiverpullController.staticLiverPullvalue.value.data![0]}");
           return Container(
             child: Column(
               children: [
@@ -470,8 +472,10 @@ class _LiverPooledWidgetState extends State<LiverPooledWidget> {
   Widget _buildReel(int index) {
     final dataofStaticPull =
         staticLiverpullController.staticLiverPullvalue.value.data![0];
+    print("satatsudbhuh  ${dataofStaticPull}");
 
     return Padding(
+
       padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: Container(
         width: Get.width * 0.30,

@@ -125,6 +125,7 @@ class SeekerToMakerRequestController extends GetxController {
                       softWrap: true,
                       maxLines: 2,
                  textAlign: TextAlign.center,
+                   style: TextStyle(color: Colors.black),
 
                   ),
                ],
@@ -152,9 +153,9 @@ class SeekerToMakerRequestController extends GetxController {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircularProgressIndicator(),
+              CircularProgressIndicator(color: Color(0xffFE0091),),
               SizedBox(height: 16.0),
-              Text("Loading..."),
+              Text("Loading...",style: TextStyle(color: Colors.black),),
 
             ],
           ),

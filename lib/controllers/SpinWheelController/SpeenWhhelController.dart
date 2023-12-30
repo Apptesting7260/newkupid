@@ -29,6 +29,8 @@ class SpeenWheelDataController  extends GetxController {
       'zodiac_id':zodiac_id
     };
 
+    print(data);
+
     setRxRequestStatus(Status.LOADING);
     _api.SpeenWheellApi(data).then((value) {
       setRxRequestStatus(Status.COMPLETED);

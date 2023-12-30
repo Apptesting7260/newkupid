@@ -234,7 +234,7 @@ class Questions {
     firstAnswer = json['first_answer'];
     secondAnswer = json['second_answer'];
     thirdAnswer = json['third_answer'];
-    correctAnswer = null;
+    correctAnswer = json['correct_answer'];
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
