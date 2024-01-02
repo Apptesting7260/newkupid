@@ -100,8 +100,7 @@ bool islivierpooled=false;
 bool isspinedwill=false;
 String? myid;
 bool ?makeride;
-GlobalKey keyButton = GlobalKey();
-GlobalKey keyButton1 = GlobalKey();
+
 GlobalKey keyButton2 = GlobalKey();
 GlobalKey keyButton3 = GlobalKey();
 GlobalKey keyButton4 = GlobalKey();

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:app_tutorial/app_tutorial.dart';
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/SeekerMyProfileDetailsController/SeekerMyProfileController.dart';
 import 'package:cupid_match/controllers/SeekerToMakerController/SeekerToMakerController.dart';
@@ -25,6 +26,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../widgets/ZodicSingWiget/ZodicSingSpinWheel.dart';
+import '../widgets/userGuide.dart';
   int? selectedrole;
 
 class Chose_Role_Type extends StatefulWidget {
@@ -37,7 +39,11 @@ class Chose_Role_Type extends StatefulWidget {
 class _Chose_Role_TypeState extends State<Chose_Role_Type> {
 
   late TutorialCoachMark tutorialCoachMark;
-  List<TargetFocus> targets = [];
+  final incrementKey = GlobalKey();
+  final avatarKey = GlobalKey();
+  final textKey = GlobalKey();
+  List<TutorialItem> items = [];
+
 
   final seekerMyProfileDetailsController =
       Get.put(SeekerMyProfileDetailsController());
@@ -57,14 +63,16 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
   void initState() {
     ListAllMakerControllerinstance.ListAllMakerApi();
     // TODO: implement initState
-    _initCoachMark();
-
-
-    Future.delayed(Duration(milliseconds: 100), showTutorial());
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initCoachMark();
+    initItems();
+    Future.delayed(const Duration(microseconds: 200)).then((value) {
+      Tutorial.showTutorial(context, items, onTutorialComplete: () {
+        // Code to be executed after the tutorial ends
+        print('Tutorial is complete!');
+      });
     });
+    super.initState();
+
+
   }
 
   int _value = 1;
@@ -104,7 +112,7 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
                 height: height * .02,
               ),
               Container(
-                key: keyButton,
+                key: incrementKey,
                 height: height * .075,
                 width: width * 1,
                 decoration: BoxDecoration(
@@ -134,7 +142,7 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
                 height: height * .02,
               ),
               Container(
-                key: keyButton1,
+                key: avatarKey,
                 height: height * .075,
                 width: width * 1,
                 decoration: BoxDecoration(
@@ -351,6 +359,38 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
       );
   }}) );
   }
+  void initItems() {
+    items.addAll({
+      TutorialItem(
+        globalKey: incrementKey,
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: const Radius.circular(15.0),
+        shapeFocus: ShapeFocus.roundedSquare,
+        child: const TutorialItemContent(
+          title: 'Increment button',
+          content: 'This is the increment button',
+        ),
+      ),
+      TutorialItem(
+        globalKey: textKey,
+        shapeFocus: ShapeFocus.square,
+        borderRadius: const Radius.circular(15.0),
+        child: const TutorialItemContent(
+          title: 'Counter text',
+          content: 'This is the text that displays the status of the counter',
+        ),
+      ),
+      TutorialItem(
+        globalKey: avatarKey,
+        color: Colors.black.withOpacity(0.6),
+        shapeFocus: ShapeFocus.oval,
+        child: const TutorialItemContent(
+          title: 'Avatar',
+          content: 'This is the avatar that displays something',
+        ),
+      ),
+    });
+  }
 
   // choseroleset()async{
   //   final sp=SharedPreferences.getInstance();
@@ -358,184 +398,190 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
   //   await sp.s
 
   // }
-
-  void _initCoachMark() {
-    // Define your targets as before
-    targets.add(
-
-      TargetFocus(
-        identify: "Target 1",
-        keyTarget: keyButton, // Replace with the key of the first widget you want to highlight
-
-        shape: ShapeLightFocus.RRect,
-        radius: 20,
-        // shape: BeveledRectangleBorder,
-        focusAnimationDuration: Duration(seconds: 3),
-        // targetPosition: getTargetCurrent(),
-        contents: [
-
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Select 1 ",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    InkWell(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.67),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "NEXT",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        tutorialCoachMark!.next();
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    targets.add(
-      TargetFocus(
-        identify: "dropDown",
-        keyTarget: keyButton2,
-        shape: ShapeLightFocus.RRect,
-        alignSkip: Alignment.center,
-        radius: 40,
-        contents: [
-          TargetContent(
-            align: ContentAlign.bottom,
-            builder: (context, controller) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "Select ",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    InkWell(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 60,
-                            height: 35,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.67),
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "NEXT",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        tutorialCoachMark.next();
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-
-    // Initialize TutorialCoachMark as before
-    tutorialCoachMark = TutorialCoachMark(
-
-      targets: targets,
-      colorShadow: Colors.blue, // Customize the shadow color
-      textSkip: "SKIP",
-      textStyleSkip: TextStyle(color: Colors.black),
-      // paddingFocus: 10,
-      // opacityShadow: 0.8,
-
-      paddingFocus: 10,
-      opacityShadow: 0.5,
-      imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-      onFinish: () {
-        print("finish");
-      },
-      onClickTarget: (target) {
-        print('onClickTarget: $target');
-      },
-      onClickTargetWithTapPosition: (target, tapDetails) {
-        print("target: $target");
-        print(
-            "clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}");
-      },
-      onClickOverlay: (target) {
-        print('onClickOverlay: $target');
-      },
-      onSkip: () {
-        print("skip");
-        return true;
-      },
-
-    );
-
-    // Show the first coach marker
-    tutorialCoachMark.show(context: context);
-  }
-   showTutorial() {
-    tutorialCoachMark.show(context: context);
-  }
-  void showNextTutorial() {
-    // Call the next method to show the next tutorial
-    tutorialCoachMark.next();
-  }
+  // void createTutorial() {
+  //   tutorialCoachMark = TutorialCoachMark(
+  //
+  //     targets: createTargets(),
+  //     colorShadow: Colors.blue, // Customize the shadow color
+  //     textSkip: "SKIP",
+  //     textStyleSkip: TextStyle(color: Colors.black),
+  //     // paddingFocus: 10,
+  //     // opacityShadow: 0.8,
+  //
+  //     paddingFocus: 10,
+  //     opacityShadow: 0.5,
+  //     imageFilter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+  //     onFinish: () {
+  //       print("finish");
+  //     },
+  //     onClickTarget: (target) {
+  //       print('onClickTarget: $target');
+  //     },
+  //     onClickTargetWithTapPosition: (target, tapDetails) {
+  //       print("target: $target");
+  //       print(
+  //           "clicked at position local: ${tapDetails.localPosition} - global: ${tapDetails.globalPosition}");
+  //     },
+  //     onClickOverlay: (target) {
+  //       print('onClickOverlay: $target');
+  //     },
+  //     onSkip: () {
+  //       print("skip");
+  //       return true;
+  //     },
+  //
+  //   );
+  // }
+  //
+  //
+  // List<TargetFocus> createTargets () {
+  //   List<TargetFocus> targets = [];
+  //   // Define your targets as before
+  //   targets.add(
+  //
+  //     TargetFocus(
+  //       identify: "Target 1",
+  //       keyTarget: keyButton,
+  //       // Replace with the key of the first widget you want to highlight
+  //
+  //       shape: ShapeLightFocus.RRect,
+  //       radius: 20,
+  //       // shape: BeveledRectangleBorder,
+  //       focusAnimationDuration: Duration(seconds: 3),
+  //       // targetPosition: getTargetCurrent(),
+  //       contents: [
+  //
+  //         TargetContent(
+  //           align: ContentAlign.bottom,
+  //           builder: (context, controller) {
+  //             return Center(
+  //               child: Column(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: <Widget>[
+  //                   Text(
+  //                     "Select 1 ",
+  //                     style: TextStyle(
+  //                       color: Colors.white,
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.w500,
+  //                     ),
+  //                   ),
+  //                   SizedBox(
+  //                     height: 15,
+  //                   ),
+  //                   InkWell(
+  //                     child: Row(
+  //                       mainAxisSize: MainAxisSize.min,
+  //                       children: [
+  //                         Container(
+  //                           width: 60,
+  //                           height: 35,
+  //                           decoration: BoxDecoration(
+  //                             color: Colors.white.withOpacity(0.67),
+  //                             borderRadius: BorderRadius.circular(5),
+  //                           ),
+  //                           child: Center(
+  //                             child: Text(
+  //                               "NEXT",
+  //                               style: TextStyle(
+  //                                   color: Colors.black,
+  //                                   fontSize: 15,
+  //                                   fontWeight: FontWeight.w700),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     onTap: () {
+  //                       tutorialCoachMark!.next();
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  //
+  //   targets.add(
+  //     TargetFocus(
+  //       identify: "dropDown",
+  //       keyTarget: keyButton2,
+  //       shape: ShapeLightFocus.RRect,
+  //       alignSkip: Alignment.center,
+  //       radius: 40,
+  //       contents: [
+  //         TargetContent(
+  //           align: ContentAlign.bottom,
+  //           builder: (context, controller) {
+  //             return Center(
+  //               child: Column(
+  //                 mainAxisSize: MainAxisSize.min,
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: <Widget>[
+  //                   Text(
+  //                     "Select ",
+  //                     style: TextStyle(
+  //                       color: Colors.white,
+  //                       fontSize: 18,
+  //                       fontWeight: FontWeight.w500,
+  //                     ),
+  //                   ),
+  //                   SizedBox(
+  //                     height: 15,
+  //                   ),
+  //                   InkWell(
+  //                     child: Row(
+  //                       mainAxisSize: MainAxisSize.min,
+  //                       children: [
+  //                         Container(
+  //                           width: 60,
+  //                           height: 35,
+  //                           decoration: BoxDecoration(
+  //                             color: Colors.white.withOpacity(0.67),
+  //                             borderRadius: BorderRadius.circular(5),
+  //                           ),
+  //                           child: Center(
+  //                             child: Text(
+  //                               "NEXT",
+  //                               style: TextStyle(
+  //                                   color: Colors.black,
+  //                                   fontSize: 15,
+  //                                   fontWeight: FontWeight.w700),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     onTap: () {
+  //                       tutorialCoachMark.next();
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  //
+  //   // Initialize TutorialCoachMark as before
+  //
+  //
+  //   // Show the first coach marker
+  //   return targets;
+  // }
+  //  showTutorial() {
+  //   tutorialCoachMark.show(context: context);
+  // }
+  // void showNextTutorial() {
+  //   // Call the next method to show the next tutorial
+  //   tutorialCoachMark.next();
+  // }
 
 
 

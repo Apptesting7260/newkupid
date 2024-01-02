@@ -180,7 +180,6 @@ class _SpinWheelState extends State<SpinWheel>
     print("time" + SpeendReqestControllerinstance.remainingMinutes.toString());
 
     return SafeArea(
-
       child: Scaffold(
         appBar: AppBar(
           title: Text(
