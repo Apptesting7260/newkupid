@@ -55,7 +55,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   bool audioplayed = false;
   late Uint8List audiobytes;
   String? fcmToken;
-  String?maketrChatStatus;
+  String maketrChatStatus="offline";
 // Recording ?recording;
   AudioPlayer player = AudioPlayer();
   Map<String, dynamic>? messages;
@@ -743,7 +743,7 @@ Future<void> _uploadAudioToFirebase(File audioFile) async {
   bool isRecordingCompleted = false;
   bool isLoading = true;
   late Directory appDirectory;
- String chatStatus="";
+ String chatStatus="offline";
  String onScreen="";
  String? MakeronScreen;
 
