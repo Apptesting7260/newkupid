@@ -504,7 +504,7 @@ chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControlle
   String customPath = '/flutter_audio_recorder_';
   Future<String> uploadSelectedImageAndGetUrl(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: source);
+    final pickedFile = await picker.pickImage (source: source);
 
     if (pickedFile != null) {
       try {

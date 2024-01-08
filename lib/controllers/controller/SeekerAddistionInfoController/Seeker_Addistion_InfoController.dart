@@ -51,7 +51,7 @@ class SeekerAddistionInfoController extends GetxController {
     loading.value = true ;
     try {
       // Replace 'your_api_endpoint' with the actual URL of your API endpoint for file upload
-      var url = Uri.parse('https://urlsdemo.xyz/kupid/api/seeker/seeker-update-additional-info');
+      var url = Uri.parse('https://urlsdemo.online/kupid/api/seeker/seeker-update-additional-info');
 
       // Create the multipart request
       var request = http.MultipartRequest('POST', url);

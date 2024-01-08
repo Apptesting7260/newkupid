@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cupid_match/match_maker/match_maker_profile_update.dart';
 import 'package:cupid_match/match_seeker/home_screen.dart';
-import 'package:cupid_match/match_seeker/lever/lever_pull.dart';
+
 import 'package:cupid_match/match_seeker/lever/new_liver.dart';
 import 'package:cupid_match/match_seeker/Chat_list_Screen.dart';
 import 'package:cupid_match/match_seeker/profile/filter.dart';

@@ -66,7 +66,7 @@ Map Data={
       };
   try {
     final response = await dio.post(
-      'https://urlsdemo.xyz/kupid/api/seeker/after-spin-seeker-request-profile',
+      'https://urlsdemo.online/kupid/api/seeker/after-spin-seeker-request-profile',
       data:jsonEncode(Data),
       options: Options(headers: headers),
     );

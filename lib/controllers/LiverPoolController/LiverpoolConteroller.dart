@@ -59,7 +59,7 @@ Map Data={
       };
   try {
     final response = await dio.post(
-      'https://urlsdemo.xyz/kupid/api/seeker/after-leverpool-seeker-request-profile',
+      'https://urlsdemo.online/kupid/api/seeker/after-leverpool-seeker-request-profile',
       data:jsonEncode(Data),
       options: Options(headers: headers),
     );
