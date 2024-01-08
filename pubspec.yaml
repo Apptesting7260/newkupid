@@ -68,10 +68,10 @@ dependencies:
   flutter_image_compress: ^2.0.4
   # flutter_ffmpeg: any
   video_player: any
-#  multi_image_picker: any
+
   path_provider: ^2.1.1
   path: any
-  # flutter_meedu_videoplayer: ^4.2.24
+
   flutter_datetime_picker: any
   firebase_core: ^2.15.0
   cloud_firestore: ^4.9.0
@@ -81,19 +81,11 @@ dependencies:
   firebase_messaging: ^14.7.6
   audioplayers: ^5.1.0
   social_media_audio_recorder: ^0.0.8
-  # voice_message_package: ^1.0.41
+  
   audio_waveforms: ^1.0.4
   just_waveform: ^0.0.5
   chat_bubbles: ^1.4.0
-  # chat_bubbles: ^1.4.0
-  # chat_package: ^1.0.0
-  # chatview: ^0.0.3
-  # flutter_audio_recorder2: ^0.0.2
 
-  # permission_handler: ^10.4.3
-  # microphone: ^0.1.0
-  # # flutter_sound: ^9.2.13
-  # just_audio: ^0.9.34
   kplayer: ^0.4.2
   permission_handler: ^10.4.5
   get_storage: ^2.1.1
@@ -107,7 +99,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.11
   flutter_card_swiper: ^6.0.0
   app_tutorial: ^1.0.6
-#  multi_image_picker: ^4.8.01
+
 
 
 
