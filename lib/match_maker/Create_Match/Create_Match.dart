@@ -842,51 +842,51 @@ ShowDialog(BuildContext context) {
               //     DoMatchesControllerinstance.DoMatches.value.msg.toString(),
               //     style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Color(0xffFE0091)),
               //   ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * .08,
-                child: ListView.builder(
-                  // scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: 1,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(8),
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.25),
-                        leading: Container(
-                          width: MediaQuery.of(context).size.width * .15,
-                          height: MediaQuery.of(context).size.height * .09,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            reverse: true,
-                            itemCount:  images.length,
-                            itemBuilder: (context, index) {
-                              return Align(
-                                alignment: Alignment.center,
-                                widthFactor: 0.4,
-                                child: CircleAvatar(
-                                  radius: 32,
-                                  backgroundColor: AppColors.white,
-                                  child: CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                        CachedNetworkImageProvider(images[index]),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
+              // Container(
+              //   width: MediaQuery.of(context).size.width,
+              //   height: MediaQuery.of(context).size.height * .08,
+              //   child: ListView.builder(
+              //     // scrollDirection: Axis.horizontal,
+              //     shrinkWrap: true,
+              //     physics: NeverScrollableScrollPhysics(),
+              //     itemCount: 1,
+              //     itemBuilder: (context, index) {
+              //       return Padding(
+              //         padding: EdgeInsets.all(8),
+              //         child: ListTile(
+              //           contentPadding: EdgeInsets.symmetric(
+              //               horizontal:
+              //                   MediaQuery.of(context).size.width * 0.25),
+              //           leading: Container(
+              //             width: MediaQuery.of(context).size.width * .15,
+              //             height: MediaQuery.of(context).size.height * .09,
+              //             child: ListView.builder(
+              //               scrollDirection: Axis.horizontal,
+              //               shrinkWrap: true,
+              //               reverse: true,
+              //               itemCount:  images.length,
+              //               itemBuilder: (context, index) {
+              //                 return Align(
+              //                   alignment: Alignment.center,
+              //                   widthFactor: 0.4,
+              //                   child: CircleAvatar(
+              //                     radius: 32,
+              //                     backgroundColor: AppColors.white,
+              //                     child: CircleAvatar(
+              //                       radius: 30,
+              //                       backgroundImage:
+              //                           CachedNetworkImageProvider(images[index]),
+              //                     ),
+              //                   ),
+              //                 );
+              //               },
+              //             ),
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * .01,
               ),

@@ -116,6 +116,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       },
       child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
             centerTitle: true,
             title: Text(
@@ -145,7 +146,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       },
                       child: Image.asset("assets/icons/menu.png"));
                 },
-              )
+              ),
+              SizedBox(width: 20,)
             ],
           ),
           endDrawer: Drawer(child: MakerDrawer()),

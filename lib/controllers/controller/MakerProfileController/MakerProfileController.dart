@@ -49,7 +49,7 @@ Future<void> MakerProfileApiHit() async {
    print(EmailController.value.text);
    print(PhoneController.value.text);
   try {
-    var url = Uri.parse('https://urlsdemo.xyz/kupid/api/user-profile-update');
+    var url = Uri.parse('https://urlsdemo.online/kupid/api/user-profile-update');
     var request = http.MultipartRequest('POST', url);
     // Replace 'your_api_endpoint' with the actual URL of your API endpoint for file upload
 

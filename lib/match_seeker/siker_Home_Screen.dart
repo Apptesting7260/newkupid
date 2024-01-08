@@ -6,6 +6,7 @@ import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/SeekerToMakerController/SeekerToMakerController.dart';
 import 'package:cupid_match/controllers/controller/IncomingRequestController/IncomingRequestController.dart';
 import 'package:cupid_match/controllers/controller/OutgoingRequestController/OutgoingRequestController.dart';
+import 'package:cupid_match/controllers/controller/SeekerChatListController/seeker_chat_list_controller.dart';
 import 'package:cupid_match/data/response/status.dart';
 import 'package:cupid_match/match_maker/Create_Match/Create_Match.dart';
 import 'package:cupid_match/match_maker/chat_screen.dart';
@@ -81,12 +82,13 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingOb
     ViewSikerProfileDetailsControllerinstances.ViewSikerProfileDetailsApiHit();
     // print(requestHomeController.seekerHomeRequestValue.value.requests!.incoming![0]);
     // print(requestHomeController.seekerHomeRequestValue.value.requests!.incoming![0].getseeker?.gender);
-        getcurrentuser();
+        // getcurrentuser();
     // print(  requestHomeController.seekerHomeRequestValue.value
     //     .requests!.outgoing![0].getseeker!
     //     .name
     //     .toString());
     // TODO: implement initState
+    // getusers();
     super.initState();
  WidgetsBinding.instance.addObserver(this);
 
@@ -126,6 +128,40 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingOb
     print("$Getcurrentuser======currentuser");
    
   }
+
+
+
+
+  SeekerChatListController seekerChatListController = Get.put(SeekerChatListController());
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
+final SeekerMyProfileDetailsController seekerMyProfileControllerr = Get.put(SeekerMyProfileDetailsController());
+  Stream<QuerySnapshot> getMessagesStream() {
+    return firestore
+        .collection("s"+seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString())
+        .orderBy('timestamp', descending: true)
+        .snapshots();
+        
+
+
+  }
+  String formatTimestamp(Timestamp timestamp) {
+    final DateTime dateTime = timestamp.toDate();
+    final DateFormat formatter = DateFormat('h:mm a');
+    return formatter.format(dateTime);
+  }
+//   getusers(){
+//       var name;
+//  name=firestore
+//         .collection("s"+seekerMyProfileController.SeekerMyProfileDetail.value.ProfileDetail!.id.toString())
+//         .orderBy('timestamp', descending: true)
+//         .get();
+        
+
+
+//   }
+
+
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -157,7 +193,9 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingOb
                       },
                       child: Image.asset("assets/icons/menu.png"));
                 },
-              )
+              ),
+
+              SizedBox(width:Get.width*.03 ,)
             ],
           ),
           endDrawer: MyDrawer(),
@@ -193,47 +231,49 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingOb
               'Data Not Found' &&
               requestHomeController.seekerHomeRequestValue.value.message ==
                   'No request found') {
-            return Column(
-              children: [
-                Align(
-                    alignment: Alignment.center,
-                    child: GestureDetector(
-                        onTap: () {
-                          Get.to(Chose_Role_Type());
-                        },
-                        child: Image.asset(
-                            'assets/images/match.png'))),
-                SizedBox(
-                  height: Get.height * 0.05,
-                ),
-                Center(
-                  child:
-                  Image.asset('assets/images/homeempty.png'),
-                ),
-                SizedBox(
-                  height: Get.height * 0.04,
-                ),
-                Text(
-                  "Outgoing Request",
-                  style: Get.theme.textTheme.bodySmall,
-                ),
-                SizedBox(
-                  height: Get.height * 0.01,
-                ),
-                Text(
-                  "Find your perfect match",
-                  style: Get.theme.textTheme.labelMedium!
-                      .copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.black),
-                ),
-                SizedBox(
-                  height: Get.height * 0.04,
-                ),
-                MyButton(title: 'Find Match', onTap: () {
-                  Get.to(Chose_Role_Type());
-                })
-              ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                          onTap: () {
+                            Get.to(Chose_Role_Type());
+                          },
+                          child: Image.asset(
+                              'assets/images/match.png'))),
+                  SizedBox(
+                    height: Get.height * 0.05,
+                  ),
+                  Center(
+                    child:
+                    Image.asset('assets/images/homeempty.png'),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.04,
+                  ),
+                  Text(
+                    "Outgoing Request",
+                    style: Get.theme.textTheme.bodySmall,
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.01,
+                  ),
+                  Text(
+                    "Find your perfect match",
+                    style: Get.theme.textTheme.labelMedium!
+                        .copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.black),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.04,
+                  ),
+                  MyButton(title: 'Find Match', onTap: () {
+                    Get.to(Chose_Role_Type());
+                  })
+                ],
+              ),
             );
           }
 
@@ -603,7 +643,7 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingOb
                                 // ),
 
                                 //********************* recent conversations *********
-                                Column(
+             Column(
                                   children: [
                                     Row(
                                       mainAxisAlignment:
@@ -629,90 +669,285 @@ class _SikerHomeScreenState extends State<SikerHomeScreen> with WidgetsBindingOb
                                             )),
                                       ],
                                     ),
-                                    Image.asset(
-                                      'assets/images/recentC.png',
-                                      width: Get.width * 0.83,
-                                    ),
-                                    Text(
-                                      "Reference site about Lorem Ipsum, giving information on its origins",
-                                      style: Get.theme.textTheme.bodySmall,
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
+
+                          //           Container(
+                          //             child: StreamBuilder(
+                          //                         stream: getMessagesStream(),
+                          //                         builder: (context, snapshot) {
+                                                    
+                          //                           if (snapshot.connectionState == ConnectionState.active) {
+                                      
+                          //                             return snapshot.data!.docs.isEmpty == false
+                          //                                 ?     Container(
+                          //                                   height: 100,
+                          //                                   child: ListView.builder(
+                          //                                                                         scrollDirection: Axis.horizontal,
+                          //                                                                         physics: AlwaysScrollableScrollPhysics(),
+                          //                                                                         shrinkWrap: true,
+                          //                                                                         itemCount: snapshot.data?.docs.length,
+                          //                                                                         itemBuilder: (context, index) {
+
+                          // var data = snapshot.data?.docs[index];
+                          //                                                                           return Padding(
+                          //                                                                             padding: const EdgeInsets.all(8.0),
+                          //                                                                             child: Container(
+                          //                                                                                 decoration: BoxDecoration(
+                          //                                                                                     color: AppColors.ratingcodeColor,
+                          //                                                                                     borderRadius:
+                          //                                                                                     BorderRadius.circular(15)),
+                          //                                                                                 width: width * .65,
+                          //                                                                                 // height: 50,
+                          //                                                                                 child: ListTile(
+                          //                                                                                   leading:     Padding(
+                          //                                                                                     padding: const EdgeInsets.only(top: 20),
+                          //                                                                                     child: Container(
+                          //                                                                                                                                 height: height * .33,
+                          //                                                                                                                                 width: width * .2,
+                          //                                                                                                                                 child: Stack(
+                          //                                                                                                                                   children: [
+                          //                                                                                                                                     Positioned(
+                          //                                                                                                                                       right: 30,
+                          //                                                                                                                                       child: CircleAvatar(
+                          //                                                                                                                                         radius: 15.0,
+                          //                                                                                                                                         backgroundImage: CachedNetworkImageProvider(
+                          //                                                                                                                                             // seekerChatListController
+                          //                                                                                                                                             //     .seekerChatListValue
+                          //                                                                                                                                             //     .value
+                          //                                                                                                                                             //     .chat![
+                          //                                                                                                                                             // index]
+                          //                                                                                                                                             //     .seekerwithImg!
+                          //                                                                                                                                             //     .toString()),
+                          //                                                                                                                                         data!['seeker_inage2']
+                          //                                                                                                                                         ),
+                          //                                                                                                                                         backgroundColor: Colors.transparent,
+                          //                                                                                                                                       ),
+                          //                                                                                                                                     ),
+                          //                                                                                                                                     Container(
+                                                                                                              
+                          //                                                                                                                                       decoration: BoxDecoration(
+                          //                                                                                                                                         shape: BoxShape.circle,
+                          //                                                                                                                                         border:
+                          //                                                                                                                                         Border.all(color: Colors.white, width: 2),
+                          //                                                                                                                                       ),
+                                                                                                              
+                          //                                                                                                                                       child: CircleAvatar(
+                          //                                                                                                                                         radius: 15.0,
+                          //                                                                                                                                         backgroundImage: CachedNetworkImageProvider(
+                          //                                                                                                                                             // seekerChatListController
+                          //                                                                                                                                             //     .seekerChatListValue
+                          //                                                                                                                                             //     .value
+                          //                                                                                                                                             //     .chat![
+                          //                                                                                                                                             // index]
+                          //                                                                                                                                             //     .seekerfromImg!
+                          //                                                                                                                                             //     .toString()
+                                                                                                              
+                          //                                                                                                                                              data['seeker_inage1']     ),
+                          //                                                                                                                                         backgroundColor: Colors.transparent,
+                          //                                                                                                                                       ),
+                          //                                                                                                                                     ),
+                          //                                                                                                                                   ],
+                          //                                                                                                                                 ),
+                          //                                                                                                                               ),
+                          //                                                                                   ),
+                                                                                                                  
+                                                                                                                
+                                                                                                              
+                                                                                                            
+                          //                                                                                   title:  Text(
+            
+                          //                       data['roomname'],
+                                                
+                          //                                                                                     style: Theme.of(context)
+                          //                                                                                         .textTheme
+                          //                                                                                         .bodyMedium
+                          //                                                                                         ?.copyWith(color: AppColors.black),
+                          //                                                                                   ),
+                          //                                                                                   subtitle: Text(
+                          //                                                                                     "25/05/2022",
+                          //                                                                                     style: Theme.of(context)
+                          //                                                                                         .textTheme
+                          //                                                                                         .bodyLarge
+                          //                                                                                         ?.copyWith(
+                          //                                                                                         fontSize: 10,
+                          //                                                                                         color: AppColors.black),
+                          //                                                                                   ),
+                          //                                                                                   trailing: GestureDetector(
+                          //                                                                                     // onTap: () => Get.to(() => ChatScreen()),
+                          //                                                                                       child: Image.asset(
+                          //                                                                                         "assets/maker/Group 221.png",
+                          //                                                                                         width: width * 0.09,
+                          //                                                                                       )),
+                          //                                                                                 )),
+                          //                                                                           );
+                          //                                                                         },
+                          //                                   ),
+                          //                                 ):Text("cc"); 
+                          //             //                     ListView.builder(
+                          //             // scrollDirection: Axis.horizontal,
+                          //             // physics: AlwaysScrollableScrollPhysics(),
+                          //             // shrinkWrap: true,
+                          //             // itemCount: 2,
+                          //             // itemBuilder: (context, index) {
+                          //             //   return Padding(
+                          //             //     padding: const EdgeInsets.all(8.0),
+                          //             //     child: Container(
+                          //             //         decoration: BoxDecoration(
+                          //             //             color: AppColors.ratingcodeColor,
+                          //             //             borderRadius:
+                          //             //             BorderRadius.circular(15)),
+                          //             //         width: width * .65,
+                          //             //         // height: 50,
+                          //             //         child: ListTile(
+                          //             //           leading: Container(
+                          //             //             width: width * .08,
+                          //             //             height: height * 0.05,
+                          //             //             child: ListView.builder(
+                          //             //               scrollDirection: Axis.horizontal,
+                          //             //               itemCount: images.length >= 3
+                          //             //                   ? 3
+                          //             //                   : images.length,
+                          //             //               shrinkWrap: true,
+                          //             //               reverse: true,
+                          //             //               itemBuilder: (context, index) {
+                          //             //                 return Align(
+                          //             //                   alignment: Alignment.centerRight,
+                          //             //                   widthFactor: 0.3,
+                          //             //                   child: CircleAvatar(
+                          //             //                     radius: 18,
+                          //             //                     backgroundColor:
+                          //             //                     AppColors.white,
+                          //             //                     child: CircleAvatar(
+                          //             //                       radius: 16,
+                          //             //                       backgroundImage: NetworkImage(
+                          //             //                           images[index]),
+                          //             //                     ),
+                          //             //                   ),
+                          //             //                 );
+                          //             //               },
+                          //             //             ),
+                          //             //           ),
+                          //             //           title: Text(
+                          //             //             "Name",
+                          //             //             style: Theme.of(context)
+                          //             //                 .textTheme
+                          //             //                 .bodyMedium
+                          //             //                 ?.copyWith(color: AppColors.black),
+                          //             //           ),
+                          //             //           subtitle: Text(
+                          //             //             "25/05/2022",
+                          //             //             style: Theme.of(context)
+                          //             //                 .textTheme
+                          //             //                 .bodyLarge
+                          //             //                 ?.copyWith(
+                          //             //                 fontSize: 10,
+                          //             //                 color: AppColors.black),
+                          //             //           ),
+                          //             //           trailing: GestureDetector(
+                          //             //             // onTap: () => Get.to(() => ChatScreen()),
+                          //             //               child: Image.asset(
+                          //             //                 "assets/maker/Group 221.png",
+                          //             //                 width: width * 0.09,
+                          //             //               )),
+                          //             //         )),
+                          //             //   );
+                          //             // },
+                          //             //                     ):Column(children: [ Image.asset(
+                          //             //   'assets/images/recentC.png',
+                          //             //   width: Get.width * 0.83,
+                          //             // ),
+                          //             // Text(
+                          //             //   "Reference site about Lorem Ipsum, giving information on its origins",
+                          //             //   style: Get.theme.textTheme.bodySmall,
+                          //             //   textAlign: TextAlign.center,
+                          //             // )],);
+                                                                         
+                          //                         }else{
+                          //                           return Column(children: [ Image.asset(
+                          //               'assets/images/recentC.png',
+                          //               width: Get.width * 0.83,
+                          //             ),
+                          //             Text(
+                          //               "Reference site about Lorem Ipsum, giving information on its origins",
+                          //               style: Get.theme.textTheme.bodySmall,
+                          //               textAlign: TextAlign.center,
+                          //             )],);
+                          //                         }}),
+                          //           )  ],
+                                  ]
                                 ),
                                 // Container(
                                 //   width: width,
                                 //   height: height * .12,
-                                //   child: ListView.builder(
-                                //     scrollDirection: Axis.horizontal,
-                                //     physics: AlwaysScrollableScrollPhysics(),
-                                //     shrinkWrap: true,
-                                //     itemCount: 2,
-                                //     itemBuilder: (context, index) {
-                                //       return Padding(
-                                //         padding: const EdgeInsets.all(8.0),
-                                //         child: Container(
-                                //             decoration: BoxDecoration(
-                                //                 color: AppColors.ratingcodeColor,
-                                //                 borderRadius:
-                                //                 BorderRadius.circular(15)),
-                                //             width: width * .65,
-                                //             // height: 50,
-                                //             child: ListTile(
-                                //               leading: Container(
-                                //                 width: width * .08,
-                                //                 height: height * 0.05,
-                                //                 child: ListView.builder(
-                                //                   scrollDirection: Axis.horizontal,
-                                //                   itemCount: images.length >= 3
-                                //                       ? 3
-                                //                       : images.length,
-                                //                   shrinkWrap: true,
-                                //                   reverse: true,
-                                //                   itemBuilder: (context, index) {
-                                //                     return Align(
-                                //                       alignment: Alignment.centerRight,
-                                //                       widthFactor: 0.3,
-                                //                       child: CircleAvatar(
-                                //                         radius: 18,
-                                //                         backgroundColor:
-                                //                         AppColors.white,
-                                //                         child: CircleAvatar(
-                                //                           radius: 16,
-                                //                           backgroundImage: NetworkImage(
-                                //                               images[index]),
-                                //                         ),
-                                //                       ),
-                                //                     );
-                                //                   },
-                                //                 ),
-                                //               ),
-                                //               title: Text(
-                                //                 "Name",
-                                //                 style: Theme.of(context)
-                                //                     .textTheme
-                                //                     .bodyMedium
-                                //                     ?.copyWith(color: AppColors.black),
-                                //               ),
-                                //               subtitle: Text(
-                                //                 "25/05/2022",
-                                //                 style: Theme.of(context)
-                                //                     .textTheme
-                                //                     .bodyLarge
-                                //                     ?.copyWith(
-                                //                     fontSize: 10,
-                                //                     color: AppColors.black),
-                                //               ),
-                                //               trailing: GestureDetector(
-                                //                 // onTap: () => Get.to(() => ChatScreen()),
-                                //                   child: Image.asset(
-                                //                     "assets/maker/Group 221.png",
-                                //                     width: width * 0.09,
-                                //                   )),
-                                //             )),
-                                //       );
-                                //     },
-                                //   ),
+                                  // child: ListView.builder(
+                                  //   scrollDirection: Axis.horizontal,
+                                  //   physics: AlwaysScrollableScrollPhysics(),
+                                  //   shrinkWrap: true,
+                                  //   itemCount: 2,
+                                  //   itemBuilder: (context, index) {
+                                  //     return Padding(
+                                  //       padding: const EdgeInsets.all(8.0),
+                                  //       child: Container(
+                                  //           decoration: BoxDecoration(
+                                  //               color: AppColors.ratingcodeColor,
+                                  //               borderRadius:
+                                  //               BorderRadius.circular(15)),
+                                  //           width: width * .65,
+                                  //           // height: 50,
+                                  //           child: ListTile(
+                                  //             leading: Container(
+                                  //               width: width * .08,
+                                  //               height: height * 0.05,
+                                  //               child: ListView.builder(
+                                  //                 scrollDirection: Axis.horizontal,
+                                  //                 itemCount: images.length >= 3
+                                  //                     ? 3
+                                  //                     : images.length,
+                                  //                 shrinkWrap: true,
+                                  //                 reverse: true,
+                                  //                 itemBuilder: (context, index) {
+                                  //                   return Align(
+                                  //                     alignment: Alignment.centerRight,
+                                  //                     widthFactor: 0.3,
+                                  //                     child: CircleAvatar(
+                                  //                       radius: 18,
+                                  //                       backgroundColor:
+                                  //                       AppColors.white,
+                                  //                       child: CircleAvatar(
+                                  //                         radius: 16,
+                                  //                         backgroundImage: NetworkImage(
+                                  //                             images[index]),
+                                  //                       ),
+                                  //                     ),
+                                  //                   );
+                                  //                 },
+                                  //               ),
+                                  //             ),
+                                  //             title: Text(
+                                  //               "Name",
+                                  //               style: Theme.of(context)
+                                  //                   .textTheme
+                                  //                   .bodyMedium
+                                  //                   ?.copyWith(color: AppColors.black),
+                                  //             ),
+                                  //             subtitle: Text(
+                                  //               "25/05/2022",
+                                  //               style: Theme.of(context)
+                                  //                   .textTheme
+                                  //                   .bodyLarge
+                                  //                   ?.copyWith(
+                                  //                   fontSize: 10,
+                                  //                   color: AppColors.black),
+                                  //             ),
+                                  //             trailing: GestureDetector(
+                                  //               // onTap: () => Get.to(() => ChatScreen()),
+                                  //                 child: Image.asset(
+                                  //                   "assets/maker/Group 221.png",
+                                  //                   width: width * 0.09,
+                                  //                 )),
+                                  //           )),
+                                  //     );
+                                  //   },
+                                  // ),
                                 // ),
 
                                 SizedBox(
