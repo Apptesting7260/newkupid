@@ -549,7 +549,7 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
           switch (ViewSikerProfileDetailsControllerinstances
               .rxRequestStatus.value) {
             case Status.LOADING:
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
             case Status.ERROR:
               if (ViewSikerProfileDetailsControllerinstances.error.value ==
                   'No internet') {
