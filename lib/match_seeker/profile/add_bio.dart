@@ -50,6 +50,7 @@ class _AddBioState extends State<AddBio> {
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
+                cursorColor: Colors.pinkAccent,
                 controller: SeekerAddistionInfoControllerinstance.BioTitleController.value,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -81,6 +82,7 @@ class _AddBioState extends State<AddBio> {
               SizedBox(height: height * .03),
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                cursorColor: Colors.pinkAccent,
                 style: TextStyle(color: Colors.black),
                 maxLines: 5,
                 keyboardType: TextInputType.name,

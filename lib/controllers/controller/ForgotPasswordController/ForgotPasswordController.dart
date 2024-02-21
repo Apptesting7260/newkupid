@@ -3,6 +3,7 @@ import 'package:cupid_match/utils/utils.dart';
 import 'package:cupid_match/controllers/controller/SignUpController/SignUpController.dart';
 import 'package:cupid_match/views/sign_up/choose_profile.dart';
 import 'package:cupid_match/views/sign_up/create_password.dart';
+import 'package:cupid_match/views/user/forgotpasswordverification.dart';
 import 'package:cupid_match/views/user/otp.dart';
 import 'package:cupid_match/views/user/reset_password.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../views/user/verification.dart';
 
 String?Verificationemail;
+ bool? forgotpassword;
 class ForgotPasswordController extends GetxController {
 
   final _api = AuthRepository();
@@ -35,7 +37,8 @@ class ForgotPasswordController extends GetxController {
       print(value);
       // Utils.snackBar( "Message",value.msg.toString());
       // Get.to(() => ChooseProfile());
-      Get.to(() => Verification(
+     String sentotp=value.otp.toString();
+      Get.to(() => ForgotVerification(otp: sentotp
 
       ));
 

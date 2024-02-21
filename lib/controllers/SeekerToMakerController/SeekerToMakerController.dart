@@ -1,6 +1,7 @@
 
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/SeekerRequestController/SeekerHomePageRequestController.dart';
+import 'package:cupid_match/controllers/controller/GetAllMakerContrioller/GetAllMakerController.dart';
 import 'package:cupid_match/match_seeker/Siker_TabView.dart';
 import 'package:cupid_match/match_seeker/chat_screen.dart';
 import 'package:cupid_match/models/DoMachesModel.dart/DoMatchesModel.dart';
@@ -29,7 +30,7 @@ class SeekerToMakerRequestController extends GetxController {
   void SeekerToMakerRequest(SeekerToMakerRequestModel _value) => DoMatches.value = _value ;
   void setError(String _value) => error.value = _value ;
   HomeRequestController requestHomeController=Get.put(HomeRequestController());
-
+ final ListAllMakerControllerinstance = Get.put(ListAllMakerController());
   void SeekerToMakerRequestApiHit(BuildContext context){
    setRxRequestStatus(Status.LOADING);
 
@@ -55,7 +56,7 @@ class SeekerToMakerRequestController extends GetxController {
       setRxRequestStatus(Status.COMPLETED);
       Get.back();
       SeekerToMakerRequest(value);
-
+ListAllMakerControllerinstance.ListAllMakerApi();
 
       _showProgressSuccesDialog( context);
       print("ksndnvgndfkjbkdbnklnflkbnfobg${value.msg}");

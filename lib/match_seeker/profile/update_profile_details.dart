@@ -49,11 +49,11 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   FocusNode _dropdownFocus1 = FocusNode();
   FocusNode _dropdownFocus2 = FocusNode();
   FocusNode _dropdownFocus3 = FocusNode();
-    FocusNode _dropdownFocus4 = FocusNode();
+  FocusNode _dropdownFocus4 = FocusNode();
   FocusNode _dropdownFocus5 = FocusNode();
   FocusNode _dropdownFocus6 = FocusNode();
-    FocusNode _dropdownFocus7 = FocusNode();
-    FocusNode _dropdownFocus8 = FocusNode();
+  FocusNode _dropdownFocus7 = FocusNode();
+  FocusNode _dropdownFocus8 = FocusNode();
 
   bool _isDropdownOpen1 = false;
   bool _isDropdownOpen2 = false;
@@ -130,25 +130,34 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   }
 
   final imgPicker = ImagePicker();
+
   Future<void> showOptionsDialog(BuildContext context) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           title: Center(
             child: Column(
               children: [
-
                 Text(
                   'Upload Photo',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600,fontSize: 18,color:Colors.black),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: Colors.black),
                 ),
-                SizedBox(height: Get.height*0.01,),
+                SizedBox(
+                  height: Get.height * 0.01,
+                ),
                 Text(
                   'Please choose image',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12,color: Colors.black),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(fontSize: 12, color: Colors.black),
                 ),
               ],
             ),
@@ -169,11 +178,13 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                   //   },
                   // ),
                   MyButton(
-                    width: Get.width*.27,
-                    height: Get.height*.05,
-                    title: "Camera", onTap: () {
+                    width: Get.width * .27,
+                    height: Get.height * .05,
+                    title: "Camera",
+                    onTap: () {
                       openCamera(ImageSource.camera);
-                  },)
+                    },
+                  )
                 ],
               ),
               Column(
@@ -189,11 +200,13 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                   //   },
                   // ),
                   MyButton(
-                    width: Get.width*.25,
-                    height: Get.height*.05,
-                    title: "Gallery", onTap: () {
-                     openCamera(ImageSource.gallery);
-                  },)
+                    width: Get.width * .25,
+                    height: Get.height * .05,
+                    title: "Gallery",
+                    onTap: () {
+                      openCamera(ImageSource.gallery);
+                    },
+                  )
                 ],
               ),
             ],
@@ -201,8 +214,6 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
         );
       },
     );
-
-
   }
 
   File? compressedFile;
@@ -235,12 +246,12 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
               height: 520,
             ),
             viewPort:
-            const CroppieViewPort(width: 480, height: 480, type: 'circle'),
+                const CroppieViewPort(width: 480, height: 480, type: 'circle'),
             enableExif: true,
             enableZoom: true,
             showZoomer: true,
           ),
-        ],// Adjust compression quality as needed
+        ], // Adjust compression quality as needed
       );
 
       setState(() {
@@ -249,10 +260,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
         print(imgFile);
         Get.back();
       });
-
-
     }
-
   }
 
   Future<void> compressImageInBackground(File imageFile) async {
@@ -287,9 +295,20 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
   String? selectLocalGender;
   var genderItems = ["Male", "Female", "Other"];
   var smokeorNot = ["Yes", "No"];
-  var haveChildren = ["Want some day", "Have some"," Not Sure Yet","No"];
-  var education = ["High School", "Trade School", "College","University Undergraduate","Graduate School"];
-  var hopping = ["Something Casual", "A Relationship", "Marriage Minded","Not sure yet"];
+  var haveChildren = ["Want some day", "Have some", " Not Sure Yet", "No"];
+  var education = [
+    "High School",
+    "Trade School",
+    "College",
+    "University Undergraduate",
+    "Graduate School"
+  ];
+  var hopping = [
+    "Something Casual",
+    "A Relationship",
+    "Marriage Minded",
+    "Not sure yet"
+  ];
   List<Map<String, String>> listOfHoroScope = [
     {"image": "assets/DropDownZodicSing/Mask group (10).png", "name": "Pisces"},
     {"image": "assets/DropDownZodicSing/Mask group (9).png", "name": "Aries"},
@@ -300,8 +319,14 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
     {"image": "assets/DropDownZodicSing/Mask group.png", "name": "Virgo"},
     {"image": "assets/DropDownZodicSing/Mask group (1).png", "name": "Libra"},
     {"image": "assets/DropDownZodicSing/Mask group (2).png", "name": "Scorpio"},
-    {"image": "assets/DropDownZodicSing/Mask group (5).png", "name": "Sagittarius"},
-    {"image": "assets/DropDownZodicSing/Mask group (7).png", "name": "Capricorn"},
+    {
+      "image": "assets/DropDownZodicSing/Mask group (5).png",
+      "name": "Sagittarius"
+    },
+    {
+      "image": "assets/DropDownZodicSing/Mask group (7).png",
+      "name": "Capricorn"
+    },
     {"image": "assets/DropDownZodicSing/Group 293.png", "name": "Aquarius"},
   ];
 
@@ -337,34 +362,39 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
       print(_isDropdownOpen3);
     });
   }
-    void _onDropdownFocusChange4() {
+
+  void _onDropdownFocusChange4() {
     setState(() {
       _isDropdownOpen4 = _dropdownFocus4.hasFocus;
 
       print(_isDropdownOpen4);
     });
   }
-    void _onDropdownFocusChange5() {
+
+  void _onDropdownFocusChange5() {
     setState(() {
       _isDropdownOpen5 = _dropdownFocus5.hasFocus;
 
       print(_isDropdownOpen5);
     });
   }
-    void _onDropdownFocusChange6() {
+
+  void _onDropdownFocusChange6() {
     setState(() {
       _isDropdownOpen6 = _dropdownFocus6.hasFocus;
 
       print(_isDropdownOpen6);
     });
   }
-    void _onDropdownFocusChange7() {
+
+  void _onDropdownFocusChange7() {
     setState(() {
       _isDropdownOpen7 = _dropdownFocus7.hasFocus;
 
       print(_isDropdownOpen7);
     });
   }
+
   void _onDropdownFocusChange8() {
     setState(() {
       _isDropdownOpen8 = _dropdownFocus8.hasFocus;
@@ -375,6 +405,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
 
   bool containerBoeder = false;
   bool phoneContainerBorder = false;
+
   @override
   void initState() {
     GetAllOcupationsControllerInstanse.GetAllOcupationsListApiHit();
@@ -387,22 +418,22 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
     _dropdownFocus1.addListener(_onDropdownFocusChange1);
     _dropdownFocus2.addListener(_onDropdownFocusChange2);
     _dropdownFocus3.addListener(_onDropdownFocusChange3);
-     _dropdownFocus4.addListener(_onDropdownFocusChange4);
-      _dropdownFocus5.addListener(_onDropdownFocusChange5);
-       _dropdownFocus6.addListener(_onDropdownFocusChange6);
-        _dropdownFocus7.addListener(_onDropdownFocusChange7);
-        _dropdownFocus8.addListener(_onDropdownFocusChange8);
+    _dropdownFocus4.addListener(_onDropdownFocusChange4);
+    _dropdownFocus5.addListener(_onDropdownFocusChange5);
+    _dropdownFocus6.addListener(_onDropdownFocusChange6);
+    _dropdownFocus7.addListener(_onDropdownFocusChange7);
+    _dropdownFocus8.addListener(_onDropdownFocusChange8);
     startdate = null;
     selectGender = null;
     datestring = null;
     imgFile = null;
-    selectSmoke=null;
-    selectDrink=null;
-    selectchildren=null;
-    selectEducation=null;
-    selectHopping=null;
-    selectGender=null;
-    selectZodic=null;
+    selectSmoke = null;
+    selectDrink = null;
+    selectchildren = null;
+    selectEducation = null;
+    selectHopping = null;
+    selectGender = null;
+    selectZodic = null;
   }
 
   @override
@@ -423,8 +454,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
           ),
           centerTitle: true,
         ),
-        body: Obx(()=>
-      Padding(
+        body: Obx(
+          () => Padding(
             padding: const EdgeInsets.all(12.0),
             child: ListView(
               children: <Widget>[
@@ -485,10 +516,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                     onTap: () {
                                       showOptionsDialog(context);
                                     },
-                                    child:
-                                        imgFile == null?
-                                        Image.asset("assets/icons/cameraa.png"):
-                                        Image.asset("assets/icons/edit.png")))
+                                    child: imgFile == null
+                                        ? Image.asset(
+                                            "assets/icons/cameraa.png")
+                                        : Image.asset("assets/icons/edit.png")))
                             // Positioned(
                             //   bottom: 0,
                             //   right: -8,
@@ -604,7 +635,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         ),
                         SizedBox(height: height * .01),
                         TextFormField(
-                          cursorColor:Color(0xffFE0091) ,
+                          cursorColor: Color(0xffFE0091),
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           controller: SeekerProfileControllerInstanse
@@ -637,7 +668,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               focusedErrorBorder: OutlineInputBorder(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(35.0)),
-                                borderSide: BorderSide(color: Color(0xffBABABA)),
+                                borderSide:
+                                    BorderSide(color: Color(0xffBABABA)),
                               ),
                               hintText: "Enter name",
                               filled: true,
@@ -700,14 +732,13 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 15),
                                 child: Container(
                                   width: Get.width * 0.7,
                                   child: TextFormField(
-                                    cursorColor:Color(0xffFE0091) ,
+                                    cursorColor: Color(0xffFE0091),
                                     maxLength: 15,
                                     controller: SignUpControllerinstance
                                             .credentialsController.value.text
@@ -746,7 +777,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                           .textTheme
                                           .bodyLarge
                                           ?.copyWith(
-                                              color: AppColors.subtitletextcolor),
+                                              color:
+                                                  AppColors.subtitletextcolor),
                                       //suffix: Text('Verify',style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Color(0xffFE0091),fontWeight: FontWeight.w400,fontSize: 12),),
                                       // focusedBorder: OutlineInputBorder(
                                       //   borderRadius: BorderRadius.circular(30),
@@ -806,29 +838,34 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                   child: UserEmailAndphone.verified.value ==
                                           false
                                       ? InkWell(
-                                    onTap: () {
-
-                                   if(UserEmailAndphone
-                                        .emailAndPhoneVerifyController.value.text.isNotEmpty){
-                                                    UserEmailAndphone
-                                          .PhoneAndEmailVerifiyed();
-                                                 showAlert();
-                                        }
-
-
-
-
-                                    },
-                                          child:UserEmailAndphone.rxRequestStatus.value==Status.LOADING?
-                                                      CircularProgressIndicator(): Padding(
-                                                        padding: const EdgeInsets.only(right: 10),
-                                                        child: Text(
-                                                                                                  "Verify",
-                                                                                                  style: TextStyle(
-                                                                                                      color: Colors.pinkAccent,
-                                                                                                      fontWeight: FontWeight.bold),
-                                                                                                ),
-                                                      ),
+                                          onTap: () {
+                                            if (UserEmailAndphone
+                                                .emailAndPhoneVerifyController
+                                                .value
+                                                .text
+                                                .isNotEmpty) {
+                                              UserEmailAndphone
+                                                  .PhoneAndEmailVerifiyed();
+                                              showAlert();
+                                            }
+                                          },
+                                          child: UserEmailAndphone
+                                                      .rxRequestStatus.value ==
+                                                  Status.LOADING
+                                              ? CircularProgressIndicator()
+                                              : Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
+                                                  child: Text(
+                                                    "Verify",
+                                                    style: TextStyle(
+                                                        color:
+                                                            Colors.pinkAccent,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
                                           // onTap: () {
                                           //   UserEmailAndphone
                                           //       .PhoneAndEmailVerifiyed();
@@ -838,8 +875,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                           // },
                                         )
                                       : Padding(
-                                        padding: const EdgeInsets.only(right: 10),
-                                        child: Text(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: Text(
                                             "Verified",
                                             style: TextStyle(
                                                 color: Colors.green,
@@ -877,10 +915,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               Container(
                                 width: Get.width * 0.7,
                                 child: TextFormField(
-
-
-                                  cursorColor:Color(0xffFE0091) ,
-
+                                  cursorColor: Color(0xffFE0091),
                                   textAlignVertical: TextAlignVertical.center,
                                   controller: SignUpControllerinstance
                                           .credentialsController.value.text
@@ -932,7 +967,6 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                   ),
                                   onFieldSubmitted: (value) {},
                                   validator: (value) {
-
                                     if (value!.isEmpty ||
                                         !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                             .hasMatch(value)) {
@@ -957,33 +991,37 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                             false
                                         ? InkWell(
                                             onTap: () {
-        if( UserEmailAndphone
-                                        .emailAndPhoneVerifyController.value.text.isNotEmpty){
-          UserEmailAndphone
-                                                  .PhoneAndEmailVerifiyed();
-                                                  showAlert();
-                                        }
-
-
-
-
-
-
+                                              if (UserEmailAndphone
+                                                  .emailAndPhoneVerifyController
+                                                  .value
+                                                  .text
+                                                  .isNotEmpty) {
+                                                UserEmailAndphone
+                                                    .PhoneAndEmailVerifiyed();
+                                                showAlert();
+                                              }
                                             },
-                                            child:UserEmailAndphone.rxRequestStatus.value==Status.LOADING?
-                                            CircularProgressIndicator():
-                                            Padding(
-                                      padding: const EdgeInsets.only(right: 10),
-                                              child: Text("Verify",
-                                                style: TextStyle(
-                                                    color: Colors.pinkAccent,
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            )
-                                    )
+                                            child: UserEmailAndphone
+                                                        .rxRequestStatus
+                                                        .value ==
+                                                    Status.LOADING
+                                                ? CircularProgressIndicator()
+                                                : Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 10),
+                                                    child: Text(
+                                                      "Verify",
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.pinkAccent,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ))
                                         : Padding(
-                                            padding:
-                                                const EdgeInsets.only(right: 10),
+                                            padding: const EdgeInsets.only(
+                                                right: 10),
                                             child: Text(
                                               "Verified",
                                               style: TextStyle(
@@ -1004,13 +1042,13 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         ),
                         if (containerBoeder == true)
                           Row(
-
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(left: 25),
                                 child: Text(
                                   "Email cannot be empty!",
-                                  style: TextStyle(color: Colors.pinkAccent,fontSize: 12),
+                                  style: TextStyle(
+                                      color: Colors.pinkAccent, fontSize: 12),
                                 ),
                               ),
                             ],
@@ -1050,8 +1088,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   height: Get.height * 0.07,
-                                  padding:
-                                      const EdgeInsets.only(left: 14, right: 14),
+                                  padding: const EdgeInsets.only(
+                                      left: 14, right: 14),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
                                     border: Border.all(
@@ -1194,8 +1232,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         // ),
                         TextFormField(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          cursorColor:Color(0xffFE0091) ,
-
+                          cursorColor: Color(0xffFE0091),
                           keyboardType: TextInputType.text,
                           controller: locationcntroller,
                           validator: (value) {
@@ -1350,7 +1387,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
                                       MaterialStateProperty.all<bool>(true),
                                 ),
@@ -1393,7 +1431,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               buttonStyleData: ButtonStyleData(
                                 height: Get.height * 0.07,
                                 padding:
-                                const EdgeInsets.only(left: 14, right: 14),
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
@@ -1406,23 +1444,23 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                               iconStyleData: selectLocalChildren == null
                                   ? IconStyleData(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                // Change to up arrow icon
-                                iconSize: 30,
-                                iconEnabledColor: Colors.black,
-                              )
+                                      icon: Icon(Icons.keyboard_arrow_down),
+                                      // Change to up arrow icon
+                                      iconSize: 30,
+                                      iconEnabledColor: Colors.black,
+                                    )
                                   : IconStyleData(
-                                icon: InkWell(
-                                  child: Icon(Icons.close),
-                                  onTap: () {
-                                    setState(() {
-                                      selectLocalChildren = null;
-                                    });
-                                  },
-                                ), // Change to down arrow icon
-                                iconSize: 25,
-                                //iconEnabledColor: Colors.black,
-                              ),
+                                      icon: InkWell(
+                                        child: Icon(Icons.close),
+                                        onTap: () {
+                                          setState(() {
+                                            selectLocalChildren = null;
+                                          });
+                                        },
+                                      ), // Change to down arrow icon
+                                      iconSize: 25,
+                                      //iconEnabledColor: Colors.black,
+                                    ),
                               dropdownStyleData: DropdownStyleData(
                                 width: Get.width * 0.89,
                                 decoration: BoxDecoration(
@@ -1432,9 +1470,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
                               menuItemStyleData: const MenuItemStyleData(
@@ -1475,7 +1514,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               buttonStyleData: ButtonStyleData(
                                 height: Get.height * 0.07,
                                 padding:
-                                const EdgeInsets.only(left: 14, right: 14),
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
@@ -1488,23 +1527,23 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                               iconStyleData: selectLocalDrike == null
                                   ? IconStyleData(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                // Change to up arrow icon
-                                iconSize: 30,
-                                iconEnabledColor: Colors.black,
-                              )
+                                      icon: Icon(Icons.keyboard_arrow_down),
+                                      // Change to up arrow icon
+                                      iconSize: 30,
+                                      iconEnabledColor: Colors.black,
+                                    )
                                   : IconStyleData(
-                                icon: InkWell(
-                                  child: Icon(Icons.close),
-                                  onTap: () {
-                                    setState(() {
-                                      selectLocalDrike = null;
-                                    });
-                                  },
-                                ), // Change to down arrow icon
-                                iconSize: 25,
-                                //iconEnabledColor: Colors.black,
-                              ),
+                                      icon: InkWell(
+                                        child: Icon(Icons.close),
+                                        onTap: () {
+                                          setState(() {
+                                            selectLocalDrike = null;
+                                          });
+                                        },
+                                      ), // Change to down arrow icon
+                                      iconSize: 25,
+                                      //iconEnabledColor: Colors.black,
+                                    ),
                               dropdownStyleData: DropdownStyleData(
                                 width: Get.width * 0.89,
                                 decoration: BoxDecoration(
@@ -1514,9 +1553,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
                               menuItemStyleData: const MenuItemStyleData(
@@ -1557,7 +1597,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               buttonStyleData: ButtonStyleData(
                                 height: Get.height * 0.07,
                                 padding:
-                                const EdgeInsets.only(left: 14, right: 14),
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
@@ -1570,23 +1610,23 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                               iconStyleData: selectLocalSmoke == null
                                   ? IconStyleData(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                // Change to up arrow icon
-                                iconSize: 30,
-                                iconEnabledColor: Colors.black,
-                              )
+                                      icon: Icon(Icons.keyboard_arrow_down),
+                                      // Change to up arrow icon
+                                      iconSize: 30,
+                                      iconEnabledColor: Colors.black,
+                                    )
                                   : IconStyleData(
-                                icon: InkWell(
-                                  child: Icon(Icons.close),
-                                  onTap: () {
-                                    setState(() {
-                                      selectLocalSmoke = null;
-                                    });
-                                  },
-                                ), // Change to down arrow icon
-                                iconSize: 25,
-                                //iconEnabledColor: Colors.black,
-                              ),
+                                      icon: InkWell(
+                                        child: Icon(Icons.close),
+                                        onTap: () {
+                                          setState(() {
+                                            selectLocalSmoke = null;
+                                          });
+                                        },
+                                      ), // Change to down arrow icon
+                                      iconSize: 25,
+                                      //iconEnabledColor: Colors.black,
+                                    ),
                               dropdownStyleData: DropdownStyleData(
                                 width: Get.width * 0.89,
                                 decoration: BoxDecoration(
@@ -1596,9 +1636,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
                               menuItemStyleData: const MenuItemStyleData(
@@ -1640,7 +1681,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               buttonStyleData: ButtonStyleData(
                                 height: Get.height * 0.07,
                                 padding:
-                                const EdgeInsets.only(left: 14, right: 14),
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
@@ -1653,23 +1694,23 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                               iconStyleData: selectLocalEducation == null
                                   ? IconStyleData(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                // Change to up arrow icon
-                                iconSize: 30,
-                                iconEnabledColor: Colors.black,
-                              )
+                                      icon: Icon(Icons.keyboard_arrow_down),
+                                      // Change to up arrow icon
+                                      iconSize: 30,
+                                      iconEnabledColor: Colors.black,
+                                    )
                                   : IconStyleData(
-                                icon: InkWell(
-                                  child: Icon(Icons.close),
-                                  onTap: () {
-                                    setState(() {
-                                      selectLocalEducation = null;
-                                    });
-                                  },
-                                ), // Change to down arrow icon
-                                iconSize: 25,
-                                //iconEnabledColor: Colors.black,
-                              ),
+                                      icon: InkWell(
+                                        child: Icon(Icons.close),
+                                        onTap: () {
+                                          setState(() {
+                                            selectLocalEducation = null;
+                                          });
+                                        },
+                                      ), // Change to down arrow icon
+                                      iconSize: 25,
+                                      //iconEnabledColor: Colors.black,
+                                    ),
                               dropdownStyleData: DropdownStyleData(
                                 width: Get.width * 0.89,
                                 decoration: BoxDecoration(
@@ -1679,9 +1720,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
                               menuItemStyleData: const MenuItemStyleData(
@@ -1722,7 +1764,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               buttonStyleData: ButtonStyleData(
                                 height: Get.height * 0.07,
                                 padding:
-                                const EdgeInsets.only(left: 14, right: 14),
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
@@ -1735,23 +1777,23 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                               iconStyleData: selectLocakHopping == null
                                   ? IconStyleData(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                // Change to up arrow icon
-                                iconSize: 30,
-                                iconEnabledColor: Colors.black,
-                              )
+                                      icon: Icon(Icons.keyboard_arrow_down),
+                                      // Change to up arrow icon
+                                      iconSize: 30,
+                                      iconEnabledColor: Colors.black,
+                                    )
                                   : IconStyleData(
-                                icon: InkWell(
-                                  child: Icon(Icons.close),
-                                  onTap: () {
-                                    setState(() {
-                                      selectLocakHopping = null;
-                                    });
-                                  },
-                                ), // Change to down arrow icon
-                                iconSize: 25,
-                                //iconEnabledColor: Colors.black,
-                              ),
+                                      icon: InkWell(
+                                        child: Icon(Icons.close),
+                                        onTap: () {
+                                          setState(() {
+                                            selectLocakHopping = null;
+                                          });
+                                        },
+                                      ), // Change to down arrow icon
+                                      iconSize: 25,
+                                      //iconEnabledColor: Colors.black,
+                                    ),
                               dropdownStyleData: DropdownStyleData(
                                 width: Get.width * 0.89,
                                 decoration: BoxDecoration(
@@ -1761,9 +1803,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
                               menuItemStyleData: const MenuItemStyleData(
@@ -1774,8 +1817,6 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                           ),
                         ),
 
-
-
                         SizedBox(height: height * .03),
                         Text(
                           "What are your zodiac ",
@@ -1784,24 +1825,27 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         SizedBox(height: height * .01),
                         // ****************  select children or not dropdown ***********************
                         Focus(
-
                           focusNode: _dropdownFocus8,
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton2<String>(
-
                               isExpanded: true,
                               hint: Text("Select"),
-                              items: listOfHoroScope.map((map ) {
+                              items: listOfHoroScope.map((map) {
                                 return DropdownMenuItem<String>(
                                   alignment: Alignment.center,
-
-
-
                                   value: map['name'],
-                                  child: Row(children: [SizedBox(width: Get.width*0.03,),Image.asset(map['image']!),SizedBox(width: Get.width*0.05,),Text(map['name']!)]),
+                                  child: Row(children: [
+                                    SizedBox(
+                                      width: Get.width * 0.03,
+                                    ),
+                                    Image.asset(map['image']!),
+                                    SizedBox(
+                                      width: Get.width * 0.05,
+                                    ),
+                                    Text(map['name']!)
+                                  ]),
                                 );
                               }).toList(),
-
                               value: selectLocalHorscope,
                               onChanged: (String? value) {
                                 setState(() {
@@ -1813,9 +1857,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               },
                               buttonStyleData: ButtonStyleData(
                                 height: Get.height * 0.07,
-
                                 padding:
-                                const EdgeInsets.only(left: 14, right: 14),
+                                    const EdgeInsets.only(left: 14, right: 14),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
@@ -1828,23 +1871,23 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               ),
                               iconStyleData: selectLocalHorscope == null
                                   ? IconStyleData(
-                                icon: Icon(Icons.keyboard_arrow_down),
-                                // Change to up arrow icon
-                                iconSize: 30,
-                                iconEnabledColor: Colors.black,
-                              )
+                                      icon: Icon(Icons.keyboard_arrow_down),
+                                      // Change to up arrow icon
+                                      iconSize: 30,
+                                      iconEnabledColor: Colors.black,
+                                    )
                                   : IconStyleData(
-                                icon: InkWell(
-                                  child: Icon(Icons.close),
-                                  onTap: () {
-                                    setState(() {
-                                      selectLocalHorscope = null;
-                                    });
-                                  },
-                                ), // Change to down arrow icon
-                                iconSize: 25,
-                                //iconEnabledColor: Colors.black,
-                              ),
+                                      icon: InkWell(
+                                        child: Icon(Icons.close),
+                                        onTap: () {
+                                          setState(() {
+                                            selectLocalHorscope = null;
+                                          });
+                                        },
+                                      ), // Change to down arrow icon
+                                      iconSize: 25,
+                                      //iconEnabledColor: Colors.black,
+                                    ),
                               dropdownStyleData: DropdownStyleData(
                                 width: Get.width * 0.89,
                                 decoration: BoxDecoration(
@@ -1854,9 +1897,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 offset: const Offset(10, 0),
                                 scrollbarTheme: ScrollbarThemeData(
                                   radius: const Radius.circular(40),
-                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thickness:
+                                      MaterialStateProperty.all<double>(6),
                                   thumbVisibility:
-                                  MaterialStateProperty.all<bool>(true),
+                                      MaterialStateProperty.all<bool>(true),
                                 ),
                               ),
                               menuItemStyleData: const MenuItemStyleData(
@@ -1867,10 +1911,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                           ),
                         ),
 
-
-
                         SizedBox(height: height * .03),
-
 
                         // // ****************  select Religion dropdown ***********************
                         // Text(
@@ -1966,8 +2007,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                             Container(
                               width: width * .45,
                               child: TextFormField(
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
-
+                                cursorColor: Colors.pinkAccent,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 keyboardType: TextInputType.number,
                                 controller: SeekerProfileControllerInstanse
                                     .HeightController.value,
@@ -1983,8 +2025,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xffFE0091))),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffFE0091))),
                                     hintStyle: TextStyle(
                                         fontSize: 16, color: Color(0xffBABABA)),
                                     contentPadding: EdgeInsets.all(18),
@@ -1996,11 +2038,11 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                     errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xffBABABA))),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffBABABA))),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(35.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(35.0)),
                                       borderSide:
                                           BorderSide(color: Color(0xffBABABA)),
                                     ),
@@ -2012,8 +2054,10 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                             Container(
                               width: width * .45,
                               child: TextFormField(
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                cursorColor: Colors.pinkAccent,
 
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 keyboardType: TextInputType.number,
                                 controller: SeekerProfileControllerInstanse
                                     .InchesController.value,
@@ -2029,24 +2073,24 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xffFE0091))),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffFE0091))),
                                     hintStyle: TextStyle(
                                         fontSize: 16, color: Color(0xffBABABA)),
                                     contentPadding: EdgeInsets.all(18),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xffBABABA))),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffBABABA))),
                                     errorBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(35.0)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xffBABABA))),
+                                        borderSide: BorderSide(
+                                            color: Color(0xffBABABA))),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(35.0)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(35.0)),
                                       borderSide:
                                           BorderSide(color: Color(0xffBABABA)),
                                     ),
@@ -2071,8 +2115,8 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: width * .05),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * .05),
                                 child: startdate == null
                                     ? Text(
                                         "Choose birthday date",
@@ -2086,13 +2130,14 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                       )
                                     : Text(
                                         DateFormat('dd-MM-yyyy').format(
-                                            DateTime.parse(startdate.toString())),
+                                            DateTime.parse(
+                                                startdate.toString())),
                                         style: TextStyle(color: Colors.black),
                                       ),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: width * .05),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * .05),
                                 child: GestureDetector(
                                     onTap: () async {
                                       DateTime minimumDate = DateTime.now()
@@ -2133,10 +2178,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                         Container(
                           width: width * .9,
                           child: TextFormField(
-                            cursorColor:Color(0xffFE0091) ,
-
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-
+                            cursorColor: Color(0xffFE0091),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
                             keyboardType: TextInputType.emailAddress,
                             controller: SeekerProfileControllerInstanse
                                 .QuestionController.value,
@@ -2204,6 +2248,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               children: [
                                 Checkbox(
                                   value: _chooseAnswer1,
+                                  activeColor: Colors.pinkAccent,
                                   onChanged: (value) {
                                     if (_chooseAnswer2 == false &&
                                         _chooseAnswer3 == false) {
@@ -2219,10 +2264,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 ),
                                 Flexible(
                                   child: TextFormField(
-                                    cursorColor:Color(0xffFE0091) ,
-
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-
+                                    cursorColor: Color(0xffFE0091),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     controller: SeekerProfileControllerInstanse
                                         .FirstanswerController.value,
                                     textAlign: TextAlign.center,
@@ -2262,6 +2306,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                               children: [
                                 Checkbox(
                                   value: _chooseAnswer2,
+                                  activeColor: Colors.pinkAccent,
                                   onChanged: (value) {
                                     if (_chooseAnswer1 == false &&
                                         _chooseAnswer3 == false) {
@@ -2277,10 +2322,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 ),
                                 Flexible(
                                   child: TextFormField(
-                                    cursorColor:Color(0xffFE0091) ,
-
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-
+                                    cursorColor: Color(0xffFE0091),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     controller: SeekerProfileControllerInstanse
                                         .SecondanswerController.value,
                                     textAlign: TextAlign.center,
@@ -2319,6 +2363,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                             Row(
                               children: [
                                 Checkbox(
+                                  activeColor: Colors.pinkAccent,
                                   value: _chooseAnswer3,
                                   onChanged: (value) {
                                     // choose = SeekerProfileControllerInstanse.ThirdanswerController.value.text;
@@ -2336,10 +2381,9 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
                                 ),
                                 Flexible(
                                   child: TextFormField(
-                                    cursorColor:Color(0xffFE0091) ,
-
-                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-
+                                    cursorColor: Color(0xffFE0091),
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
                                     controller: SeekerProfileControllerInstanse
                                         .ThirdanswerController.value,
                                     textAlign: TextAlign.center,
@@ -2601,8 +2645,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    }
-    else if (selectDrink == null) {
+    } else if (selectDrink == null) {
       Fluttertoast.showToast(
           msg: "Pless Select Drink or not",
           toastLength: Toast.LENGTH_SHORT,
@@ -2611,8 +2654,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    }
-    else if (selectSmoke == null) {
+    } else if (selectSmoke == null) {
       Fluttertoast.showToast(
           msg: "Pless Select smoke or not",
           toastLength: Toast.LENGTH_SHORT,
@@ -2621,7 +2663,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    }   else if ( selectHopping== null) {
+    } else if (selectHopping == null) {
       Fluttertoast.showToast(
           msg: "Pless Select  you hoping to find in your partner",
           toastLength: Toast.LENGTH_SHORT,
@@ -2630,7 +2672,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    }else if (selectEducation == null) {
+    } else if (selectEducation == null) {
       Fluttertoast.showToast(
           msg: "Pless Select education",
           toastLength: Toast.LENGTH_SHORT,
@@ -2639,8 +2681,7 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    }
-    else if (selectGender == null) {
+    } else if (selectGender == null) {
       Fluttertoast.showToast(
           msg: "Pless Select Gender",
           toastLength: Toast.LENGTH_SHORT,
@@ -2801,133 +2842,141 @@ class _SikerProfileDetailsState extends State<SikerProfileDetails> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
-            content: Obx(
-               () {
-                return Container(
-                  height: Get.height * 0.45,
-                  width: Get.width * 1,
-                  child: Column(
-                    children: [
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Get.back();
-                            },
-                            child: Image.asset("assets/icons/cancel.png"),
-                          )),
-                      SizedBox(
-                        height: Get.height * .04,
-                      ),
-
-                      Center(
-                        child: Text(
-                          "Type the verification code\n         we've sent you",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(color: Colors.black),
-                        ),
-                      ),
-                      SizedBox(
-                        height: Get.height * .05,
-                      ),
-                      Center(
-                        child: Pinput(
-                          validator: (value) {
-                            if (value!.isEmpty && value.length != 6) {
-                              return "Please enter your 6 digit pin";
-                            } else {
-                              return null;
-                            }
+            content: Obx(() {
+              return Container(
+                height: Get.height * 0.45,
+                width: Get.width * 1,
+                child: Column(
+                  children: [
+                    Align(
+                        alignment: Alignment.bottomRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.back();
                           },
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          length: 6,
-                          autofocus: true,
-                          //
-                          // validator: (s) {
-                          //   if (s?.contains('1')??false) return null;
-                          //   return 'NOT VALID';
-                          // },
-                          useNativeKeyboard: true,
-                          keyboardType: TextInputType.number,
-                          defaultPinTheme: PinTheme(
+                          child: Image.asset("assets/icons/cancel.png"),
+                        )),
+                    SizedBox(
+                      height: Get.height * .04,
+                    ),
+                    Center(
+                      child: Text(
+                        "Type the verification code\n         we've sent you",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(color: Colors.black),
+                      ),
+                    ),
+                    SizedBox(
+                      height: Get.height * .05,
+                    ),
+                    Center(
+                      child: Pinput(
+                        validator: (value) {
+                          if (value!.isEmpty && value.length != 6) {
+                            return "Please enter your 6 digit pin";
+                          } else {
+                            return null;
+                          }
+                        },
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        length: 6,
+                        autofocus: true,
+                        //
+                        // validator: (s) {
+                        //   if (s?.contains('1')??false) return null;
+                        //   return 'NOT VALID';
+                        // },
+                        useNativeKeyboard: true,
+                        keyboardType: TextInputType.number,
+                        defaultPinTheme: PinTheme(
+                          width: 56,
+                          height: 56,
+                          textStyle: TextStyle(
+                              fontSize: 30,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                        ),
+                        focusedPinTheme: PinTheme(
                             width: 56,
                             height: 56,
-                            textStyle: TextStyle(
-                                fontSize: 30, color: Colors.black, fontWeight: FontWeight.w600),
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(40),
-                            ),
-                          ),
-                          focusedPinTheme: PinTheme(
-                              width: 56,
-                              height: 56,
-                              decoration: BoxDecoration( color: Color(0xffFE0091),
-                            border: Border.all(color: Colors.green),
-                            borderRadius: BorderRadius.circular(50),)),
-                          // submittedPinTheme: submittedPinTheme,
-                          onSubmitted: (String pin) => _showSnackBar(context,pin),
-                          focusNode: _pinPutFocusNode,
-                          controller: UserEmailAndphone.otpController.value,
-                          // submittedPinTheme: PinTheme(
-                          //     height: 56,
-                          //     width: 56,
-                          //     decoration: BoxDecoration(
-                          //         borderRadius: BorderRadius.circular(40.0),
-                          //         border: Border.all(color: Color(0xffFE0091)),
-                          //         color: Color(0xffFe0091))),
-                          // focusedPinTheme: defaultPinTheme,
-                          // followingPinTheme: defaultPinTheme,
-                        ),
+                              color: Color(0xffFE0091),
+                              border: Border.all(color: Colors.green),
+                              borderRadius: BorderRadius.circular(50),
+                            )),
+                        // submittedPinTheme: submittedPinTheme,
+                        onSubmitted: (String pin) =>
+                            _showSnackBar(context, pin),
+                        focusNode: _pinPutFocusNode,
+                        controller: UserEmailAndphone.otpController.value,
+                        // submittedPinTheme: PinTheme(
+                        //     height: 56,
+                        //     width: 56,
+                        //     decoration: BoxDecoration(
+                        //         borderRadius: BorderRadius.circular(40.0),
+                        //         border: Border.all(color: Color(0xffFE0091)),
+                        //         color: Color(0xffFe0091))),
+                        // focusedPinTheme: defaultPinTheme,
+                        // followingPinTheme: defaultPinTheme,
                       ),
-                      SizedBox(height: Get.height * .05),
-                      Center(
-                        child: MyButton(
-                            loading: UserEmailAndphone.loading.value,
-                            title: "Verify",
-                            onTap: () {
-                              // if(UserEmailAndphone.emailAndPhoneVerifyController.value.text.contains("@")){
-                              //   // UserEmailAndphone.email_verify.value=1;
-                              // }
-                              // else{
-                              //   // UserEmailAndphone.phone_verify.value=1;
-                              // }
-                              if(UserEmailAndphone.otpController.value.text.isNotEmpty) {
-                                UserEmailAndphone.PhoneAndEmaiOtpVerifyed(context);
-                              }
-                              else{
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Center(child: Text("full fill the otp")),
-                                    action: SnackBarAction(
-                                      label: '',
-                                      onPressed: () {
-                                        // Handle the action when the button in the SnackBar is pressed.
-                                      },
-                                    ),
+                    ),
+                    SizedBox(height: Get.height * .05),
+                    Center(
+                      child: MyButton(
+                          loading: UserEmailAndphone.loading.value,
+                          title: "Verify",
+                          onTap: () {
+                            // if(UserEmailAndphone.emailAndPhoneVerifyController.value.text.contains("@")){
+                            //   // UserEmailAndphone.email_verify.value=1;
+                            // }
+                            // else{
+                            //   // UserEmailAndphone.phone_verify.value=1;
+                            // }
+                            if (UserEmailAndphone
+                                .otpController.value.text.isNotEmpty) {
+                              UserEmailAndphone.PhoneAndEmaiOtpVerifyed(
+                                  context);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Center(child: Text("full fill the otp")),
+                                  action: SnackBarAction(
+                                    label: '',
+                                    onPressed: () {
+                                      // Handle the action when the button in the SnackBar is pressed.
+                                    },
                                   ),
-                                );
-                              }
-                            }),
-                      ),
-                        SizedBox(
-                        height: Get.height*0.01,
-                      ),
-                    if(UserEmailAndphone.resendOtp.value==true)  Center(
-                        child: UserEmailAndphone.rxRequestStatus.value==Status.LOADING ?
-                        CircularProgressIndicator() :TextButton(onPressed: () {
-                          UserEmailAndphone.PhoneAndEmailVerifiyed();
-                        }, child: Text("resend otp")
-                        ),
+                                ),
+                              );
+                            }
+                          }),
+                    ),
+                    SizedBox(
+                      height: Get.height * 0.01,
+                    ),
+                    if (UserEmailAndphone.resendOtp.value == true)
+                      Center(
+                        child: UserEmailAndphone.rxRequestStatus.value ==
+                                Status.LOADING
+                            ? CircularProgressIndicator()
+                            : TextButton(
+                                onPressed: () {
+                                  UserEmailAndphone.PhoneAndEmailVerifiyed();
+                                },
+                                child: Text("resend otp")),
                       )
-                    ],
-                  ),
-                );
-              }
-            ));
+                  ],
+                ),
+              );
+            }));
       },
     );
   }

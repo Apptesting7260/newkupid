@@ -16,6 +16,7 @@ import 'package:cupid_match/match_seeker/lever/request_makers.dart';
 import 'package:cupid_match/res/components/internet_exceptions_widget.dart';
 import 'package:cupid_match/widgets/my_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:math';
 
@@ -32,6 +33,8 @@ class SlotMachine extends StatefulWidget {
 class _SlotMachineState extends State<SlotMachine> {
   final MagicProfileControllerinstance = Get.put(MagicProfileController());
   final LiverPoolControllerinstance = Get.put(LiverPoolController());
+  //  final ViewSikerProfileDetailsControllernstance =
+  //     Get.put(ViewSikerProfileDetailsController());
 
   
   bool pulled = false;
@@ -100,7 +103,10 @@ class _SlotMachineState extends State<SlotMachine> {
 
   @override
   void initState() {
-    MagicProfileControllerinstance.MagicProfileApiHit();
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+   MagicProfileControllerinstance.MagicProfileApiHit();
+});
+  
     // TODO: implement initState
     super.initState();
   }
@@ -158,7 +164,8 @@ class _SlotMachineState extends State<SlotMachine> {
                   //     .SikerTOSikerRequestApiHit();
                      if(MagicProfileControllerinstance.MagicProfileList.value
                                     .requests!.length> 3){
-                                  if(staticLiverpullController.seekerprofilerequested.value.toString()=="false"){
+                                      staticLiverpullController.seekerprofilerequested.value=false;
+                                  // if(staticLiverpullController.)=="false"){
                                     // if (pulled == false) {
                                       _startSpinning();
                                     // }
@@ -166,17 +173,17 @@ class _SlotMachineState extends State<SlotMachine> {
                                       Timer(Duration(seconds: 2), () {
                                         _stopSpinning();
                                       });
-                                  }else{
+                                  // }else{
 
-                                    Fluttertoast.showToast(
-                                      msg: "You Have Already Pooled",
-                                      toastLength: Toast.LENGTH_SHORT, // You can use Toast.LENGTH_LONG for a longer duration.
-                                      gravity: ToastGravity.BOTTOM, // You can change the position to TOP, CENTER, or BOTTOM.
-                                      backgroundColor: Colors.black54,
-                                      textColor: Colors.white,
-                                    );
+                                  //   Fluttertoast.showToast(
+                                  //     msg: "You Have Already Pooled",
+                                  //     toastLength: Toast.LENGTH_SHORT, // You can use Toast.LENGTH_LONG for a longer duration.
+                                  //     gravity: ToastGravity.BOTTOM, // You can change the position to TOP, CENTER, or BOTTOM.
+                                  //     backgroundColor: Colors.black54,
+                                  //     textColor: Colors.white,
+                                  //   );
 
-                                  }
+                                  // }
                                 }else{
 
                                   Fluttertoast.showToast(
@@ -346,7 +353,7 @@ class _SlotMachineState extends State<SlotMachine> {
                 //             ),
                 //
                 //
-                //           ],
+                //           ],F
                 //         ),
                 //       ],
                 //     ),

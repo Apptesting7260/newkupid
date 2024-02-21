@@ -95,7 +95,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                  loading: ForgotPasswordControllerInstanse.loading.value,
                  title: "Send",
                  onTap: () {
-
+setState(() {
+  forgotpassword=true;
+});
                    ForgotPasswordControllerInstanse.ForgotPasswordApiHit();
                  },
                ),

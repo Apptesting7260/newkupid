@@ -20,7 +20,14 @@ import 'match_seeker/lever/new_liver.dart';
 import 'match_seeker/profile/interest.dart';
 import 'match_seeker/profile/update_profile_details.dart';
 import 'match_seeker/siker_Home_Screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:flutter/foundation.dart';
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
@@ -38,43 +45,151 @@ Future main()async {
    WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp();
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
- 
+//  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+
+
   // FlutterBranchSdk.validateSDKIntegration();
   // FlutterBranchSdk.initSession();
   // await FlutterBranchSdk.init(
   //     useTestKey: true, enableLogging: false, disableTracking: false);
-  fcmToken = await FirebaseMessaging.instance.getToken();
-  print('FCM Token: $fcmToken');
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  // fcmToken = await FirebaseMessaging.instance.getToken();
+  // print('FCM Token: $fcmToken');
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: true,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    print('Got a message whilst in the foreground!');
-    print('Message data: ${message.data}');
+  // NotificationSettings settings = await messaging.requestPermission(
+  //   alert: true,
+  //   announcement: true,
+  //   badge: true,
+  //   carPlay: false,
+  //   criticalAlert: false,
+  //   provisional: false,
+  //   sound: true,
+  // );
+  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   print('Got a message whilst in the foreground!');
+  //   print('Message data: ${message.data}');
 
-    if (message.notification != null) {
-      print('Message also contained a notification: ${message.notification}');
-    }
-  });
+  //   if (message.notification != null) {
+  //     print('Message also contained a notification: ${message.notification}');
+  //   }
+  // });
 
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  final DarwinInitializationSettings initializationSettingsDarwin =
+  DarwinInitializationSettings();
+firebaseNotification() async { 
+  
+  
+  
+   FirebaseMessaging messaging = FirebaseMessaging.instance;
+    messaging.requestPermission(alert: true);
+    messaging.isAutoInitEnabled;
+    var android =
+    const AndroidInitializationSettings('@drawable/launch_background');
+    var ios = const DarwinInitializationSettings();
+    var platform = InitializationSettings(android: android, iOS: ios);
+    flutterLocalNotificationsPlugin.initialize(platform);
+    messaging.requestPermission(
+        sound: true, alert: true, badge: true, provisional: true);
+    // initLocalNotification();
+
+    getFcmToken();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      AppleNotification? appleNotification = message.notification?.apple;
+
+      print('message notification body=====${message.notification?.body}');
+      if (notification != null && android != null) {
+        showNotification(message.notification);
+        print('android not null notification==${message.notification}');
+        FirebaseMessaging.instance.getInitialMessage().then((message) {
+          if (message != null) {
+            print("abc525");
+          } else {
+            print("abc");
+          }
+        });
+      } else if (notification != null && appleNotification != null) {
+        showNotification(message.notification);
+      } else {}
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        // Get.offAll(NotificationScreen());
+      }
+    });
+
+    messaging.getToken().then((String? token) async {
+      if (token == null) {
+      } else {
+        // MySharedPreferences.localStorage
+        //     ?.setString(MySharedPreferences.deviceId, token);
+        // print("token===$token");
+      }
+    }).catchError((error) {
+      print(error.toString());
+    });
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      print('FlutterFire Messaging Example: Getting APNs token...');
+     fcmToken = await FirebaseMessaging.instance.getAPNSToken();
+      print('FlutterFire Messaging Example: Got APNs token: $fcmToken');
+    }
+  }
+
+   getFcmToken() {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    print("sdfsdfdsfdsfdsafdsfdsf");
+    messaging.getToken().then((String? token) async {
+      if (token == null) {
+      } else {
+        fcmToken = token;
+
+        print("token=======$fcmToken");
+      }
+    }).catchError((error) {
+      print(error.toString());
+    });
+  }
+
+@override
+  void initState() {
+    // TODO: implement initState
+    firebaseNotification();
+    super.initState();
+  }
+
+    Future showNotification(RemoteNotification? notification) async {
+    var android = const AndroidNotificationDetails(
+      'CHANNLEID',
+      "CHANNLENAME",
+      channelDescription: "channelDescription",
+      importance: Importance.max,
+      fullScreenIntent: true,
+      priority: Priority.high,
+      visibility: NotificationVisibility.public,
+    );
+    var iOS = const DarwinNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: iOS);
+    await flutterLocalNotificationsPlugin.show(DateTime.now().second,
+        notification?.title, notification?.body, platform);
+  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -93,7 +208,7 @@ class MyApp extends StatelessWidget {
 
       home:  SplashScreen(),
     );
-  }
+  }  
 }
 
 

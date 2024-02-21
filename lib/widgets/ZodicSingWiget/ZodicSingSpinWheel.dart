@@ -12,6 +12,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../GlobalVariable/GlobalVariable.dart';
 import '../../controllers/SeekerMyProfileDetailsController/SeekerMyProfileController.dart';
@@ -26,6 +27,7 @@ import '../../match_seeker/lever/StaticLiverPool.dart';
 import '../../res/components/general_exception.dart';
 import '../../res/components/internet_exceptions_widget.dart';
 import '../Spin_Will_Wigdet.dart';
+import '../seekershortprofile.dart';
 
 enum SwipeDirection { left, right, top }
 
@@ -223,36 +225,36 @@ class _SpinWheelState extends State<SpinWheel>
                           SizedBox(
                             height: Get.height * .03,
                           ),
-                          Text(
-                            '${totalData + 1}/${staticTotalLength + 1}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w600,
+                          if (speenWheelDataController
+                                  .SpeenWheelData.value.seekerData!.length !=
+                              0)
+                            Text(
+                              '${totalData}/${staticTotalLength}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
 
                           SizedBox(
                             height: Get.height * .03,
                           ),
-                          Container(
-                            height: Get.height * 0.6,
-                            width: Get.width * 0.9,
-                            child: speenWheelDataController
-                                            .SpeenWheelData.value.seekerData !=
-                                        [] ||
-                                    speenWheelDataController.SpeenWheelData
-                                            .value.seekerData!.length !=
-                                        0
-                                ? CardSwiper(
+                          speenWheelDataController.SpeenWheelData.value
+                                      .seekerData!.length !=
+                                  0
+                              ? Container(
+                                  height: Get.height * 0.6,
+                                  width: Get.width * 0.9,
+                                  child: CardSwiper(
                                     cardsCount: speenWheelDataController
                                         .SpeenWheelData
                                         .value
                                         .seekerData!
                                         .length,
-                                    numberOfCardsDisplayed: 2,
+                                    numberOfCardsDisplayed: 1,
                                     backCardOffset: const Offset(0, -50),
                                     padding: const EdgeInsets.all(24.0),
                                     allowedSwipeDirection:
@@ -482,13 +484,21 @@ class _SpinWheelState extends State<SpinWheel>
                                                           BorderRadius.circular(
                                                               15.0),
                                                       image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            speenWheelDataController
-                                                                .SpeenWheelData
-                                                                .value
-                                                                .seekerData![
-                                                                    index]
-                                                                .imgPath),
+                                                        image:
+
+                                                        speenWheelDataController
+                                                            .SpeenWheelData
+                                                            .value
+                                                            .seekerData![
+                                                        index]
+                                                            .imgPath!=null ?NetworkImage( speenWheelDataController
+                                                            .SpeenWheelData
+                                                            .value
+                                                            .seekerData![
+                                                        index]
+                                                            .imgPath
+                                                            .toString()):NetworkImage(
+                                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2av8pAdOHJdgpwkYC5go5OE07n8-tZzTgwg&usqp=CAU"),
                                                         // Replace with your image path
                                                         fit: BoxFit.cover,
                                                       ),
@@ -554,12 +564,18 @@ class _SpinWheelState extends State<SpinWheel>
                                         ),
                                       );
                                     },
-                                  )
-                                : Text(
-                                    "No Data ",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                          ),
+                                  ))
+                              : Column(children: [
+                                  Lottie.asset(
+                                      'assets/lottieJson/Animation - 1707975473040.json'),
+                                  Text("No Data Found",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15))
+                                ]),
                           // Row(
                           //   children: [
                           //     Expanded(child: Image.asset("assets/image/cancel.png")),
@@ -593,181 +609,216 @@ class _SpinWheelState extends State<SpinWheel>
               SizedBox(
                 height: Get.height * 0.05,
               ),
+              isButton == true&&seekerMyProfileDetailsController
+                  .SeekerMyProfileDetail
+                  .value
+                  .SpinLeverRequestedDat!
+                  .spin ==
+                  false
+                  ? MyButton(
+                      title: 'Spin Now',
+                      onTap: () {
+                        // if (!spinning) {
+                        startRotation();
+                        // }
+                      },
+                    )
+                 :
               Center(
-                child: !isButton
-                    ? (seekerMyProfileDetailsController.SeekerMyProfileDetail
-                                .value.SpinLeverRequestedDat!.spin ==
-                            false)
-                        ? MyButton(
-                            title: 'Spin Now',
-                            onTap: () {
-                              if (!spinning) {
-                                startRotation();
-                              }
-                            },
-                          )
-                        : Obx(
-                            () => Column(
-                              children: [
-                                Text(
-                                  "Next Spin",
-                                  style: Get.theme.textTheme.headlineSmall!
-                                      .copyWith(
-                                    color: Color(0xff000CAA),
-                                    fontWeight: FontWeight.bold,
+                      child: !isButton
+                          ? (seekerMyProfileDetailsController
+                                      .SeekerMyProfileDetail
+                                      .value
+                                      .SpinLeverRequestedDat!
+                                      .spin ==
+                                  false)
+                              ? MyButton(
+                                  title: 'Spin Now',
+                                  onTap: () {
+                                    // if (!spinning) {
+                                    startRotation();
+                                    // }
+                                  },
+                                )
+                              : Obx(
+                                  () => Column(
+                                    children: [
+                                      Text(
+                                        "Next Spin",
+                                        style: Get
+                                            .theme.textTheme.headlineSmall!
+                                            .copyWith(
+                                          color: Color(0xff000CAA),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: Get.height * 0.02),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          //&************ for hours
+                                          Container(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue[50],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Text(
+                                                    SpeendReqestControllerinstance
+                                                        .remainingHours
+                                                        .toString(),
+                                                    style: Get.theme.textTheme
+                                                        .headlineSmall!
+                                                        .copyWith(
+                                                      color: Color(0xff000CAA),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        Get.height * 0.0105),
+                                                Text(
+                                                  "Hour",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall!
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, bottom: 25),
+                                            child: Text(
+                                              ":",
+                                              style: Get.theme.textTheme
+                                                  .headlineSmall!
+                                                  .copyWith(
+                                                color: Color(0xff000CAA),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: Get.width * 0.025),
+
+                                          //&************ for minutes
+                                          Container(
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue[50],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Text(
+                                                    SpeendReqestControllerinstance
+                                                        .remainingMinutes
+                                                        .toString(),
+                                                    style: Get.theme.textTheme
+                                                        .headlineSmall!
+                                                        .copyWith(
+                                                      color: Color(0xff000CAA),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        Get.height * 0.0105),
+                                                Text(
+                                                  "Minute",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall!
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, bottom: 25),
+                                            child: Text(
+                                              ":",
+                                              style: Get.theme.textTheme
+                                                  .headlineSmall!
+                                                  .copyWith(
+                                                color: Color(0xff000CAA),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+
+                                          SizedBox(width: Get.width * 0.025),
+                                          //&************ for second
+                                          Container(
+                                            child: Column(
+                                              children: [
+                                                Container(
+                                                  padding: EdgeInsets.all(15),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.blue[50],
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Text(
+                                                    SpeendReqestControllerinstance
+                                                        .remainingSeconds
+                                                        .toString(),
+                                                    style: Get.theme.textTheme
+                                                        .headlineSmall!
+                                                        .copyWith(
+                                                      color: Color(0xff000CAA),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        Get.height * 0.0105),
+                                                Text(
+                                                  "Second",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodySmall!
+                                                      .copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                SizedBox(height: Get.height * 0.02),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    //&************ for hours
-                                    Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(15),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue[50],
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            child: Text(
-                                              SpeendReqestControllerinstance
-                                                  .remainingHours
-                                                  .toString(),
-                                              style: Get.theme.textTheme
-                                                  .headlineSmall!
-                                                  .copyWith(
-                                                color: Color(0xff000CAA),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: Get.height * 0.0105),
-                                          Text(
-                                            "Hour",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, bottom: 25),
-                                      child: Text(
-                                        ":",
-                                        style: Get
-                                            .theme.textTheme.headlineSmall!
-                                            .copyWith(
-                                          color: Color(0xff000CAA),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(width: Get.width * 0.025),
-
-                                    //&************ for minutes
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(15),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue[50],
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            child: Text(
-                                              SpeendReqestControllerinstance
-                                                  .remainingMinutes
-                                                  .toString(),
-                                              style: Get.theme.textTheme
-                                                  .headlineSmall!
-                                                  .copyWith(
-                                                color: Color(0xff000CAA),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: Get.height * 0.0105),
-                                          Text(
-                                            "Minute",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, bottom: 25),
-                                      child: Text(
-                                        ":",
-                                        style: Get
-                                            .theme.textTheme.headlineSmall!
-                                            .copyWith(
-                                          color: Color(0xff000CAA),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-
-                                    SizedBox(width: Get.width * 0.025),
-                                    //&************ for second
-                                    Container(
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            padding: EdgeInsets.all(15),
-                                            decoration: BoxDecoration(
-                                              color: Colors.blue[50],
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            child: Text(
-                                              SpeendReqestControllerinstance
-                                                  .remainingSeconds
-                                                  .toString(),
-                                              style: Get.theme.textTheme
-                                                  .headlineSmall!
-                                                  .copyWith(
-                                                color: Color(0xff000CAA),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: Get.height * 0.0105),
-                                          Text(
-                                            "Second",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall!
-                                                .copyWith(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                    : SizedBox(),
-              ),
+                                )
+                          : SizedBox(),
+                    ),
               SizedBox(
                 height: Get.height * .05,
               ),
@@ -795,7 +846,7 @@ class _SpinWheelState extends State<SpinWheel>
         totalData--;
 
         print("TotalData  === $totalData");
-        if (totalData == -1) {
+        if (totalData == 0) {
           setState(() {
             seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
             SpeendReqestControllerinstance.SpeendRequestApihit();
@@ -818,7 +869,7 @@ class _SpinWheelState extends State<SpinWheel>
         }
 
         totalData--;
-        if (totalData == -1) {
+        if (totalData == 0) {
           setState(() {
             seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
             SpeendReqestControllerinstance.SpeendRequestApihit();
@@ -955,6 +1006,7 @@ class _SpinWheelState extends State<SpinWheel>
     SpeendReqestControllerinstance.SpeendRequestApihit();
     Future.delayed(Duration(seconds: randomIndex == 0 ? 12 : randomIndex), () {
       audioPlayer.stop();
+      rotationController.reset();
       setState(() {
         spinning = false;
         SpeendReqestControllerinstance.SpeendRequestApihit();
@@ -963,6 +1015,12 @@ class _SpinWheelState extends State<SpinWheel>
         staticTotalLength =
             speenWheelDataController.SpeenWheelData.value.seekerData!.length;
         print(totalData);
+        if( totalData==0){
+          setState(() {
+            isButton = false;
+          });
+        }
+        print(isButton);
         rotationController.reset(); // Stop rotating the arrow
         print('Stopped at index: $randomIndex');
         print(
@@ -1238,9 +1296,10 @@ class _SpinWheelState extends State<SpinWheel>
                       width: width * .3,
                       child: CircleAvatar(
                         radius: 30.0,
-                        backgroundImage: NetworkImage(speenWheelDataController
+                        backgroundImage:speenWheelDataController.SpeenWheelData.value.seekerData![index].imgPath!=null ?NetworkImage(speenWheelDataController
                             .SpeenWheelData.value.seekerData![index].imgPath
-                            .toString()),
+                            .toString()):NetworkImage(
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2av8pAdOHJdgpwkYC5go5OE07n8-tZzTgwg&usqp=CAU"),
                         backgroundColor: Colors.transparent,
                       ),
                     ),
@@ -1271,7 +1330,12 @@ class _SpinWheelState extends State<SpinWheel>
               ),
               GestureDetector(
                 onTap: () {
-                  Get.off(OutGoingRequest());
+                  userIdsiker = speenWheelDataController
+                      .SpeenWheelData.value.seekerData![index].id
+                      .toString();
+                  print('object');
+                  Get.back();
+                  Get.to(ShortProfileSeeker());
                   // match_withid =  SpeendReqestControllerinstance
                   //                                       .staticLiverPullvalue
                   //                                       .value
@@ -1410,15 +1474,16 @@ class _SpinWheelState extends State<SpinWheel>
                   ),
                 ),
                 onTap: () {
-                  userIdsiker = speenWheelDataController
-                      .SpeenWheelData.value.seekerData![index].id
-                      .toString();
+                  selectedseekerid = speenWheelDataController
+                      .SpeenWheelData.value.seekerData![index].id;
 
                   setState(() {
                     userIdsiker;
                   });
                   Timer(Duration(microseconds: 2), () {
-                    Get.off(SeeAllMaker());
+                   if(selectedseekerid!=null){
+                     Get.off(SeeAllMaker());
+                   }
                   });
                 },
               ),

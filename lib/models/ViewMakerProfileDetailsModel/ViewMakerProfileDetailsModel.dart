@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class ViewMakerProfileModel {
   ViewMakerProfileModel({
      this.status,
@@ -44,6 +46,7 @@ class ProfileDetails {
      this.likedProfile,
      this.imgPath,
      this.videoPath,
+    this.likeStatus
     //  this.details,
   });
    var id;
@@ -69,6 +72,8 @@ class ProfileDetails {
    var likedProfile;
    var imgPath;
    var videoPath;
+  int ?likeStatus;
+  RxBool lodding=false.obs;
   //  Details?details;
   
   ProfileDetails.fromJson(Map<String, dynamic> json){
@@ -95,6 +100,7 @@ class ProfileDetails {
     likedProfile = json['liked_profile'];
     imgPath = json['img_path'];
     videoPath = json['video_path'];
+    likeStatus = json['like_status'];
     // details =  Details.fromJson(json['details']);
   }
 
@@ -123,6 +129,8 @@ class ProfileDetails {
     _data['liked_profile'] = likedProfile;
     _data['img_path'] = imgPath;
     _data['video_path'] = videoPath;
+    _data['like_status'] = likeStatus;
+
     // _data['details'] = details!.toJson();
     return _data;
   }

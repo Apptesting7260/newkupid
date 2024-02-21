@@ -108,11 +108,12 @@ Future<dynamic> getApi2(String url)async{
   @override
   Future postApi2(var data, String url) async {
       final prefs=await SharedPreferences.getInstance();
-    if (kDebugMode) {
+    // if (kDebugMode) {
+    //   print(url);
+    //   print(data);
+    // }
       print(url);
       print(data);
-    }
-
     dynamic responseJson;
     try {
       print(BarrierToken.toString());
@@ -123,12 +124,12 @@ Future<dynamic> getApi2(String url)async{
 
           body:data
       );
-      // print(response.body);
+      print(response.body);
       // print("object");
       responseJson = returnResponse(response);
 
       apiresponsehit = jsonDecode(response.body);
-      // print(apiresponsehit);
+      print("$apiresponsehit==========");
     } on SocketException {
       throw InternetException('');
     } on RequestTimeOut {

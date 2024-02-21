@@ -24,6 +24,7 @@ import '../GlobalVariable/nullFunction.dart';
 import '../match_seeker/Siker_TabView.dart';
 import '../match_seeker/profile/SeekerUpdateProfileDetails.dart';
 import '../match_seeker/profile/profile_page.dart';
+import 'ZodicSingWiget/ZodicSingSpinWheel.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -170,7 +171,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
               ListTile(
                 onTap: () {
-                  Get.to(() => Chose_Role_Type());
+                  Get.to(() => SpinWheel());
                 },
                 leading: Image.asset(
                   'assets/maker/Mask group (2).png',
@@ -207,7 +208,7 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
               ListTile(
                 onTap: () {
-                  Get.to(() => PaymentInfo());
+                  // Get.to(() => PaymentInfo());
                 },
                 leading: Image.asset(
                   'assets/maker/Mask group (4).png',
@@ -372,13 +373,12 @@ class _MyDrawerState extends State<MyDrawer> {
   }
 
     setStatus(String status) async {
-    DocumentReference roomRef =
-        _firestore.collection("$seekerUserId").doc("Status");
-    await roomRef.update({'status': status});
+
+        _firestore.collection("s$seekerUserId").doc("Status").set({'status':"offline"});
     print("====================================================status");
-                        var deviceTokenRef = _firestore.collection("s${seekerUserId.toString()}").doc('Device Token');
-    var deviceTokenRefsnapshot =  deviceTokenRef.get();
+                        var deviceTokenRef = _firestore.collection("s${seekerUserId.toString()}").doc('Device Token').set({'device token': ""});
+    // var deviceTokenRefsnapshot =  deviceTokenRef.get();
   
-       deviceTokenRef.set({'device token': ""});
+       // deviceTokenRef.set({'device token': ""});
   }
 }

@@ -2,12 +2,14 @@ class AppUrl {
   static const String baseUrl = 'https://urlsdemo.online/kupid/api';
   static const String SignUpUrl = '$baseUrl/signup-step1';
   static const String OtpvarificationUrl = '$baseUrl/otpverify-step2';
+  static const String ForgotOtpvarificationUrl = '$baseUrl/forgot-password-otpverify';
   static const String CreatePasswordUrl = '$baseUrl/setpassword-step3';
   static const String ResendOtpUrl = '$baseUrl/otpresend-step2';
   static const String SetRoleUrl = '$baseUrl/chooserole-step4';
   static const String ForgotPasswordUrl = '$baseUrl/forgot-password';
   static const String ForgotPasswordResetUrl = '$baseUrl/submit-reset-password';
   static const String MakerProfileUrl = '$baseUrl/user-profile-update';
+  static const String otpVeridyUrl = '$baseUrl/otpverify-step2';
   static const String SeekerProfileUrl = '$baseUrl/user-profile-update';
   static const String FetchSubcriptionUrl =
       '$baseUrl/maker/getall-subscription';
@@ -70,4 +72,7 @@ class AppUrl {
   static const String SeekerToMakerRequest  = '$baseUrl/seeker/request-seeker-to-maker';
   static const String MakerGetDetails  = '$baseUrl/maker/maker-view-my-profile';
   static const String SppenwheelDetails  = '$baseUrl/seeker/seeker-spin-request-data-by-zodiac';
+  static const String SeekerLike  = 'https://urlsdemo.online/kupid/api/seeker/seeker-profile-like';
+  static const String MakekerLike  = '$baseUrl/maker/maker-like-list';
+
 }

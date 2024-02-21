@@ -79,6 +79,9 @@ class _MatchScreenState extends State<MatchScreen> {
                         },
                         child: Image.asset("assets/icons/menu.png"));
                   },
+                ),
+                SizedBox(
+                  width: Get.width * 0.02,
                 )
               ],
             ),
@@ -86,7 +89,7 @@ class _MatchScreenState extends State<MatchScreen> {
             body: Obx(() {
               switch (ProfileScrollControllerinstance.rxRequestStatus.value) {
                 case Status.LOADING:
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
                 case Status.ERROR:
                   if (ProfileScrollControllerinstance.error.value ==
                       'No internet') {
@@ -294,7 +297,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                 child: Container(
                                   alignment: Alignment.center,
                                   child: Center(
-                                      child: CircularProgressIndicator()),
+                                      child: CircularProgressIndicator(color: Colors.pinkAccent,)),
                                 ),
                                 backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
@@ -368,7 +371,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                     .toString(),
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
+                                    Center(child: CircularProgressIndicator(color: Colors.pinkAccent,)),
                                 // Placeholder widget while loading
                                 errorWidget: (context, url, error) => Icon(Icons
                                     .error), // Error widget if loading fails
@@ -427,6 +430,8 @@ class _MatchScreenState extends State<MatchScreen> {
                                     .Femal![index]
                                     .address
                                     .toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 10),
                               ),
@@ -603,7 +608,7 @@ class _MatchScreenState extends State<MatchScreen> {
                                     .toString(),
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
+                                    Center(child: CircularProgressIndicator(color: Colors.pinkAccent)),
                                 // Placeholder widget while loading
                                 errorWidget: (context, url, error) => Icon(Icons
                                     .error), // Error widget if loading fails
@@ -651,6 +656,8 @@ class _MatchScreenState extends State<MatchScreen> {
                                     .Mal![index]
                                     .address
                                     .toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     fontSize: 10,

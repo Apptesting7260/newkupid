@@ -126,7 +126,7 @@ class _InterestState extends State<Interest> {
       body:  Obx(() {
           switch (SeekersAllInterstsControllerInstanse.rxRequestStatus.value) {
             case Status.LOADING:
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
             case Status.ERROR:
               if (SeekersAllInterstsControllerInstanse.error.value == 'No internet') {
                 return InterNetExceptionWidget(

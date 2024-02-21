@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
 import 'package:cupid_match/controllers/controller/SetRoleController/SetRoleController.dart';
@@ -15,7 +16,7 @@ import '../../../repository/Auth_Repository/Auth_Repository.dart';
 class SeekerMyProfileDetailsController extends GetxController {
   final _api = AuthRepository();
   //int? seekerRequestlenght;
-
+ final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final rxRequestStatus = Status.LOADING.obs;
   final SeekerMyProfileDetail = SeekerMyProfileDetailModelAutoGenerate().obs;
   RxString error = ''.obs;
@@ -39,7 +40,7 @@ print("${value.SpinLeverRequestedDat!.leverpool.toString()}");
     await roomRef.set({'status': "online"});
  seekerUserId=value.ProfileDetail!.id.toString();
   
-  
+  getusers(value.ProfileDetail!.id.toString());
 
     // Get the toke
 
@@ -78,4 +79,13 @@ void refreshApi(){
 
   });
 }
+
+  getusers(String id) {
+    var name;
+    name = firestore
+        .collection("s" +
+            id.toString())
+        .orderBy('timestamp', descending: true)
+        .get();
+  }
 }

@@ -50,6 +50,8 @@ print(prefs.getString("BarearToken"));
       // Utils.snackBar( "Message",value.msg.toString());
 
      Timer(Duration(seconds: 2),(){
+
+       prefs.setString('Usertype', ProfileType.toString());
        ProfileType != 2
            ? Get.to(() => MakerProfileDetails())
            : Get.to(() => SikerProfileDetails());

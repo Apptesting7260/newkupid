@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 
 import 'package:cupid_match/data/network/network_api_services.dart';
 import 'package:cupid_match/models/AllMakerModel/AllMakerModel.dart';
@@ -31,7 +34,9 @@ import 'package:cupid_match/models/ViewProfileDetailsModel/ViewProfileDetailsMod
 import 'package:cupid_match/models/ViewSikerDetailsToMatchModel,.dart/ViewSikerDetailsModel.dart';
 import 'package:cupid_match/models/likeModel/LikeListModel.dart';
 import 'package:cupid_match/res/app_url/app_url.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/app_exceptions.dart';
 import '../../models/AllOcupationsModel/AllOcupationsModel.dart';
 import '../../models/CountryModel/country_model.dart';
 import '../../models/CreatePasswordModel/CreatePasswordModel.dart';
@@ -40,6 +45,7 @@ import '../../models/ForgotPasswordModel/ForgotPasswordModel.dart';
 import '../../models/ForgotPasswordResetModel/ForgotPasswordResetModel.dart';
 import '../../models/IncomingMakerRequestModel/incoming_maker_request_model.dart';
 import '../../models/MakerHomePage/MakerHomePageModel.dart';
+import '../../models/MakerLikeListApi/MakerLikeListModel.dart';
 import '../../models/MakerMyProfileDetailModel/GetMyPrpfileDetailsModel.dart';
 import '../../models/MakerProfileModel/MakerProfileModel.dart';
 import '../../models/MakerRecentMatchesModel/maker_recent_matches_model.dart';
@@ -54,6 +60,7 @@ import '../../models/SeekerRequestModel.dart';
 import '../../models/SetRoleModel/SetRoleModel.dart';
 import '../../models/SpeenWhellModel/SpeenWheelModel/SpeenWheelModel.dart';
 import '../../models/ViewProfileDetailsModel/EditProfileDetailsModel.dart';
+import '../../models/likeModel/LikeModel.dart';
 
 class AuthRepository {
   int? abcd;
@@ -68,12 +75,17 @@ class AuthRepository {
     dynamic response = await _apiService.postApi2(data, AppUrl.MakerProfileUrl);
     print("============$response");
     return SignUpModel.fromJson(response);
-    
   }
 
   Future<OtpVerificationModel> OtpVarificationApi(var data) async {
     dynamic response =
         await _apiService.postApi(data, AppUrl.OtpvarificationUrl);
+    return OtpVerificationModel.fromJson(response);
+  }
+
+  Future<OtpVerificationModel> ForgotOtpVarificationApi(var data) async {
+    dynamic response =
+        await _apiService.postApi(data, AppUrl.ForgotOtpvarificationUrl);
     return OtpVerificationModel.fromJson(response);
   }
 
@@ -221,10 +233,10 @@ class AuthRepository {
     print(response);
     return ViewSikerDetailsToMatchModel.fromJson(response);
   }
+
   Future<EditViewprofileDetailsModel> ViewSikerEditeDetails() async {
     print("hited");
-    dynamic response =
-    await _apiService.getApi2(AppUrl.EditeProfileUrl);
+    dynamic response = await _apiService.getApi2(AppUrl.EditeProfileUrl);
     print(response);
     return EditViewprofileDetailsModel.fromJson(response);
   }
@@ -247,11 +259,13 @@ class AuthRepository {
 //***************** IncomingRequestApi  *********************
   Future<IncomingSeekerRequestModel> IncomingRequestApi() async {
     print("IncomingRequestApdsgfdhsgfdsjhdsjfhdsji");
-    dynamic response = await _apiService.getApi2(AppUrl.IncomingRequestUrl+'asc');
+    dynamic response =
+        await _apiService.getApi2(AppUrl.IncomingRequestUrl + 'asc');
     // print(response);
     print(response);
     return IncomingSeekerRequestModel.fromJson(response);
-  }//***************** IncomingRequestApi  *********************
+  } //***************** IncomingRequestApi  *********************
+
   Future<MakerMyprofileDetailsModel> getMakerProfileDetails() async {
     print("IncomingRequestApdsgfdhsgfdsjhdsjfhdsji");
     dynamic response = await _apiService.getApi2(AppUrl.MakerGetDetails);
@@ -273,6 +287,11 @@ class AuthRepository {
     dynamic response = await _apiService.getApi2(AppUrl.LikeListUrl);
     print(response);
     return LikeListModel.fromJson(response);
+  }
+  Future<MakerLikeList> MakerLikeListApi() async {
+    dynamic response = await _apiService.getApi2(AppUrl.MakekerLike);
+    print(response);
+    return MakerLikeList.fromJson(response);
   }
 
   Future<RequestActionModel> RequestActionApi(var data) async {
@@ -367,7 +386,8 @@ class AuthRepository {
     return StaticLiverPullModel.fromJson(response);
   }
 
-  Future<SeekerMyProfileDetailModelAutoGenerate> SeekerMyProfileDetailsApi() async {
+  Future<SeekerMyProfileDetailModelAutoGenerate>
+      SeekerMyProfileDetailsApi() async {
     // print("hited");
     dynamic response =
         await _apiService.getApi2(AppUrl.SeekerMyProfileDetailsUrl);
@@ -375,16 +395,13 @@ class AuthRepository {
     return SeekerMyProfileDetailModelAutoGenerate.fromJson(response);
   }
 
-    Future<LiverPoolModel> LiverPoolRequestApi( var data) async {
+  Future<LiverPoolModel> LiverPoolRequestApi(var data) async {
     // print("hited");
     dynamic response =
         await _apiService.postApi2(data, AppUrl.LiverPoolRequestUrl);
     print(response);
     return LiverPoolModel.fromJson(response);
   }
-
-
-
 
 //***************** Home IncomingRequestApi  *********************
   Future<SeekerHomeRequestModel> HomeIncomingRequestApi() async {
@@ -394,58 +411,106 @@ class AuthRepository {
     // print(response);
     return SeekerHomeRequestModel.fromJson(response);
   }
+
 //***************** Sekker out Going Request Api  *********************
-  Future<SeekerOutgoingRequestModel> SeekerOutgoingRequestListApi() async{
-    dynamic response = await _apiService.getApi2(AppUrl.saeekerOutgoingRequestListApi);
-    print('responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee outgoing');
+  Future<SeekerOutgoingRequestModel> SeekerOutgoingRequestListApi() async {
+    dynamic response =
+        await _apiService.getApi2(AppUrl.saeekerOutgoingRequestListApi);
+    print(
+        'responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee outgoing');
     print(response);
-    return SeekerOutgoingRequestModel.fromJson(response) ;
+    return SeekerOutgoingRequestModel.fromJson(response);
   }
+
   //***************** Incoming Maker Home Request ApiServices  *********************
   Future<MakerHomePageModel> MakerHomePageRequestApi() async {
     print("IncomingMakerRequestApi");
     dynamic response =
-    await _apiService.getApi2(AppUrl.MakerHomeRequestcontroller);
+        await _apiService.getApi2(AppUrl.MakerHomeRequestcontroller);
     print(response);
     return MakerHomePageModel.fromJson(response);
   }
+
   //***************** Maker singlerequest List ApiServices  ********************
-  Future<MakersinglepageRequestModel> MakerSingleRequestPageRequestApi(var data ) async {
+  Future<MakersinglepageRequestModel> MakerSingleRequestPageRequestApi(
+      var data) async {
     print("IncomingMakerRequestApi");
     dynamic response =
-    await _apiService.postApi2(data,AppUrl.MakerSinlgeRequestUrl);
+        await _apiService.postApi2(data, AppUrl.MakerSinlgeRequestUrl);
     print(response);
     return MakersinglepageRequestModel.fromJson(response);
   }
 
-  Future<CreateNewMatchesModel> CreateNewMatchesApi(var datas) async{
-    dynamic response = await _apiService.postApi2(datas,AppUrl.createNewMatchesApi);
+  Future<CreateNewMatchesModel> CreateNewMatchesApi(var datas) async {
+    dynamic response =
+        await _apiService.postApi2(datas, AppUrl.createNewMatchesApi);
     print('responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
     print(response);
-    dynamic data = CreateNewMatchesModel.fromJson(response) ;
+    dynamic data = CreateNewMatchesModel.fromJson(response);
     return data;
   }
- Future<RequestAcceptModel> RequestAcceptModelApi(var data ) async {
+
+  Future<RequestAcceptModel> RequestAcceptModelApi(var data) async {
     print("IncomingMakerRequestApi");
     dynamic response =
-    await _apiService.postApi2(data,AppUrl.RequestAcceptApi);
+        await _apiService.postApi2(data, AppUrl.RequestAcceptApi);
     print(response);
     return RequestAcceptModel.fromJson(response);
   }
-   Future<SeekerToMakerRequestModel> SeekerToMakerRequestApi(var data ) async {
+
+  Future<SeekerToMakerRequestModel> SeekerToMakerRequestApi(var data) async {
     print("IncomingMakerRequestApi");
     dynamic response =
-    await _apiService.postApi2(data,AppUrl.SeekerToMakerRequest);
+        await _apiService.postApi2(data, AppUrl.SeekerToMakerRequest);
     print(response);
     return SeekerToMakerRequestModel.fromJson(response);
   }
-  Future<SpeenWheelModel> SpeenWheellApi(var data ) async {
+
+  Future<SpeenWheelModel> SpeenWheellApi(var data) async {
     print("IncomingMakerRequestApi");
     dynamic response =
-    await _apiService.postApi2(data,AppUrl.SppenwheelDetails);
+        await _apiService.postApi2(data, AppUrl.SppenwheelDetails);
     print(response);
     return SpeenWheelModel.fromJson(response);
   }
-  
-}
 
+  Future<LikeModel> likepi(var data) async {
+    print(data);
+    print("data");
+    final prefs = await SharedPreferences.getInstance();
+
+    try {
+      final response = await http.post(
+        Uri.parse(AppUrl.SeekerLike),
+        body: data,
+        headers: {"Authorization": "Bearer ${prefs.getString('BarearToken')}"},
+      ).timeout(Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        // Parse the JSON response
+        var jsonData = json.decode(response.body);
+        print(jsonData);
+
+        // Check if jsonData is a Map and not null
+        if (jsonData is Map<String, dynamic> && jsonData.isNotEmpty) {
+          // Return the parsed model
+          return LikeModel.fromJson(jsonData);
+        } else {
+          // If jsonData is not in the expected format, throw an exception
+          throw Exception('Invalid response format');
+        }
+      } else {
+        // If the response status code is not 200, throw an exception
+        throw Exception(
+            'Failed to load data. Status code: ${response.statusCode}');
+      }
+    } on SocketException {
+      throw InternetException('');
+    } catch (e) {
+      // Handle exceptions during the API call
+      print('Error during API call: $e');
+      throw Exception('Failed to load data: $e');
+    }
+    // return LikeModel.fromJson(response);
+  }
+}

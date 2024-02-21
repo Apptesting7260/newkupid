@@ -867,7 +867,7 @@ class _OutgoingMakerRequestState extends State<OutgoingMakerRequest> {
                     case Status.LOADING:
                       return Container(
 
-                          child:  Center(child: CircularProgressIndicator()),
+                          child:  Center(child: CircularProgressIndicator(color: Colors.pinkAccent,)),
                       height: Get.height *0.5,);
                     case Status.ERROR:
                       if (outgoingMakerRequestController.error.value ==

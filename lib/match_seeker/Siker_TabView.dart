@@ -17,10 +17,14 @@ import 'package:cupid_match/match_seeker/Chat_list_Screen.dart';
 import 'package:cupid_match/match_seeker/profile/profile_page.dart';
 import 'package:cupid_match/match_seeker/siker_Home_Screen.dart';
 import 'package:cupid_match/utils/utils.dart';
+import 'package:cupid_match/views/payment.dart';
+import 'package:cupid_match/widgets/ZodicSingWiget/ZodicSingSpinWheel.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import '../controllers/controller/GetAllMakerContrioller/GetAllMakerController.dart';
+import 'SeeAllMaker/SeAllMaker.dart';
 import 'bottom_navigation.dart';
 
 class Siker_Tab_View extends StatefulWidget {
@@ -38,6 +42,8 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
   DateTime currentBackPressTime = DateTime.now();
   bool loading = false;
   var data;
+  final ListAllMakerControllerinstance = Get.put(ListAllMakerController());
+
   final drawerKey = GlobalKey<ScaffoldState>();
   OutgoinRequestController sekeerOutGoingController = Get.put(OutgoinRequestController());
   IncomingSeekerRequestController sekeerIncomingController = Get.put(IncomingSeekerRequestController());
@@ -85,6 +91,7 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
   homepageapis() {
     // sekeerOutGoingController.seekerOutGoingRequest();
     // sekeerIncomingController.seekerIncomingGoingRequest();
+    ListAllMakerControllerinstance.ListAllMakerApi();
     recentSeekerMatchesController.isrecentSeekermatchesApi();
 
     seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
@@ -108,7 +115,12 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
         shape:CircleBorder(),
         backgroundColor: Colors.white,
         onPressed: () {
-          Get.to(Chose_Role_Type());
+          // Get.to(Chose_Role_Type());
+          Get.to(SpinWheel());
+          // Get.to(SeeAllMaker());
+
+
+
         },
         child: Icon(
           Icons.add,
@@ -129,6 +141,8 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
               LikesSeeker(),
               ChatListScreen(),
               ProfilePage(),
+              // PaymentScreen()
+              // CheckoutScreenExample(),
             ],
           ),
         ),
@@ -188,3 +202,69 @@ class _Siker_Tab_ViewState extends State<Siker_Tab_View> {
         duration: const Duration(microseconds: 1), curve: Curves.ease);
   }
 }
+// import 'package:flutter/material.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
+
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   Stripe.publishableKey = 'your_publishable_key';
+//   runApp(MyApp());
+// }
+
+// class SetupIntentService {
+//   Future<String> createSetupIntent(String customerId) async {
+//     try {
+//       final SetupIntentResult setupIntentResult = await Stripe.instance.confirmSetupIntent(
+//         PaymentMethodParams.cardFromMethodId('paymentMethodId'),
+//         clientSecret: 'your_payment_intent_client_secret',
+//       );
+//       return setupIntentResult.paymentIntentId;
+//     } catch (e) {
+//       print('Error creating SetupIntent: $e');
+//       throw Exception('Failed to create SetupIntent');
+//     }
+//   }
+// }
+
+// class PaymentScreen extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: Scaffold(
+//         appBar: AppBar(title: Text('Setup Intent Example')),
+//         body: Center(
+//           child: ElevatedButton(
+//             onPressed: () async {
+//               await _startSetupIntent(context);
+//             },
+//             child: Text('Start Setup Intent'),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Future<void> _startSetupIntent(BuildContext context) async {
+//     try {
+//       final setupIntentService = SetupIntentService();
+//       final clientSecret = await setupIntentService.createSetupIntent('customer_id');
+//       print('SetupIntent clientSecret: $clientSecret');
+//     } catch (e) {
+//       print('Error: $e');
+//       // Handle errors
+//     }
+//   }
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Stripe Setup Intent Example',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       home: PaymentScreen(),
+//     );
+//   }
+// }

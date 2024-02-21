@@ -667,6 +667,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                       height: height * .01,
                     ),
                     TextFormField(
+                      cursorColor: Colors.pinkAccent,
+
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       textAlignVertical: TextAlignVertical.center,
                       controller:
@@ -746,6 +748,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                             Container(
                               width: Get.width * 0.7,
                               child: TextFormField(
+
+                                cursorColor: Colors.pinkAccent,
       
                                 controller: SignUpControllerInstanse
                                         .credentialsController.value.text
@@ -914,6 +918,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
       // User is already registered (pachedemail is not null)
                     else
                       TextFormField(
+                        cursorColor: Colors.pinkAccent,
+
                         enabled: true,
                         decoration: InputDecoration(
                           hintText: pachedemail,
@@ -1033,6 +1039,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                               width: Get.width * 0.7,
 
                               child: TextFormField(
+                                cursorColor: Colors.pinkAccent,
+
                                 maxLength: 15,
                                 textAlignVertical: TextAlignVertical.center,
 
@@ -1409,6 +1417,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                     // ),
       
                     TextFormField(
+                      cursorColor: Colors.pinkAccent,
+
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       keyboardType: TextInputType.text,
                       controller: locationcntroller,
@@ -1589,6 +1599,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                       height: height * .01,
                     ),
                     TextFormField(
+                      cursorColor: Colors.pinkAccent,
+
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: MakerProfileControllerInstanse
                           .AboutMakerController.value,
@@ -1637,6 +1649,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                       height: height * .01,
                     ),
                     TextFormField(
+                      cursorColor: Colors.pinkAccent,
+
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: MakerProfileControllerInstanse
                           .ExpectFromSeekerController.value,
@@ -1686,6 +1700,8 @@ class _MakerProfileDetailsState extends State<MakerProfileDetails> {
                       height: height * .01,
                     ),
                     TextFormField(
+                      cursorColor: Colors.pinkAccent,
+
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: MakerProfileControllerInstanse
                           .HandlingOfMakerController.value,

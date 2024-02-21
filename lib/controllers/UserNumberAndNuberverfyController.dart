@@ -113,24 +113,25 @@ class UserEmailAndPhoneVerifyController extends GetxController {
 
     // _api.UserPhoneAndNumberVerfyApi(data).then((value) => null)
 
-    otpController.value.clear();
     _api.UserPhoneAndNumberVerfyApi(data).then((value) async {
      // rxRequestStatus(Status.COMPLETED);
 
-      ciculerEdicator.value=false;
+     otpController.value.clear();
+     ciculerEdicator.value=false;
 
-      // ViewProfileDetails(value);
-      verified.value = true;
-      loading.value=false;
-      print("======================================================$value");
-      print(value.msg);
+     // ViewProfileDetails(value);
+     verified.value = true;
+     loading.value=false;
+     print("======================================================$value");
+     print(value.msg);
 
-      print(
-          "hit request  maker side hyfr jfjd api 5678900bbuhc 8u0u00-09-9-9-09-9-9-09-9jkcniuicjzijnnzijxn");
-      loading.value = false;
-      print("==========$data");
+     print(
+         "hit request  maker side hyfr jfjd api 5678900bbuhc 8u0u00-09-9-9-09-9-9-09-9jkcniuicjzijnnzijxn");
+     loading.value = false;
+     print("==========$data");
 
-      Get.back();
+     Get.back();
+
       // Get.snackbar(
       //     "Message",
       //     "Varify Successfully",

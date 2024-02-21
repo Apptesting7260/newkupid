@@ -78,7 +78,7 @@ class _CreateNewMatchesState extends State<CreateNewMatches> {
         body: Obx(() {
           switch (createNewMatchesController.rxRequestStatus.value) {
             case Status.LOADING:
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
             case Status.ERROR:
               if (createNewMatchesController.error.value == 'No internet') {
                 return InterNetExceptionWidget(
@@ -210,9 +210,11 @@ class _CreateNewMatchesState extends State<CreateNewMatches> {
                                     //     ),
                                     //   ],
                                     // ),
+
                                     SizedBox(
                                       height: Get.height * 0.005,
                                     ),
+
                                     Row(
                                       children: [
                                         SizedBox(
@@ -300,7 +302,9 @@ class _CreateNewMatchesState extends State<CreateNewMatches> {
                                             .profileDetails![0]. religion==null ||  seekerViewMyProfileController
                                             .ViewProfileDetail
                                             .value
-                                            .profileDetails![0]. religion=='')?Container():Container(
+                                            .profileDetails![0]. religion=='')?Container():
+
+                                        Container(
                                             height: Get.height * 0.03,
                                             width: Get.width * 0.19,
                                             decoration: BoxDecoration(
@@ -401,51 +405,51 @@ class _CreateNewMatchesState extends State<CreateNewMatches> {
                                         SizedBox(
                                           width: Get.width * 0.02,
                                         ),
-                                        ( seekerViewMyProfileController
-                                            .ViewProfileDetail
-                                            .value
-                                            .profileDetails![0]. salary==null ||  seekerViewMyProfileController
-                                            .ViewProfileDetail
-                                            .value
-                                            .profileDetails![0]. salary=='')?Container(
-                                          child: SizedBox(width: Get.width*0.18,),
-                                        ): Container(
-                                            height: Get.height * 0.03,
-                                            width: Get.width * 0.19,
-                                            decoration: BoxDecoration(
-                                              color: Color.fromRGBO(
-                                                  244, 244, 244, 1),
-                                              border: Border.all(width: 1),
-                                              borderRadius:
-                                              BorderRadius.circular(60),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                // SizedBox(width: Get.width*0.005,),
-                                                Container(
-                                                  height: Get.height * 0.015,
-                                                  width: Get.width * 0.08,
-                                                  child: Image.asset(
-                                                    'assets/icons/money.png',
-                                                    fit: BoxFit.contain,
-                                                  ),
-                                                ),
-                                                // SizedBox(width: Get.width*0.002,),
-                                                Text(
-                                                  seekerViewMyProfileController
-                                                      .ViewProfileDetail
-                                                      .value
-                                                      .profileDetails![0].salary.toString()+' Monthly',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 6,
-                                                      fontWeight:
-                                                      FontWeight.w400),
-                                                  softWrap: true,
-                                                  overflow: TextOverflow.ellipsis,
-                                                ),
-                                              ],
-                                            )),
+                                        // ( seekerViewMyProfileController
+                                        //     .ViewProfileDetail
+                                        //     .value
+                                        //     .profileDetails![0]. salary==null ||  seekerViewMyProfileController
+                                        //     .ViewProfileDetail
+                                        //     .value
+                                        //     .profileDetails![0]. salary=='')?Container(
+                                        //   child: SizedBox(width: Get.width*0.18,),
+                                        // ): Container(
+                                        //     height: Get.height * 0.03,
+                                        //     width: Get.width * 0.19,
+                                        //     decoration: BoxDecoration(
+                                        //       color: Color.fromRGBO(
+                                        //           244, 244, 244, 1),
+                                        //       border: Border.all(width: 1),
+                                        //       borderRadius:
+                                        //       BorderRadius.circular(60),
+                                        //     ),
+                                        //     child: Row(
+                                        //       children: [
+                                        //         // SizedBox(width: Get.width*0.005,),
+                                        //         Container(
+                                        //           height: Get.height * 0.015,
+                                        //           width: Get.width * 0.08,
+                                        //           child: Image.asset(
+                                        //             'assets/icons/money.png',
+                                        //             fit: BoxFit.contain,
+                                        //           ),
+                                        //         ),
+                                        //         // SizedBox(width: Get.width*0.002,),
+                                        //         // Text(
+                                        //         //   seekerViewMyProfileController
+                                        //         //       .ViewProfileDetail
+                                        //         //       .value
+                                        //         //       .profileDetails![0].salary.toString()+' Monthly',
+                                        //         //   style: TextStyle(
+                                        //         //       color: Colors.black,
+                                        //         //       fontSize: 6,
+                                        //         //       fontWeight:
+                                        //         //       FontWeight.w400),
+                                        //         //   softWrap: true,
+                                        //         //   overflow: TextOverflow.ellipsis,
+                                        //         // ),
+                                        //       ],
+                                        //     )),
                                         SizedBox(
                                           width: Get.width * 0.15,
                                         ),
@@ -1025,7 +1029,7 @@ class _CreateNewMatchesState extends State<CreateNewMatches> {
                               child: Container(
                                 alignment: Alignment.center,
                                 child: Center(
-                                    child: CircularProgressIndicator()),
+                                    child: CircularProgressIndicator(color: Colors.pinkAccent,)),
                               ),
                               backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(

@@ -8,6 +8,7 @@ import '../../GlobalVariable/GlobalVariable.dart';
 import '../../controllers/controller/OutgoingMakerRequestController/MakerSingleRequestController.dart';
 import '../../data/response/status.dart';
 import '../../match_seeker/Requests/SeekeerIncominSingalRequestPage.dart';
+import '../../widgets/seekershortprofile.dart';
 
 class SingleRecentPageRequest extends StatefulWidget {
   const SingleRecentPageRequest({super.key});
@@ -62,7 +63,7 @@ class _SingleRecentPageRequestState extends State<SingleRecentPageRequest> {
         body: Obx((){
           switch(seekerOutgoingRequestSinglePageController.rxRequestStatus.value) {
             case Status.LOADING:
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
             case Status.ERROR:
             // if (seekerOutgoingRequestSinglePageController.error.value ==
             //     'No internet') {
@@ -236,697 +237,722 @@ class _SingleRecentPageRequestState extends State<SingleRecentPageRequest> {
                         ),
 
 
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(244, 244, 244, 1),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Color.fromRGBO(254, 0, 145, 1))),
-                          height: Get.height * 0.5,
-                          width: Get.width * 0.45,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: Get.height * 0.015,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  // Container(
-                                  //   height: Get.height * 0.25,
-                                  //   width: Get.width * 0.4,
-                                  //   decoration: BoxDecoration(
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10)),
-                                  //   child: ClipRRect(
-                                  //     borderRadius:
-                                  //         BorderRadius.circular(20),
-                                  //     child: Image.asset(
-                                  //       'assets/images/image.png',
-                                  //       fit: BoxFit.fill,
-                                  //     ),
-                                  //   ),
-                                  // ),
+                        Builder(
+                          builder: (context) {
+                            return InkWell(
+                              onTap: () {
 
-                                  Container(
-                                    height: Get.height * 0.25,
-                                    width: Get.width * 0.4,
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getseeker!.imgPath.toString(),
-                                      imageBuilder: (context,
-                                          imageProvider) =>
-                                          Container(
-                                            height: Get.height * 0.25,
-                                            width: Get.width * 0.4,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(20),
-                                              image: DecorationImage(
-                                                  image:
-                                                  imageProvider,
-                                                  fit: BoxFit.fill),
-                                            ),
-                                          ),
-                                      placeholder:
-                                          (context, url) =>
-                                          Center(
-                                            child:
-                                            CircularProgressIndicator(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                      errorWidget:
-                                          (context, url, error) =>
-                                          Icon(Icons.error),
+                                userIdsiker =     seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                    .value.data!.getseeker!
+                                    .id
+                                    .toString();
+                                print('object');
+                                Get.to(ShortProfileSeeker());
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(244, 244, 244, 1),
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: Color.fromRGBO(254, 0, 145, 1))),
+                                height: Get.height * 0.5,
+                                width: Get.width * 0.45,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: Get.height * 0.015,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.03,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                                  Text(
-                                    seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                        .value.data!.getseeker!.name.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.005,
-                              ),
-                              // Row(
-                              //   children: [
-                              //     SizedBox(
-                              //       width: Get.width * 0.04,
-                              //     ),
-                              //     Text(
-                              //       seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                              //           .value.data!.getseeker!.occupationName.toString()+"",
-                              //       style: TextStyle(
-                              //           color: Colors.black,
-                              //           fontSize: 8,
-                              //           fontWeight: FontWeight.w400),
-                              //     ),
-                              //   ],
-                              // ),
-                              SizedBox(
-                                height: Get.height * 0.005,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                                  Text(
-                                    seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                        .value.data!.getseeker!.address.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 6,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.015,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                                  Text(
-                                    'Interest',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.005,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.02,
+                                        ),
+                                        // Container(
+                                        //   height: Get.height * 0.25,
+                                        //   width: Get.width * 0.4,
+                                        //   decoration: BoxDecoration(
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(10)),
+                                        //   child: ClipRRect(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(20),
+                                        //     child: Image.asset(
+                                        //       'assets/images/image.png',
+                                        //       fit: BoxFit.fill,
+                                        //     ),
+                                        //   ),
+                                        // ),
 
-
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getseeker!.details!
-                                      .interestName!=[]) ? Row(
-                                    children: [
-                                      for (var i = 0;  seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getseeker!.details!.interestName!
-                                          .length > i; i++)
+                                        Container(
+                                          height: Get.height * 0.25,
+                                          width: Get.width * 0.4,
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                            seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                .value.data!.getseeker!.imgPath.toString(),
+                                            imageBuilder: (context,
+                                                imageProvider) =>
+                                                Container(
+                                                  height: Get.height * 0.25,
+                                                  width: Get.width * 0.4,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(20),
+                                                    image: DecorationImage(
+                                                        image:
+                                                        imageProvider,
+                                                        fit: BoxFit.fill),
+                                                  ),
+                                                ),
+                                            placeholder:
+                                                (context, url) =>
+                                                Center(
+                                                  child:
+                                                  CircularProgressIndicator(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                Icon(Icons.error),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.03,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.04,
+                                        ),
                                         Text(
                                           seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                              .value.data!.getseeker!.details!
-                                              .interestName![i].title.toString() +
-                                              " ",
+                                              .value.data!.getseeker!.name.toString(),
                                           style: TextStyle(
-
-                                              fontSize: 6,
                                               color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.w400),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.005,
+                                    ),
+                                    // Row(
+                                    //   children: [
+                                    //     SizedBox(
+                                    //       width: Get.width * 0.04,
+                                    //     ),
+                                    //     Text(
+                                    //       seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                    //           .value.data!.getseeker!.occupationName.toString()+"",
+                                    //       style: TextStyle(
+                                    //           color: Colors.black,
+                                    //           fontSize: 8,
+                                    //           fontWeight: FontWeight.w400),
+                                    //     ),
+                                    //   ],
+                                    // ),
+                                    SizedBox(
+                                      height: Get.height * 0.005,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.04,
+                                        ),
+                                        Text(
+                                          seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                              .value.data!.getseeker!.address.toString(),
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 6,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.015,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.04,
+                                        ),
+                                        Text(
+                                          'Interest',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 8,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.005,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.04,
                                         ),
 
-                                    ],) : Container(),
 
-                                ],
-                              ),
+                                        ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getseeker!.details!
+                                            .interestName!=[]) ? Row(
+                                          children: [
+                                            for (var i = 0;  seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                .value.data!.getseeker!.details!.interestName!
+                                                .length > i; i++)
+                                              Text(
+                                                seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                    .value.data!.getseeker!.details!
+                                                    .interestName![i].title.toString() +
+                                                    " ",
+                                                style: TextStyle(
+
+                                                    fontSize: 6,
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                    FontWeight.w400),
+                                              ),
+
+                                          ],) : Container(),
+
+                                      ],
+                                    ),
 
 
-                              SizedBox(
-                                height: Get.height * 0.01,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getseeker!.religion == null ||
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getseeker!.religion == '')
-                                      ? Container()
-                                      : Container(
-                                      height: Get.height * 0.03,
-                                      width: Get.width * 0.19,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        border: Border.all(width: 1),
-                                        borderRadius:
-                                        BorderRadius.circular(60),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: Get.width * 0.005,
-                                          ),
-                                          Container(
-                                            height: Get.height * 0.015,
-                                            width: Get.width * 0.08,
-                                            child: Image.asset(
-                                              'assets/icons/religon.png',
-                                              fit: BoxFit.contain,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * 0.0001,
-                                          ),
-                                          Text(
+                                    SizedBox(
+                                      height: Get.height * 0.01,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.02,
+                                        ),
+                                        ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getseeker!.religion == null ||
                                             seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                                .value.data!.getseeker!.religion
-                                                .toString()+"",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 6,
-                                                fontWeight:
-                                                FontWeight.w400),
-                                          ),
-                                        ],
-                                      )),
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getseeker!.height == null ||
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getseeker!.height == '')
-                                      ? Container()
-                                      : Container(
-                                      height: Get.height * 0.03,
-                                      width: Get.width * 0.19,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        border: Border.all(width: 1),
-                                        borderRadius:
-                                        BorderRadius.circular(60),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: Get.width * 0.005,
-                                          ),
-                                          Container(
-                                            height: Get.height * 0.015,
-                                            width: Get.width * 0.08,
-                                            child: Image.asset(
-                                              'assets/icons/height.png',
-                                              fit: BoxFit.contain,
+                                                .value.data!.getseeker!.religion == '')
+                                            ? Container()
+                                            : Container(
+                                            height: Get.height * 0.03,
+                                            width: Get.width * 0.19,
+                                            decoration: BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                  244, 244, 244, 1),
+                                              border: Border.all(width: 1),
+                                              borderRadius:
+                                              BorderRadius.circular(60),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * 0.0001,
-                                          ),
-                                          Text(
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: Get.width * 0.005,
+                                                ),
+                                                Container(
+                                                  height: Get.height * 0.015,
+                                                  width: Get.width * 0.08,
+                                                  child: Image.asset(
+                                                    'assets/icons/religon.png',
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: Get.width * 0.0001,
+                                                ),
+                                                Text(
+                                                  seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                      .value.data!.getseeker!.religion
+                                                      .toString()+"",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 6,
+                                                      fontWeight:
+                                                      FontWeight.w400),
+                                                ),
+                                              ],
+                                            )),
+                                        SizedBox(
+                                          width: Get.width * 0.02,
+                                        ),
+                                        ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getseeker!.height == null ||
                                             seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                                .value.data!.getseeker!.height.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 6,
-                                                fontWeight:
-                                                FontWeight.w400),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.01,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getseeker!.salary == null ||
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getseeker!.salary == '')
-                                      ? Container(
-                                    child: SizedBox(width: Get.width * 0.18,),
-                                  )
-                                      : Container(
-                                      height: Get.height * 0.03,
-                                      width: Get.width * 0.19,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        border: Border.all(width: 1),
-                                        borderRadius:
-                                        BorderRadius.circular(60),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          // SizedBox(width: Get.width*0.005,),
-                                          Container(
-                                            height: Get.height * 0.015,
-                                            width: Get.width * 0.08,
-                                            child: Image.asset(
-                                              'assets/icons/money.png',
-                                              fit: BoxFit.contain,
+                                                .value.data!.getseeker!.height == '')
+                                            ? Container()
+                                            : Container(
+                                            height: Get.height * 0.03,
+                                            width: Get.width * 0.19,
+                                            decoration: BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                  244, 244, 244, 1),
+                                              border: Border.all(width: 1),
+                                              borderRadius:
+                                              BorderRadius.circular(60),
                                             ),
-                                          ),
-                                          // SizedBox(width: Get.width*0.002,),
-                                          Text(
+                                            child: Row(
+                                              children: [
+                                                SizedBox(
+                                                  width: Get.width * 0.005,
+                                                ),
+                                                Container(
+                                                  height: Get.height * 0.015,
+                                                  width: Get.width * 0.08,
+                                                  child: Image.asset(
+                                                    'assets/icons/height.png',
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: Get.width * 0.0001,
+                                                ),
+                                                Text(
+                                                  seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                      .value.data!.getseeker!.height.toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 6,
+                                                      fontWeight:
+                                                      FontWeight.w400),
+                                                ),
+                                              ],
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: Get.height * 0.01,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.02,
+                                        ),
+                                        ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getseeker!.salary == null ||
                                             seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                                .value.data!.getseeker!.salary
-                                                .toString() + ' LPA',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 6,
-                                                fontWeight:
-                                                FontWeight.w400),
-                                          ),
-                                        ],
-                                      )),
-                                  SizedBox(
-                                    width: Get.width * 0.15,
-                                  ),
-                                  Container(
-                                    height: Get.height * 0.05,
-                                    width: Get.width * 0.05,
-                                    child: Image.asset(
-                                      'assets/icons/NextButton.png',
-                                      fit: BoxFit.contain,
-                                    ),)
-                                ],
+                                                .value.data!.getseeker!.salary == '')
+                                            ? Container(
+                                          child: SizedBox(width: Get.width * 0.18,),
+                                        )
+                                            : Container(
+                                            height: Get.height * 0.03,
+                                            width: Get.width * 0.19,
+                                            decoration: BoxDecoration(
+                                              color: Color.fromRGBO(
+                                                  244, 244, 244, 1),
+                                              border: Border.all(width: 1),
+                                              borderRadius:
+                                              BorderRadius.circular(60),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                // SizedBox(width: Get.width*0.005,),
+                                                Container(
+                                                  height: Get.height * 0.015,
+                                                  width: Get.width * 0.08,
+                                                  child: Image.asset(
+                                                    'assets/icons/money.png',
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                                // SizedBox(width: Get.width*0.002,),
+                                                Text(
+                                                  seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                      .value.data!.getseeker!.salary
+                                                      .toString() + ' LPA',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 6,
+                                                      fontWeight:
+                                                      FontWeight.w400),
+                                                ),
+                                              ],
+                                            )),
+                                        SizedBox(
+                                          width: Get.width * 0.15,
+                                        ),
+                                        Container(
+                                          height: Get.height * 0.05,
+                                          width: Get.width * 0.05,
+                                          child: Image.asset(
+                                            'assets/icons/NextButton.png',
+                                            fit: BoxFit.contain,
+                                          ),)
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
+                            );
+                          }
                         ),
 
                         SizedBox(width: Get.width * 0.04,),
 
                         //    // ******************
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Color.fromRGBO(244, 244, 244, 1),
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Color.fromRGBO(254, 0, 145, 1))),
-                          height: Get.height * 0.5,
-                          width: Get.width * 0.45,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: Get.height * 0.015,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  // Container(
-                                  //   height: Get.height * 0.25,
-                                  //   width: Get.width * 0.4,
-                                  //   decoration: BoxDecoration(
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10)),
-                                  //   child: ClipRRect(
-                                  //     borderRadius:
-                                  //         BorderRadius.circular(20),
-                                  //     child: Image.asset(
-                                  //       'assets/images/image.png',
-                                  //       fit: BoxFit.fill,
-                                  //     ),
-                                  //   ),
-                                  // ),
-
-                                  Container(
-                                    height: Get.height * 0.25,
-                                    width: Get.width * 0.4,
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getanotherseeker!.imgPath.toString(),
-                                      imageBuilder: (context,
-                                          imageProvider) =>
-                                          Container(
-                                            height: Get.height * 0.25,
-                                            width: Get.width * 0.4,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(20),
-                                              image: DecorationImage(
-                                                  image:
-                                                  imageProvider,
-                                                  fit: BoxFit.fill),
-                                            ),
-                                          ),
-                                      placeholder:
-                                          (context, url) =>
-                                          Center(
-                                            child:
-                                            CircularProgressIndicator(
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                      errorWidget:
-                                          (context, url, error) =>
-                                          Icon(Icons.error),
+                        InkWell(
+                          onTap: () {
+                            userIdsiker = seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                .value.data!.getanotherseeker!
+                                .id
+                                .toString();
+                            print('object');
+                            Get.to(ShortProfileSeeker());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(244, 244, 244, 1),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    width: 1,
+                                    color: Color.fromRGBO(254, 0, 145, 1))),
+                            height: Get.height * 0.5,
+                            width: Get.width * 0.45,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: Get.height * 0.015,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.02,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.03,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                                  Text(
-                                    seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                        .value.data!.getanotherseeker!.name.toString(),
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.005,
-                              ),
-                              // Row(
-                              //   children: [
-                              //     SizedBox(
-                              //       width: Get.width * 0.04,
-                              //     ),
-                              //     Text(
-                              //       seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                              //           .value.data!.getanotherseeker!.occupationName.toString()+"",
-                              //       style: TextStyle(
-                              //           color: Colors.black,
-                              //
-                              //           fontSize: 8,
-                              //           fontWeight: FontWeight.w400),
-                              //     ),
-                              //   ],
-                              // ),
-                              SizedBox(
-                                height: Get.height * 0.005,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                               Container(
-                                 width: Get.width*0.3,
-                                 child:    Text(
-                                   seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                       .value.data!.getanotherseeker!.address.toString()+"",
-                                   style: TextStyle(
-                                       color: Colors.black,
-                                       fontSize: 6,
-                                       fontWeight: FontWeight.w400),
-                                   softWrap: true, // Allows text to wrap to the next line
-                                   // Set the maximum number of lines
-                                   overflow: TextOverflow.ellipsis,
-                                 ),
-                               )
+                                    // Container(
+                                    //   height: Get.height * 0.25,
+                                    //   width: Get.width * 0.4,
+                                    //   decoration: BoxDecoration(
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10)),
+                                    //   child: ClipRRect(
+                                    //     borderRadius:
+                                    //         BorderRadius.circular(20),
+                                    //     child: Image.asset(
+                                    //       'assets/images/image.png',
+                                    //       fit: BoxFit.fill,
+                                    //     ),
+                                    //   ),
+                                    // ),
 
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.015,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                                  Text(
-                                    'Interest',
-                                    style: TextStyle(
-                                        color: Colors.black,
+                                    Container(
+                                      height: Get.height * 0.25,
+                                      width: Get.width * 0.4,
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                        seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getanotherseeker!.imgPath.toString(),
+                                        imageBuilder: (context,
+                                            imageProvider) =>
+                                            Container(
+                                              height: Get.height * 0.25,
+                                              width: Get.width * 0.4,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius
+                                                    .circular(20),
+                                                image: DecorationImage(
+                                                    image:
+                                                    imageProvider,
+                                                    fit: BoxFit.fill),
+                                              ),
+                                            ),
+                                        placeholder:
+                                            (context, url) =>
+                                            Center(
+                                              child:
+                                              CircularProgressIndicator(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                        errorWidget:
+                                            (context, url, error) =>
+                                            Icon(Icons.error),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.03,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.04,
+                                    ),
+                                    Text(
+                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                          .value.data!.getanotherseeker!.name.toString(),
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.005,
+                                ),
+                                // Row(
+                                //   children: [
+                                //     SizedBox(
+                                //       width: Get.width * 0.04,
+                                //     ),
+                                //     Text(
+                                //       seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                //           .value.data!.getanotherseeker!.occupationName.toString()+"",
+                                //       style: TextStyle(
+                                //           color: Colors.black,
+                                //
+                                //           fontSize: 8,
+                                //           fontWeight: FontWeight.w400),
+                                //     ),
+                                //   ],
+                                // ),
+                                SizedBox(
+                                  height: Get.height * 0.005,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.04,
+                                    ),
+                                 Container(
+                                   width: Get.width*0.3,
+                                   child:    Text(
+                                     seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                         .value.data!.getanotherseeker!.address.toString()+"",
+                                     style: TextStyle(
+                                         color: Colors.black,
+                                         fontSize: 6,
+                                         fontWeight: FontWeight.w400),
+                                     softWrap: true, // Allows text to wrap to the next line
+                                     // Set the maximum number of lines
+                                     overflow: TextOverflow.ellipsis,
+                                   ),
+                                 )
 
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.005,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.04,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getanotherseeker!.details!.interestName != null
-                                      ||seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getanotherseeker!.details!.interestName != []
-                                  ) ? Row(
-                                    children: [
-                                      for (var i = 0;  seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getanotherseeker!.details!
-                                          .interestName!.length > i; i++)
-                                        Text(
-                                          seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                              .value.data!.getanotherseeker!.details!.interestName![i]
-                                              .title.toString() + " ",
-                                          style: TextStyle(
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.015,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.04,
+                                    ),
+                                    Text(
+                                      'Interest',
+                                      style: TextStyle(
+                                          color: Colors.black,
 
-                                              fontSize: 6,
-                                              color: Colors.black,
-                                              fontWeight:
-                                              FontWeight.w400),
+                                          fontSize: 8,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.005,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.04,
+                                    ),
+                                    ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                        .value.data!.getanotherseeker!.details!.interestName != null
+                                        ||seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getanotherseeker!.details!.interestName != []
+                                    ) ? Row(
+                                      children: [
+                                        for (var i = 0;  seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getanotherseeker!.details!
+                                            .interestName!.length > i; i++)
+                                          Text(
+                                            seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                .value.data!.getanotherseeker!.details!.interestName![i]
+                                                .title.toString() + " ",
+                                            style: TextStyle(
+
+                                                fontSize: 6,
+                                                color: Colors.black,
+                                                fontWeight:
+                                                FontWeight.w400),
+                                          ),
+
+                                      ],) : Container(),
+
+                                  ],
+                                ),
+
+
+                                SizedBox(
+                                  height: Get.height * 0.01,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.02,
+                                    ),
+                                    ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                        .value.data!.getanotherseeker!.religion == null ||
+                                        seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getanotherseeker!.religion == '')
+                                        ? Container()
+                                        : Container(
+                                        height: Get.height * 0.03,
+                                        width: Get.width * 0.19,
+                                        decoration: BoxDecoration(
+                                          color: Color.fromRGBO(
+                                              244, 244, 244, 1),
+                                          border: Border.all(width: 1),
+                                          borderRadius:
+                                          BorderRadius.circular(60),
                                         ),
-
-                                    ],) : Container(),
-
-                                ],
-                              ),
-
-
-                              SizedBox(
-                                height: Get.height * 0.01,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getanotherseeker!.religion == null ||
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getanotherseeker!.religion == '')
-                                      ? Container()
-                                      : Container(
-                                      height: Get.height * 0.03,
-                                      width: Get.width * 0.19,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        border: Border.all(width: 1),
-                                        borderRadius:
-                                        BorderRadius.circular(60),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: Get.width * 0.005,
-                                          ),
-                                          Container(
-                                            height: Get.height * 0.015,
-                                            width: Get.width * 0.08,
-                                            child: Image.asset(
-                                              'assets/icons/religon.png',
-                                              fit: BoxFit.contain,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: Get.width * 0.005,
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * 0.0001,
-                                          ),
-                                          Text(
-                                            seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                                .value.data!.getanotherseeker!.religion.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 6,
-                                                fontWeight:
-                                                FontWeight.w400),
-                                          ),
-                                        ],
-                                      )),
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getanotherseeker!.height == null ||
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getanotherseeker!.height == '')
-                                      ? Container()
-                                      : Container(
-                                      height: Get.height * 0.03,
-                                      width: Get.width * 0.19,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        border: Border.all(width: 1),
-                                        borderRadius:
-                                        BorderRadius.circular(60),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: Get.width * 0.005,
-                                          ),
-                                          Container(
-                                            height: Get.height * 0.015,
-                                            width: Get.width * 0.08,
-                                            child: Image.asset(
-                                              'assets/icons/height.png',
-                                              fit: BoxFit.contain,
+                                            Container(
+                                              height: Get.height * 0.015,
+                                              width: Get.width * 0.08,
+                                              child: Image.asset(
+                                                'assets/icons/religon.png',
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * 0.0001,
-                                          ),
-                                          Text(
-                                            seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                                .value.data!.getanotherseeker!.height.toString(),
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 6,
-                                                fontWeight:
-                                                FontWeight.w400),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              ),
-                              SizedBox(
-                                height: Get.height * 0.01,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: Get.width * 0.02,
-                                  ),
-                                  ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                      .value.data!.getanotherseeker!.salary == null ||
-                                      seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                          .value.data!.getanotherseeker!.salary == '') ? Container(
-                                    child: SizedBox(width: Get.width * 0.18,),
-                                  ) : Container(
-                                      height: Get.height * 0.03,
-                                      width: Get.width * 0.19,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromRGBO(
-                                            244, 244, 244, 1),
-                                        border: Border.all(width: 1),
-                                        borderRadius:
-                                        BorderRadius.circular(60),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          // SizedBox(width: Get.width*0.005,),
-                                          Container(
-                                            height: Get.height * 0.015,
-                                            width: Get.width * 0.08,
-                                            child: Image.asset(
-                                              'assets/icons/money.png',
-                                              fit: BoxFit.contain,
+                                            SizedBox(
+                                              width: Get.width * 0.0001,
                                             ),
-                                          ),
-                                          // SizedBox(width: Get.width*0.002,),
-                                          Text(
-                                            seekerOutgoingRequestSinglePageController.ViewProfileDetail
-                                                .value.data!.getanotherseeker!.salary.toString() +
-                                                ' LPA',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 6,
-                                                fontWeight:
-                                                FontWeight.w400),
-                                          ),
-                                        ],
-                                      )),
-                                  SizedBox(
-                                    width: Get.width * 0.15,
-                                  ),
-                                  Container(
-                                    height: Get.height * 0.05,
-                                    width: Get.width * 0.05,
-                                    child: Image.asset(
-                                      'assets/icons/NextButton.png',
-                                      fit: BoxFit.contain,
-                                    ),)
-                                ],
-                              ),
-                            ],
+                                            Text(
+                                              seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                  .value.data!.getanotherseeker!.religion.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 6,
+                                                  fontWeight:
+                                                  FontWeight.w400),
+                                            ),
+                                          ],
+                                        )),
+                                    SizedBox(
+                                      width: Get.width * 0.02,
+                                    ),
+                                    ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                        .value.data!.getanotherseeker!.height == null ||
+                                        seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getanotherseeker!.height == '')
+                                        ? Container()
+                                        : Container(
+                                        height: Get.height * 0.03,
+                                        width: Get.width * 0.19,
+                                        decoration: BoxDecoration(
+                                          color: Color.fromRGBO(
+                                              244, 244, 244, 1),
+                                          border: Border.all(width: 1),
+                                          borderRadius:
+                                          BorderRadius.circular(60),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            SizedBox(
+                                              width: Get.width * 0.005,
+                                            ),
+                                            Container(
+                                              height: Get.height * 0.015,
+                                              width: Get.width * 0.08,
+                                              child: Image.asset(
+                                                'assets/icons/height.png',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: Get.width * 0.0001,
+                                            ),
+                                            Text(
+                                              seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                  .value.data!.getanotherseeker!.height.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 6,
+                                                  fontWeight:
+                                                  FontWeight.w400),
+                                            ),
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: Get.height * 0.01,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.02,
+                                    ),
+                                    ( seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                        .value.data!.getanotherseeker!.salary == null ||
+                                        seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                            .value.data!.getanotherseeker!.salary == '') ? Container(
+                                      child: SizedBox(width: Get.width * 0.18,),
+                                    ) : Container(
+                                        height: Get.height * 0.03,
+                                        width: Get.width * 0.19,
+                                        decoration: BoxDecoration(
+                                          color: Color.fromRGBO(
+                                              244, 244, 244, 1),
+                                          border: Border.all(width: 1),
+                                          borderRadius:
+                                          BorderRadius.circular(60),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            // SizedBox(width: Get.width*0.005,),
+                                            Container(
+                                              height: Get.height * 0.015,
+                                              width: Get.width * 0.08,
+                                              child: Image.asset(
+                                                'assets/icons/money.png',
+                                                fit: BoxFit.contain,
+                                              ),
+                                            ),
+                                            // SizedBox(width: Get.width*0.002,),
+                                            Text(
+                                              seekerOutgoingRequestSinglePageController.ViewProfileDetail
+                                                  .value.data!.getanotherseeker!.salary.toString() +
+                                                  ' LPA',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 6,
+                                                  fontWeight:
+                                                  FontWeight.w400),
+                                            ),
+                                          ],
+                                        )),
+                                    SizedBox(
+                                      width: Get.width * 0.15,
+                                    ),
+                                    Container(
+                                      height: Get.height * 0.05,
+                                      width: Get.width * 0.05,
+                                      child: Image.asset(
+                                        'assets/icons/NextButton.png',
+                                        fit: BoxFit.contain,
+                                      ),)
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         // //******************************* */

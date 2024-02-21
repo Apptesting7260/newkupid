@@ -78,6 +78,7 @@ final UserLoginControllerinstance=Get.put(UserLoginController());
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
+                cursorColor: Colors.pinkAccent,
                 controller: UserLoginControllerinstance.Email_Or_Phone_Controller.value,
                 validator: (value) {
                   if (!isEmail(value!) && !isPhone(value!)) {
@@ -110,6 +111,7 @@ final UserLoginControllerinstance=Get.put(UserLoginController());
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 obscureText: !_passwordVisible,
+                cursorColor: Colors.pinkAccent,
                 keyboardType: TextInputType.emailAddress,
                 controller:  UserLoginControllerinstance.PasswordController.value,
                 validator: (value) {

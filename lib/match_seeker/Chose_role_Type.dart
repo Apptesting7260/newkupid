@@ -297,7 +297,8 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
                                   ],
                                 ),
                                 SizedBox(width: width * .1),
-                                GestureDetector(
+                            if(ListAllMakerControllerinstance
+                                        .userList.value.allmakers![index].isRequested.toString()=="false")    GestureDetector(
                                   onTap: () {
                                     // showdilog();
 
@@ -315,7 +316,7 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
                                   },
                                   child: Container(
                                     height: height * .04,
-                                    // width: width * .2,
+                                    width: width * .4,
                                     decoration: BoxDecoration(
                                       color: Color(0xffFE0091),
                                       borderRadius: BorderRadius.circular(15),
@@ -333,7 +334,28 @@ SeekerToMakerRequestController SeekerToMakerRequestControllerinstance=Get.put(Se
                                       ),
                                     ),
                                   ),
-                                )
+                                ),
+                                 if(ListAllMakerControllerinstance
+                                        .userList.value.allmakers![index].isRequested.toString()=="true")    Container(
+                                          height: height * .04,
+                                          width: width * .4,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffFE0091),
+                                            borderRadius: BorderRadius.circular(15),
+                                          ),
+                                          child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Requested",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .copyWith(color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        )
                               ],
                             ),
                           );

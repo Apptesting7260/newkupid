@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:cupid_match/controllers/controller/ForgotPasswordController/ForgotPasswordController.dart';
 import 'package:cupid_match/repository/Auth_Repository/Auth_Repository.dart';
 import 'package:cupid_match/utils/utils.dart';
 import 'package:cupid_match/controllers/controller/SignUpController/SignUpController.dart';
 import 'package:cupid_match/views/sign_up/choose_profile.dart';
 import 'package:cupid_match/views/sign_up/create_password.dart';
+import 'package:cupid_match/views/user/forgot_password.dart';
+// import 'package:cupid_match/views/user/forgot_password.dart';
 import 'package:cupid_match/views/user/login_Screen.dart';
 import 'package:cupid_match/views/user/otp.dart';
 import 'package:cupid_match/views/user/reset_password.dart';
@@ -41,8 +44,12 @@ class CreatePasswordController extends GetxController {
     _api.CreatePasswordApi(data).then((value){
       loading.value = false ;
       print(value);
-      // Utils.snackBar( "Message",value.msg.toString());
+      
+      
     Get.to(() => ChooseProfile());
+      
+      // Utils.snackBar( "Message",value.msg.toString());
+
       PasswordController.value.clear();
       ConfirmPasswordController.value.clear();
 

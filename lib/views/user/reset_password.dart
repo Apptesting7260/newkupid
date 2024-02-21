@@ -114,7 +114,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               TextFormField(
                 obscureText: !_passwordVisiblee,
                 keyboardType: TextInputType.emailAddress,
-                controller: ForgotPasswordResetControllerInstanse.PasswordController.value,
+                controller: ForgotPasswordResetControllerInstanse.ConPasswordController.value,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Please Enter Password";

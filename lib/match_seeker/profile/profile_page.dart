@@ -7,6 +7,7 @@ import 'package:cupid_match/data/response/status.dart';
 import 'package:cupid_match/res/components/general_exception.dart';
 import 'package:cupid_match/res/components/internet_exceptions_widget.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   final seekerMyProfileDetailsController =
       Get.put(SeekerMyProfileDetailsController());
+
   @override
   void initState() {
     // ViewSikerProfileDetailsControllernstance.ViewSikerProfileDetailsApiHit();
@@ -43,13 +45,16 @@ class _ProfilePageState extends State<ProfilePage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return RefreshIndicator(
-      onRefresh: ()async {
+      onRefresh: () async {
         seekerMyProfileDetailsController.SeekerMyProfileDetailsApiHit();
       },
       child: Scaffold(body: Obx(() {
         switch (seekerMyProfileDetailsController.rxRequestStatus.value) {
           case Status.LOADING:
-            return const Center(child: CircularProgressIndicator(  color: Colors.pink,));
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Colors.pink,
+            ));
           case Status.ERROR:
             if (seekerMyProfileDetailsController.error.value == 'No internet') {
               return InterNetExceptionWidget(
@@ -76,24 +81,28 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: CachedNetworkImage(
                                 errorWidget: (context, url, error) =>
                                     Icon(Icons.error),
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator(  color: Colors.pink,)),
+                                placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                  color: Colors.pink,
+                                )),
                                 fit: BoxFit.cover,
-                                imageUrl:  seekerMyProfileDetailsController
+                                imageUrl: seekerMyProfileDetailsController
                                     .SeekerMyProfileDetail
-                                    .value.ProfileDetail!
+                                    .value
+                                    .ProfileDetail!
                                     .imgPath
                                     .toString(), // Replace with your actual image URL
                               ),
                               onTap: () {
                                 showImageViewer(
                                     context,
-                                   CachedNetworkImageProvider( seekerMyProfileDetailsController
-                                       .SeekerMyProfileDetail
-                                       .value.ProfileDetail!
-                                       .imgPath
-                                       .toString())
-                                       ,
+                                    CachedNetworkImageProvider(
+                                        seekerMyProfileDetailsController
+                                            .SeekerMyProfileDetail
+                                            .value
+                                            .ProfileDetail!
+                                            .imgPath
+                                            .toString()),
                                     swipeDismissible: false,
                                     doubleTapZoomable: true);
                               },
@@ -135,9 +144,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                               seekerMyProfileDetailsController
+                                                seekerMyProfileDetailsController
                                                     .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                                    .value
+                                                    .ProfileDetail!
                                                     .name
                                                     .toString(),
                                                 style: Theme.of(context)
@@ -148,20 +158,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                             Text(
                                                 seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                                            .SeekerMyProfileDetail
+                                                            .value
+                                                            .ProfileDetail!
                                                             .occupation ==
                                                         null
                                                     ? ""
-                                                    :  seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                                    : seekerMyProfileDetailsController
+                                                        .SeekerMyProfileDetail
+                                                        .value
+                                                        .ProfileDetail!
                                                         .occupation
                                                         .toString(),
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyMedium!
-                                                    .copyWith(color: Colors.grey)),
+                                                    .copyWith(
+                                                        color: Colors.grey)),
                                           ],
                                         ),
                                         Image.asset("assets/icons/send.png")
@@ -189,16 +202,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 height: height * .01,
                                               ),
                                               Container(
-                                                        width: Get.width*0.7,
+                                                width: Get.width * 0.7,
                                                 child: Text(
-                                                    seekerMyProfileDetailsController
-                                                        .SeekerMyProfileDetail
-                                                        .value.ProfileDetail!
-                                                        .address
-                                                        .toString(),
-                                                  style: TextStyle(color: Colors.black),
-
-                                                  overflow: TextOverflow.ellipsis,
+                                                  seekerMyProfileDetailsController
+                                                      .SeekerMyProfileDetail
+                                                      .value
+                                                      .ProfileDetail!
+                                                      .address
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                 ),
                                               ),
                                             ],
@@ -208,7 +223,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                             width: width * .18,
                                             decoration: BoxDecoration(
                                               color: Colors.blue.shade50,
-                                              borderRadius: BorderRadius.circular(10),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
                                             child: Row(
                                               mainAxisAlignment:
@@ -225,7 +241,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                       .textTheme
                                                       .bodySmall!
                                                       .copyWith(
-                                                          color: Color(0xff000CAA)),
+                                                          color: Color(
+                                                              0xff000CAA)),
                                                 )
                                               ],
                                             ),
@@ -235,37 +252,43 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     SizedBox(height: height * .03),
                                     Text("Mobile Number",
-                                        style:
-                                            Theme.of(context).textTheme.titleSmall),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
                                     SizedBox(
                                       height: height * .01,
                                     ),
-                                    Text(  seekerMyProfileDetailsController
-                                                        .SeekerMyProfileDetail
-                                                        .value.ProfileDetail!
-                                                        .phone
-                                                        .toString(),
+                                    Text(
+                                        seekerMyProfileDetailsController
+                                            .SeekerMyProfileDetail
+                                            .value
+                                            .ProfileDetail!
+                                            .phone
+                                            .toString(),
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodyMedium!
                                             .copyWith(color: Colors.grey)),
                                     SizedBox(height: height * .03),
                                     Text("Occupation",
-                                        style:
-                                            Theme.of(context).textTheme.titleSmall),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
                                     SizedBox(
                                       height: height * .01,
                                     ),
                                     Text(
-                                         seekerMyProfileDetailsController
+                                        seekerMyProfileDetailsController
                                                     .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                                    .value
+                                                    .ProfileDetail!
                                                     .occupation ==
                                                 null
                                             ? ""
-                                            :  seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                            : seekerMyProfileDetailsController
+                                                .SeekerMyProfileDetail
+                                                .value
+                                                .ProfileDetail!
                                                 .occupation
                                                 .toString(),
                                         style: Theme.of(context)
@@ -274,15 +297,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                             .copyWith(color: Colors.grey)),
                                     SizedBox(height: height * .03),
                                     Text("Birthday Date",
-                                        style:
-                                            Theme.of(context).textTheme.titleSmall),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
                                     SizedBox(
                                       height: height * .01,
                                     ),
                                     Text(
-                                         seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                        seekerMyProfileDetailsController
+                                            .SeekerMyProfileDetail
+                                            .value
+                                            .ProfileDetail!
                                             .dob
                                             .toString(),
                                         style: Theme.of(context)
@@ -291,20 +316,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                             .copyWith(color: Colors.grey)),
                                     SizedBox(height: height * .03),
                                     Text("About",
-                                        style:
-                                            Theme.of(context).textTheme.titleSmall),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
                                     SizedBox(
                                       height: height * .01,
                                     ),
-                                    if ( seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                    if (seekerMyProfileDetailsController
+                                            .SeekerMyProfileDetail
+                                            .value
+                                            .ProfileDetail!
                                             .details !=
                                         null)
                                       Text(
-                                           seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                          seekerMyProfileDetailsController
+                                              .SeekerMyProfileDetail
+                                              .value
+                                              .ProfileDetail!
                                               .details!
                                               .bioDescription
                                               .toString(),
@@ -320,30 +348,37 @@ class _ProfilePageState extends State<ProfilePage> {
                                     //         .copyWith(color: Color(0xffFE0091))),
                                     SizedBox(height: height * .03),
                                     Text("Interests",
-                                        style:
-                                            Theme.of(context).textTheme.titleSmall),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall),
                                     SizedBox(height: height * .02),
                                     ListView.builder(
                                       shrinkWrap: true,
                                       physics: NeverScrollableScrollPhysics(),
-                                      itemCount:  seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
-                                          .details!
-                                          .interestName!
-                                          .length, // Replace itemCount with the actual item count
+                                      itemCount:
+                                          seekerMyProfileDetailsController
+                                              .SeekerMyProfileDetail
+                                              .value
+                                              .ProfileDetail!
+                                              .details!
+                                              .interestName!
+                                              .length,
+                                      // Replace itemCount with the actual item count
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        return
-                                        (index % 3 ==
+                                        return (index % 3 ==
                                                 0) // Start a new row after every 3 items
                                             ? Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceEvenly,
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: buildContainer(index),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child:
+                                                        buildContainer(index),
                                                   ),
                                                   buildContainer(index + 1),
                                                   buildContainer(index + 2),
@@ -446,80 +481,97 @@ class _ProfilePageState extends State<ProfilePage> {
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .labelLarge!
-                                                .copyWith(color: Color(0xff000CAA)),
+                                                .copyWith(
+                                                    color: Color(0xff000CAA)),
                                           ),
-                                          onTap: () {
-
-                                          },
+                                          onTap: () {},
                                         ),
                                       ],
                                     ),
                                     SizedBox(height: height * .02),
 
-                                    if ( seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                    if (seekerMyProfileDetailsController
+                                                .SeekerMyProfileDetail
+                                                .value
+                                                .ProfileDetail!
                                                 .details !=
                                             null &&
-                                         seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                        seekerMyProfileDetailsController
+                                                .SeekerMyProfileDetail
+                                                .value
+                                                .ProfileDetail!
                                                 .details!
                                                 .gallaryPath !=
                                             [])
                                       Container(
                                         child: GridView.builder(
                                           shrinkWrap: true,
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 4,
                                           ),
                                           itemCount:
-                                               seekerMyProfileDetailsController
-                                                    .SeekerMyProfileDetail
-                                                    .value.ProfileDetail!
+                                              seekerMyProfileDetailsController
+                                                  .SeekerMyProfileDetail
+                                                  .value
+                                                  .ProfileDetail!
                                                   .details!
                                                   .gallaryPath!
                                                   .length,
-                                          itemBuilder:
-                                              (BuildContext context, int index) {
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return Padding(
-                                              padding: const EdgeInsets.all(8.0),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
                                               child: InkWell(
                                                 child: CachedNetworkImage(
                                                   imageUrl:
-                                                     seekerMyProfileDetailsController
-                                                      .SeekerMyProfileDetail
-                                                      .value.ProfileDetail!
+                                                      seekerMyProfileDetailsController
+                                                          .SeekerMyProfileDetail
+                                                          .value
+                                                          .ProfileDetail!
                                                           .details!
                                                           .gallaryPath![index]
                                                           .toString(),
                                                   fit: BoxFit.cover,
-                                                  placeholder: (context, url) => Center(
-                                                      child:
-                                                          CircularProgressIndicator()), // Placeholder widget while loading
+                                                  placeholder: (context, url) =>
+                                                      Center(
+                                                          child:
+                                                          CupertinoActivityIndicator(
+                                                            color: Colors.pinkAccent,
+                                                          ),),
+                                                  // Placeholder widget while loading
                                                   errorWidget: (context, url,
                                                           error) =>
                                                       Icon(Icons
                                                           .error), // Error widget if loading fails
                                                 ),
                                                 onTap: () {
-                                                  List<String> imageUrl=[];
+                                                  List<String> imageUrl = [];
                                                   seekerMyProfileDetailsController
                                                       .SeekerMyProfileDetail
-                                                      .value.ProfileDetail!
+                                                      .value
+                                                      .ProfileDetail!
                                                       .details!
-                                                      .gallaryPath?.forEach((element) {return imageUrl.add(element.toString());});
-                                                  CustomImageProvider customImageProvider = CustomImageProvider(
-                                                      imageUrls:imageUrl ,
-                                                      initialIndex: index);
-                                                  showImageViewerPager(context, customImageProvider,
+                                                      .gallaryPath
+                                                      ?.forEach((element) {
+                                                    return imageUrl.add(
+                                                        element.toString());
+                                                  });
+                                                  CustomImageProvider
+                                                      customImageProvider =
+                                                      CustomImageProvider(
+                                                          imageUrls: imageUrl,
+                                                          initialIndex: index);
+                                                  showImageViewerPager(context,
+                                                      customImageProvider,
                                                       onPageChanged: (page) {
-                                                        // print("Page changed to $page");
-                                                      }, onViewerDismissed: (page) {
-                                                        // print("Dismissed while on page $page");
-                                                      });
+                                                    // print("Page changed to $page");
+                                                  }, onViewerDismissed: (page) {
+                                                    // print("Dismissed while on page $page");
+                                                  });
                                                 },
                                               ),
                                             );
@@ -598,9 +650,8 @@ class _ProfilePageState extends State<ProfilePage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     if (index <
-       seekerMyProfileDetailsController
-                                                .SeekerMyProfileDetail
-                                                .value.ProfileDetail!.details!.interestName!.length) {
+        seekerMyProfileDetailsController.SeekerMyProfileDetail.value
+            .ProfileDetail!.details!.interestName!.length) {
       return Container(
         decoration: BoxDecoration(
           border: Border.all(color: Color(0xffFE0091)),
@@ -618,11 +669,11 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SizedBox(width: width * .01),
             Container(
-                width: width * .15,
+              width: width * .15,
               child: Text(
-              seekerMyProfileDetailsController
-                                                  .SeekerMyProfileDetail
-                                                  .value.ProfileDetail!.details!.interestName![index].title.toString(),
+                seekerMyProfileDetailsController.SeekerMyProfileDetail.value
+                    .ProfileDetail!.details!.interestName![index].title
+                    .toString(),
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!

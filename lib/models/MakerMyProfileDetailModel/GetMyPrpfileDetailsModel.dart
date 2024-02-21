@@ -43,6 +43,12 @@ class Requests {
      this.imgPath,
      this.videoPath,
      this.details,
+     this.matchMade,
+     this.matchsSuccessfull,
+     this.matchsDeclined,
+     this.matchsCompleted,
+     this.makerExperience,
+     this.likedProfile,
   });
   var id;
 var name;
@@ -61,6 +67,12 @@ var headingOfMaker;
   var currentStep;
 var imgPath;
 var videoPath;
+var matchMade;
+var matchsSuccessfull;
+var matchsDeclined;
+var matchsCompleted;
+var makerExperience;
+var likedProfile;
  Details? details;
 
   Requests.fromJson(Map<String, dynamic> json){
@@ -78,6 +90,13 @@ var videoPath;
     expectation = json['expectation'];
     headingOfMaker = json['heading_of_maker'];
     status = json['status'];
+    matchMade = json['match_made'];
+    matchsSuccessfull = json['matchs_successfull'];
+    matchsDeclined = json['matchs_declined'];
+    matchsCompleted = json['matchs_completed'];
+    makerExperience = json['maker_experience'];
+    likedProfile = json['liked_profile'];
+
     currentStep = json['current_step'];
     imgPath = json['img_path'];
     videoPath = json['video_path'];
@@ -106,6 +125,12 @@ var videoPath;
     _data['img_path'] = imgPath;
     _data['video_path'] = videoPath;
     _data['details'] = details!.toJson();
+    _data['match_made'] = matchMade;
+    _data['matchs_successfull'] = matchsSuccessfull;
+    _data['matchs_declined'] = matchsDeclined;
+    _data['matchs_completed'] = matchsCompleted;
+    _data['maker_experience'] = makerExperience;
+    _data['liked_profile'] = likedProfile;
     return _data;
   }
 }

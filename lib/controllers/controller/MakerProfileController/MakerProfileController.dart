@@ -53,15 +53,15 @@ Future<void> MakerProfileApiHit() async {
     var request = http.MultipartRequest('POST', url);
     // Replace 'your_api_endpoint' with the actual URL of your API endpoint for file upload
 
-    if(ImagetoUpload==null){
+    // if(ImagetoUpload==null){
 
-    }else {
-      var fileStream = http.ByteStream(ImagetoUpload!.openRead());
-      var length = await ImagetoUpload!.length();
-      var multipartFile = http.MultipartFile('pro_img', fileStream, length,
-          filename: ImagetoUpload!.path.split('/').last);
-      request.files.add(multipartFile);
-    }
+    // }else {
+    //   var fileStream = http.ByteStream(ImagetoUpload!.openRead());
+    //   var length = await ImagetoUpload!.length();
+    //   var multipartFile = http.MultipartFile('pro_img', fileStream, length,
+    //       filename: ImagetoUpload!.path.split('/').last);
+    //   request.files.add(multipartFile);
+    // }
     // Create the multipart request
 
 
@@ -70,46 +70,75 @@ Future<void> MakerProfileApiHit() async {
 
     // Add other text fields to the request+
     request.fields['update_type'] = "profile";
+print("1");
+ request.fields['email']="kanarama@mailinator.com";
+//  print( request.fields['email']="kanarama@mailinator.com");
+// print("${UserEmailAndPhoneVerifyControllerinstance
+//           .emailAndPhoneVerifyController.value.text}-----email");
+//     if (UserEmailAndPhoneVerifyControllerinstance
+//         .emailAndPhoneVerifyController.value.text
+//         .contains("@")) {
+//       String email = UserEmailAndPhoneVerifyControllerinstance
+//           .emailAndPhoneVerifyController.value.text;
+//       request.fields['email'] = email.toString();
+// print("2");
 
-    if (UserEmailAndPhoneVerifyControllerinstance
-        .emailAndPhoneVerifyController.value.text
-        .contains("@")) {
-      String email = UserEmailAndPhoneVerifyControllerinstance
-          .emailAndPhoneVerifyController.value.text;
-      request.fields['email'] = email.toString();
-      request.fields['email_otp_verified_status'] = "1";
-      print("${email}email==============");
-    } else {
-      String phone = UserEmailAndPhoneVerifyControllerinstance
-          .emailAndPhoneVerifyController.value.text;
-      request.fields['phone'] = phone.toString();
+//       request.fields['email_otp_verified_status'] = "1";
+//       print("${email}email==============");
+// print("3");
 
-      request.fields['phone_otp_verified_status'] = "1";
-      print("${phone}phone==============");
-    }
+//     } else {
+//       String phone = UserEmailAndPhoneVerifyControllerinstance
+//           .emailAndPhoneVerifyController.value.text;
+//       request.fields['phone'] = phone.toString();
+// print("4");
+
+//       request.fields['phone_otp_verified_status'] = "1";
+//       print("${phone}phone==============");
+// print("5");
+
+//     }
 
     request.fields['name'] = NameController.value.text;
+print("5");
+
     request.fields['dob'] = datestring.toString();
+print("1");
+
     request.fields['location'] = SelectedLocation.toString();
+print("1");
+
     request.fields['experience'] = selectExperience.toString();
+print("1");
+
     request.fields['about_maker'] = ExpectFromSeekerController.value.text;
+print("1");
+
     request.fields['expect_from_seeker'] = AboutMakerController.value.text;
+print("1");
+
     request.fields['heading_of_maker'] = HandlingOfMakerController.value.text;
+print("1");
+
     request.fields['gender'] = selectGender.toString();
+print("1");
+
     request.fields['type'] = "1";
+print("1");
 
     request.headers['Authorization'] = "Bearer ${prefs.getString('BarearToken')}";
 
+print("1");
 
 
-    if(videoFile==null){
+    // if(videoFile==null){
 
-    }else{
-      var videoStream = http.ByteStream(videoFile!.openRead());
-    var videoLength = await videoFile!.length();
-      var videoFileField = http.MultipartFile('pro_vedio', videoStream, videoLength, filename: videoFile!.path.split('/').last);
-    request.files.add(videoFileField);
-    }
+    // }else{
+    //   var videoStream = http.ByteStream(videoFile!.openRead());
+    // var videoLength = await videoFile!.length();
+    //   var videoFileField = http.MultipartFile('pro_vedio', videoStream, videoLength, filename: videoFile!.path.split('/').last);
+    // request.files.add(videoFileField);
+    // }
 
 
 print(BarrierToken);

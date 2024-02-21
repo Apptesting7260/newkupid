@@ -59,6 +59,7 @@ class _SignState extends State<Sign> {
               TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
+                cursorColor: Colors.pinkAccent,
                 controller: SignUpControllerInstance.credentialsController.value,
                 validator: (value) {
                   if (!isEmail(value!) && !isPhone(value!) ) {

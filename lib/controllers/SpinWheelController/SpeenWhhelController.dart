@@ -38,6 +38,7 @@ class SpeenWheelDataController  extends GetxController {
       print(value);
       print("7293874988783b c7388398u9u9b32g 45 345345  35");
       //
+      
     }).onError((error, stackTrace) {
       setError(error.toString());
       setRxRequestStatus(Status.ERROR);

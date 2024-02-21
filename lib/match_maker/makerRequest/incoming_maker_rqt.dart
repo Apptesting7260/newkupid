@@ -58,7 +58,7 @@ class _IncomingMakerRequestState extends State<IncomingMakerRequest> {
         final recentRequest=requestMatchesController.rxRequestStatus.value;
         if(recentRequest==Status.LOADING){
           return Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(color: Colors.pinkAccent,),
           );
 
         }

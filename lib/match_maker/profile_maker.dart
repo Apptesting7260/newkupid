@@ -97,6 +97,9 @@ class _ViewProfileDetailsMakerState extends State<ViewProfileDetailsMaker> {
                       },
                       child: Image.asset("assets/icons/menu.png"));
                 },
+              ),
+              SizedBox(
+                width: Get.width * 0.02,
               )
             ],
           ),
@@ -105,7 +108,7 @@ class _ViewProfileDetailsMakerState extends State<ViewProfileDetailsMaker> {
             switch (ViewMakerProfileDetailsControllerinstance
                 .rxRequestStatus.value) {
               case Status.LOADING:
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
               case Status.ERROR:
                 if (ViewMakerProfileDetailsControllerinstance.error.value ==
                     'No internet') {
@@ -320,71 +323,445 @@ class _ViewProfileDetailsMakerState extends State<ViewProfileDetailsMaker> {
                           SizedBox(
                             height: height * .02,
                           ),
-                          Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: width * 0.04),
-                            child: GridView.builder(
-                                scrollDirection: Axis.vertical,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: ListItem.length,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4,
-                                  mainAxisSpacing: 4,
-                                  crossAxisSpacing: 4,
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: width * .22,
+                                child: Card(
+                                  elevation: 2,
+                                  shadowColor: Color(0xff0000001),
+                                  color: Color(0xffF3F3F3),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Color(0xff0000001A),
+                                        radius: 17,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              ListItem[0]['Image'] ??
+                                                  'assets/maker/img_2.png'),
+                                          //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                          radius: 23,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      Text(
+                                        ListItem[0]['Name'] ?? "Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                            color: Color(0xff777777),
+                                            fontSize: 4),
+                                      ),
+                                      Text(
+                                        ViewMakerProfileDetailsControllerinstance
+                                            .ViewProfileDetail.value!.requests!
+                                            .matchMade
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                itemBuilder: (BuildContext, index) {
-                                  return Card(
-
-                                    elevation: 2,
-                                    shadowColor: Color(0xff0000001),
-                                    color: Color(0xffF3F3F3),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: Get.height * 0.005,
+                              ),
+                              Container(
+                                width: width * .22,
+                                child: Card(
+                                  elevation: 2,
+                                  shadowColor: Color(0xff0000001),
+                                  color: Color(0xffF3F3F3),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Color(0xff0000001A),
+                                        radius: 17,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              ListItem[1]['Image'] ??
+                                                  'assets/maker/img_2.png'),
+                                          //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                          radius: 23,
                                         ),
-                                        CircleAvatar(
-                                          backgroundColor: Color(0xff0000001A),
-                                          radius: 17,
-                                          child: CircleAvatar(
-                                            backgroundImage: AssetImage(
-                                                ListItem[index]['Image'] ??
-                                                    'assets/maker/img_2.png'),
-                                            //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
-                                            radius: 23,
-                                          ),
-
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      Text(
+                                        ListItem[1]['Name'] ?? "Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                            color: Color(0xff777777),
+                                            fontSize: 4),
+                                      ),
+                                      Text(
+                                        ViewMakerProfileDetailsControllerinstance
+                                            .ViewProfileDetail.value!.requests!
+                                            .matchsSuccessfull
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * .22,
+                                child: Card(
+                                  elevation: 2,
+                                  shadowColor: Color(0xff0000001),
+                                  color: Color(0xffF3F3F3),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Color(0xff0000001A),
+                                        radius: 17,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              ListItem[2]['Image'] ??
+                                                  'assets/maker/img_2.png'),
+                                          //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                          radius: 23,
                                         ),
-                                        SizedBox(
-                                          height: height * 0.005,
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      Text(
+                                        ListItem[2]['Name'] ?? "Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                            color: Color(0xff777777),
+                                            fontSize: 4),
+                                      ),
+                                      Text(
+                                        ViewMakerProfileDetailsControllerinstance
+                                            .ViewProfileDetail.value!.requests!
+                                            .matchsDeclined
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * .22,
+                                child: Card(
+                                  elevation: 2,
+                                  shadowColor: Color(0xff0000001),
+                                  color: Color(0xffF3F3F3),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Color(0xff0000001A),
+                                        radius: 17,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              ListItem[3]['Image'] ??
+                                                  'assets/maker/img_2.png'),
+                                          //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                          radius: 23,
                                         ),
-                                        Text(
-                                          ListItem[index]['Name'] ?? "Name",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall
-                                              ?.copyWith(
-                                                  color: Color(0xff777777),
-                                                  fontSize: 4),
-                                        ),
-                                        Text(
-                                          ViewMakerProfileDetailsControllerinstance
-                                              .ViewProfileDetail
-                                              .value!
-                                              .requests!
-                                              .status
-                                              .toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      Text(
+                                        ListItem[3]['Name'] ?? "Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                            color: Color(0xff777777),
+                                            fontSize: 4),
+                                      ),
+                                      Text(
+                                        ViewMakerProfileDetailsControllerinstance
+                                            .ViewProfileDetail.value!.requests!
+                                            .matchsCompleted
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: width * .22,
+                                child: Card(
+                                  elevation: 2,
+                                  shadowColor: Color(0xff0000001),
+                                  color: Color(0xffF3F3F3),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Color(0xff0000001A),
+                                        radius: 17,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              ListItem[4]['Image'] ??
+                                                  'assets/maker/img_2.png'),
+                                          //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                          radius: 23,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      Text(
+                                        ListItem[4]['Name'] ?? "Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                            color: Color(0xff777777),
+                                            fontSize: 4),
+                                      ),
+                                      Text(
+                                        ViewMakerProfileDetailsControllerinstance
+                                            .ViewProfileDetail.value!.requests!
+                                            .makerExperience
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * .22,
+                                child: Card(
+                                  elevation: 2,
+                                  shadowColor: Color(0xff0000001),
+                                  color: Color(0xffF3F3F3),
+                                  child: Column(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundColor: Color(0xff0000001A),
+                                        radius: 17,
+                                        child: CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              ListItem[5]['Image'] ??
+                                                  'assets/maker/img_2.png'),
+                                          //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                          radius: 23,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.01,
+                                      ),
+                                      Text(
+                                        ListItem[5]['Name'] ?? "Name",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall
+                                            ?.copyWith(
+                                            color: Color(0xff777777),
+                                            fontSize: 4),
+                                      ),
+                                      Text(
+                                        ViewMakerProfileDetailsControllerinstance
+                                            .ViewProfileDetail.value!.requests!
+                                            .likedProfile
+                                            .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: width * .22,
+                                // child: Card(
+                                //   elevation: 2,
+                                //   shadowColor: Color(0xff0000001),
+                                //   color: Color(0xffF3F3F3),
+                                //   child: Column(
+                                //     children: [
+                                //       CircleAvatar(
+                                //         backgroundColor: Color(0xff0000001A),
+                                //         radius: 17,
+                                //         child: CircleAvatar(
+                                //           backgroundImage: AssetImage(
+                                //               ListItem[2]['Image'] ??
+                                //                   'assets/maker/img_2.png'),
+                                //           //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                //           radius: 23,
+                                //         ),
+                                //       ),
+                                //       SizedBox(
+                                //         height: height * 0.01,
+                                //       ),
+                                //       Text(
+                                //         ListItem[2]['Name'] ?? "Name",
+                                //         style: Theme
+                                //             .of(context)
+                                //             .textTheme
+                                //             .labelSmall
+                                //             ?.copyWith(
+                                //             color: Color(0xff777777),
+                                //             fontSize: 4),
+                                //       ),
+                                //       Text(
+                                //         ViewMakerProfileDetailsControllerinstance
+                                //             .ViewProfileDetail
+                                //             .value
+                                //             .ProfileDetail!
+                                //             .matchsDeclined
+                                //             .toString(),
+                                //         style: Theme
+                                //             .of(context)
+                                //             .textTheme
+                                //             .titleLarge,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                              ),
+                              Container(
+                                width: width * .22,
+                                // child: Card(
+                                //   elevation: 2,
+                                //   shadowColor: Color(0xff0000001),
+                                //   color: Color(0xffF3F3F3),
+                                //   child: Column(
+                                //     children: [
+                                //       CircleAvatar(
+                                //         backgroundColor: Color(0xff0000001A),
+                                //         radius: 17,
+                                //         child: CircleAvatar(
+                                //           backgroundImage: AssetImage(
+                                //               ListItem[3]['Image'] ??
+                                //                   'assets/maker/img_2.png'),
+                                //           //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                                //           radius: 23,
+                                //         ),
+                                //       ),
+                                //       SizedBox(
+                                //         height: height * 0.01,
+                                //       ),
+                                //       Text(
+                                //         ListItem[3]['Name'] ?? "Name",
+                                //         style: Theme
+                                //             .of(context)
+                                //             .textTheme
+                                //             .labelSmall
+                                //             ?.copyWith(
+                                //             color: Color(0xff777777),
+                                //             fontSize: 4),
+                                //       ),
+                                //       Text(
+                                //         ViewMakerProfileDetailsControllerinstance
+                                //             .ViewProfileDetail
+                                //             .value
+                                //             .ProfileDetail!
+                                //             .matchsCompleted
+                                //             .toString(),
+                                //         style: Theme
+                                //             .of(context)
+                                //             .textTheme
+                                //             .titleLarge,
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                              ),
+                            ],
+                          ),
+                          // Padding(
+                          //   padding:
+                          //       EdgeInsets.symmetric(horizontal: width * 0.04),
+                          //   child: GridView.builder(
+                          //       scrollDirection: Axis.vertical,
+                          //       physics: NeverScrollableScrollPhysics(),
+                          //       shrinkWrap: true,
+                          //       itemCount: ListItem.length,
+                          //       gridDelegate:
+                          //           SliverGridDelegateWithFixedCrossAxisCount(
+                          //         crossAxisCount: 4,
+                          //         mainAxisSpacing: 4,
+                          //         crossAxisSpacing: 4,
+                          //       ),
+                          //       itemBuilder: (BuildContext, index) {
+                          //         return Card(
+                          //
+                          //           elevation: 2,
+                          //           shadowColor: Color(0xff0000001),
+                          //           color: Color(0xffF3F3F3),
+                          //           child: Column(
+                          //             children: [
+                          //               SizedBox(
+                          //                 height: Get.height * 0.005,
+                          //               ),
+                          //               CircleAvatar(
+                          //                 backgroundColor: Color(0xff0000001A),
+                          //                 radius: 17,
+                          //                 child: CircleAvatar(
+                          //                   backgroundImage: AssetImage(
+                          //                       ListItem[index]['Image'] ??
+                          //                           'assets/maker/img_2.png'),
+                          //                   //backgroundImage: NetworkImage(ListItem[index]['Image'] ??"https://images.unsplash.com/photo-1685118148066-da2c5c61e291?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60"),
+                          //                   radius: 23,
+                          //                 ),
+                          //
+                          //               ),
+                          //               SizedBox(
+                          //                 height: height * 0.005,
+                          //               ),
+                          //               Text(
+                          //                 ListItem[index]['Name'] ?? "Name",
+                          //                 style: Theme.of(context)
+                          //                     .textTheme
+                          //                     .labelSmall
+                          //                     ?.copyWith(
+                          //                         color: Color(0xff777777),
+                          //                         fontSize: 4),
+                          //               ),
+                          //               Text(
+                          //                 ViewMakerProfileDetailsControllerinstance
+                          //                     .ViewProfileDetail
+                          //                     .value!
+                          //                     .requests!
+                          //                     .status
+                          //                     .toString(),
+                          //                 style: Theme.of(context)
+                          //                     .textTheme
+                          //                     .titleLarge,
+                          //               ),
+                          //             ],
+                          //           ),
+                          //         );
+                          //       }),
+                          // ),
+
+
+
                           SizedBox(
                             height: height * 0.04,
                           ),
@@ -476,7 +853,7 @@ class _ViewProfileDetailsMakerState extends State<ViewProfileDetailsMaker> {
                         ],
                       ),
                       Positioned(
-                        left: 150,
+                        left: 120,
                         top: height * 0.03,
                         child: Container(
                           height: height * 0.14,

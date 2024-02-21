@@ -22,9 +22,11 @@ class ListAllMakerController extends GetxController {
    setRxRequestStatus(Status.LOADING);
 
     _api.ListAllMakerApi().then((value){
-      setRxRequestStatus(Status.COMPLETED);
+
       getAllmakerList(value);
       print(value);
+
+      setRxRequestStatus(Status.COMPLETED);
     }).onError((error, stackTrace){
       setError(error.toString());
       print("error");

@@ -55,6 +55,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(RegExp(r'\s')), // Deny spaces
                   ],
+                  cursorColor: Colors.pinkAccent,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: !_passwordVisible,
                   keyboardType: TextInputType.emailAddress,
@@ -129,6 +130,8 @@ class _CreatePasswordState extends State<CreatePassword> {
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(RegExp(r'\s')), // Deny spaces
                   ],
+                  cursorColor: Colors.pinkAccent,
+
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   obscureText: !_passwordVisiblee,
                   keyboardType: TextInputType.emailAddress,

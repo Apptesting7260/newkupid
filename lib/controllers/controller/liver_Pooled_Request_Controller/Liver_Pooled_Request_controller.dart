@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:cupid_match/GlobalVariable/GlobalVariable.dart';
+import 'package:cupid_match/controllers/SeekerMyProfileDetailsController/SeekerMyProfileController.dart';
 import 'package:cupid_match/data/response/status.dart';
 import 'package:cupid_match/models/LiverPooledRequestModel/LiverPooledRequestModel.dart';
 import 'package:cupid_match/models/MagicProfile/MagicProfiles.dart';
@@ -18,7 +19,8 @@ import 'package:get/get.dart';
 class SpeendReqestController extends GetxController {
 
   final _api = AuthRepository();
-
+ final seekerMyProfileDetailsController =
+      Get.put(SeekerMyProfileDetailsController());
   RxString selectedAnswer="".obs;
   final rxRequestStatus = Status.LOADING.obs ;
   final staticLiverPullvalue =SpeendRequestModel().obs ;
@@ -79,15 +81,17 @@ seekerprofilerequested.value=false;
       //   slotImages.add(value.requests![i].imgPath.toString());
       //   slotname.add(value.requests![i].name.toString());
       // }
-
-      startTime = DateTime.parse("${value.data![0].spinLeverpoolRequestedData!.spinRequestTime.toString()}");
+if(seekerMyProfileDetailsController.SeekerMyProfileDetail.value.SpinLeverRequestedDat!.spin==true){
+startTime = DateTime.parse("${value.data![0].spinLeverpoolRequestedData!.spinRequestTime.toString()}");
       endTime = DateTime.parse("${value.data![0].spinLeverpoolRequestedData!.showExpireTime.toString()}");
-      print("${value.data![0].spinLeverpoolRequestedData!.spinRequestTime}==========abcd");
-      print("${value.data![0].spinLeverpoolRequestedData!.showExpireTime}============abcde");
-      for(int i=0; i<value.data!.length; i++){
-        slotImages.add(value.data![i].imgPath.toString());
-        slotname.add(value.data![i].name.toString());
-      }
+}
+      
+      // print("${value.data![0].spinLeverpoolRequestedData!.spinRequestTime}==========abcd");
+      // print("${value.data![0].spinLeverpoolRequestedData!.showExpireTime}============abcde");
+      // for(int i=0; i<value.data!.length; i++){
+      //   slotImages.add(value.data![i].imgPath.toString());
+      //   slotname.add(value.data![i].name.toString());
+      // }
 print("uuuuuuuuu");
       print("object");
       print("$slotImages===================");

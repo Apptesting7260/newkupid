@@ -78,8 +78,10 @@ class _DomatchscreenSikerState extends State<DomatchscreenSiker> {
                 onTap: () {
                   _scaffoldKey.currentState!.openEndDrawer();
                 },
-                child: Image.asset("assets/icons/menu.png"))
+                child: Image.asset("assets/icons/menu.png")),
+                 SizedBox(width:Get.width*.03 ,)
           ],
+
         ),
         body: Obx(() {
           final ListAllMakerControllerstatus =
@@ -270,7 +272,8 @@ class _DomatchscreenSikerState extends State<DomatchscreenSiker> {
                                   ],
                                 ),
                                 SizedBox(width: width * .15),
-                                GestureDetector(
+                             if(ListAllMakerControllerinstance
+                                        .userList.value.allmakers![index].isRequested.toString()=="false")   GestureDetector(
                                   onTap: () {
                                     // showdilog();
                   
@@ -286,7 +289,7 @@ class _DomatchscreenSikerState extends State<DomatchscreenSiker> {
                                   },
                                   child: Container(
                                     height: height * .04,
-                                    // width: width * .2,
+                                    width: width * .38,
                                     decoration: BoxDecoration(
                                       color: Color(0xffFE0091),
                                       borderRadius: BorderRadius.circular(15),
@@ -295,7 +298,7 @@ class _DomatchscreenSikerState extends State<DomatchscreenSiker> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          "Request to Maker",
+                                          "Request to Maker ",
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall!
@@ -304,7 +307,29 @@ class _DomatchscreenSikerState extends State<DomatchscreenSiker> {
                                       ),
                                     ),
                                   ),
-                                )
+                                ),
+
+                                if(ListAllMakerControllerinstance
+                                        .userList.value.allmakers![index].isRequested.toString()=="true")   Container(
+                                          height: height * .04,
+                                          width: width * .38,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xffFE0091),
+                                            borderRadius: BorderRadius.circular(15),
+                                          ),
+                                          child: Center(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Requested",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .copyWith(color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        )
                               ],
                             ),
                           );

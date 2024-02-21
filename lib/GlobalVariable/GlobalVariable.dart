@@ -100,6 +100,11 @@ bool islivierpooled=false;
 bool isspinedwill=false;
 String? myid;
 bool ?makeride;
+String ?profileLike;
+String ?LikeTo;
+String ?like_type;
+
+String?imageUrl;
 
 GlobalKey keyButton2 = GlobalKey();
 GlobalKey keyButton3 = GlobalKey();

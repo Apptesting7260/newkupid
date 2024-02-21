@@ -991,7 +991,7 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
             backgroundColor: Color(0xffFFFFFF),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),),
-          title: Center(child: Text('Chat Info')),
+          title: Center(child: Text('Chat Info',style: TextStyle(color: Colors.black),)),
           content: SingleChildScrollView(
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1002,8 +1002,8 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
 
                  children: [
 
-                   Text(makerName.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
-                   Text(seekerName1.toString(),style: TextStyle(fontWeight: FontWeight.bold)),
+                   Text(makerName.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
+                   Text(seekerName1.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
                  ],
                ),
                Column(

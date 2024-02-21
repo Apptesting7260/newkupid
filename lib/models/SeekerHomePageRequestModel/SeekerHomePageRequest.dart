@@ -373,12 +373,16 @@ class Requests {
       json['incoming'].forEach((v) {
         incoming!.add(new Incoming.fromJson(v));
       });
+    }else{
+      json['incoming']=[];
     }
     if (json['outgoing'] != null) {
       outgoing = <Outgoing>[];
       json['outgoing'].forEach((v) {
         outgoing!.add(new Outgoing.fromJson(v));
       });
+    }else{
+      json['outgoing']=[];
     }
   }
 

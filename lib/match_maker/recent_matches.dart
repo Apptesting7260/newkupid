@@ -85,6 +85,7 @@ class _RecentMatchesState extends State<RecentMatches> {
                       return GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
+                            mainAxisExtent:  height * .45,
                             mainAxisSpacing: 10,
                             childAspectRatio: .50),
                         scrollDirection: Axis.vertical,
@@ -192,7 +193,7 @@ class _RecentMatchesState extends State<RecentMatches> {
                                             child: CircleAvatar(
                                               radius: 50,
                                               backgroundColor: AppColors.white,
-                                              child: Icon(Icons.heart_broken),
+                                              child: Icon(Icons.heart_broken,color: Colors.pinkAccent,),
                                             ),
                                           ),
                                         ),
@@ -204,7 +205,7 @@ class _RecentMatchesState extends State<RecentMatches> {
                                             child: CircleAvatar(
                                               radius: 50,
                                               backgroundColor: AppColors.white,
-                                              child: Icon(Icons.heart_broken),
+                                              child: Icon(Icons.heart_broken,color: Colors.pinkAccent),
                                             ),
                                           ),
                                         ),

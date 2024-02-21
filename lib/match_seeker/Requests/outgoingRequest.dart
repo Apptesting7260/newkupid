@@ -73,7 +73,7 @@ class _OutGoingRequestState extends State<OutGoingRequest> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: Get.height *0.45,),
-                      const Center(child: CircularProgressIndicator()),
+                      const Center(child: CircularProgressIndicator( color: Colors.pink)),
                     ],
                   );
                 case Status.ERROR:

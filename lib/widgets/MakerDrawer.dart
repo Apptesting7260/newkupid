@@ -324,14 +324,13 @@ final box = GetStorage();
                     // Delete the cached data when the user logs out
 
                     sp.remove("BarearToken");
-                                var deviceTokenRef = _firestore.collection("m${makerUserId.toString()}").doc('Device Token');
-    var deviceTokenRefsnapshot =  deviceTokenRef.get();
-  
-       deviceTokenRef.set({'device token': ""});
+                                var deviceTokenRef = _firestore.collection("m${makerUserId.toString()}").doc('Device Token').set({'device token': ""});
+
+
   print("====================================maker id===================$makerUserId--------------------------------------------------------------------");
-  DocumentReference roomRef =
-        _firestore.collection("m$makerUserId").doc("Status");
-    await roomRef.update({'status': "offline"});
+
+        _firestore.collection("m$makerUserId").doc("Status").set({'status': "offline"});
+
 
                     // You can also clear all data in the storage if needed
                     // box.erase();
