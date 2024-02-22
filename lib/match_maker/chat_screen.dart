@@ -1033,7 +1033,8 @@ class _MakerChatScreenState extends State<MakerChatScreen>
                 );
               },
             ),
-          )
+          ),
+          SizedBox(width: Get.width *.02,)
         ],
         leading: GestureDetector(
           onTap: () {

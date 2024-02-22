@@ -86,9 +86,7 @@ class _ChatScreenMakerState extends State<ChatScreenMaker> {
                     child: Image.asset("assets/icons/menu.png"));
               },
             ),
-            SizedBox(
-              width: Get.width * 0.02,
-            )
+            SizedBox(width: Get.width*0.03,)
           ],
         ),
         endDrawer: Drawer(child: MakerDrawer()),

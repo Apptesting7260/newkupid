@@ -64,7 +64,6 @@ class SeekerEditProfileController extends GetxController {
   final CorrectanswerController = TextEditingController().obs;
   final SalaryController = TextEditingController().obs;
   final otpController = TextEditingController().obs;
-  String imageUrl = "";
 
   // RxString selectLocalGender="".obs;
   // ViewSikerProfileDetailsControllerinstance.ViewProfileDetail
@@ -186,7 +185,7 @@ class SeekerEditProfileController extends GetxController {
       }
 
       // Add other text fields to the request+
-      request.fields['update_type'] = "profile";
+      request.fields['update_type'] = "seeker_update";
 
       request.fields['name'] = NameController.value.text;
       // if (phone_verify.value==true) {

@@ -53,15 +53,19 @@ Future<void> MakerProfileApiHit() async {
     var request = http.MultipartRequest('POST', url);
     // Replace 'your_api_endpoint' with the actual URL of your API endpoint for file upload
 
-    // if(ImagetoUpload==null){
+    if(ImagetoUpload==null){
 
-    // }else {
-    //   var fileStream = http.ByteStream(ImagetoUpload!.openRead());
-    //   var length = await ImagetoUpload!.length();
-    //   var multipartFile = http.MultipartFile('pro_img', fileStream, length,
-    //       filename: ImagetoUpload!.path.split('/').last);
-    //   request.files.add(multipartFile);
-    // }
+    }else {
+      var fileStream = http.ByteStream(ImagetoUpload!.openRead());
+      var length = await ImagetoUpload!.length();
+      var multipartFile = http.MultipartFile('pro_img', fileStream, length,
+          filename: ImagetoUpload!
+              .path
+              .split('/')
+              .last);
+      request.files.add(multipartFile);
+      print(ImagetoUpload);
+    }
     // Create the multipart request
 
 

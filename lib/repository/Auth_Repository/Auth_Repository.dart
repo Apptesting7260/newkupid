@@ -47,6 +47,7 @@ import '../../models/IncomingMakerRequestModel/incoming_maker_request_model.dart
 import '../../models/MakerHomePage/MakerHomePageModel.dart';
 import '../../models/MakerLikeListApi/MakerLikeListModel.dart';
 import '../../models/MakerMyProfileDetailModel/GetMyPrpfileDetailsModel.dart';
+import '../../models/MakerProfileModel/MakerEditrviewProfileModel.dart';
 import '../../models/MakerProfileModel/MakerProfileModel.dart';
 import '../../models/MakerRecentMatchesModel/maker_recent_matches_model.dart';
 import '../../models/MakerSinglepageRequestModel/MakerSingleRequestModel.dart';
@@ -240,6 +241,14 @@ class AuthRepository {
     print(response);
     return EditViewprofileDetailsModel.fromJson(response);
   }
+
+  Future<MakerEditProfileModel> ViewMakerEditeDetails() async {
+    print("hited");
+    dynamic response = await _apiService.getApi2(AppUrl.EditeProfileUrl);
+    print(response);
+    return MakerEditProfileModel.fromJson(response);
+  }
+
 
   Future<AllMakerModel> ListAllMakerApi() async {
     print("hited");

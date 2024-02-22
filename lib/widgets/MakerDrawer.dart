@@ -21,6 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../GlobalVariable/nullFunction.dart';
 import '../controllers/MakerGetMyProfileDetails/MakerGetProfileDetailsController.dart';
+import '../match_maker/MakerUpdateProfile.dart';
+import '../match_maker/verify_identity.dart';
 import '../views/splash_screen.dart';
 
 class MakerDrawer extends StatefulWidget {
@@ -282,7 +284,7 @@ final box = GetStorage();
               ),
               ListTile(
                 onTap: () {
-                  Get.to(()=>ViewProfileDetailsMaker());
+                  Get.to(()=>MakerUpdateProfileDetails());
                 },
                 leading: Image.asset(
                   'assets/maker/Mask group (7).png',
@@ -301,6 +303,9 @@ final box = GetStorage();
                 indent: 25,
               ),
               ListTile(
+                onTap: () {
+                  Get.to(VerifyScreen());
+                },
                 leading: Image.asset(
                   'assets/maker/Mask group (10).png',
                   width: 25,

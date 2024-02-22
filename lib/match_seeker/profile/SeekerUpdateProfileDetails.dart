@@ -526,7 +526,7 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
 
   @override
   Widget build(BuildContext context) {
-    print(SeekerProfileControllerInstanse.imageUrl.toString());
+    // print(SeekerProfileControllerInstanse.imageUrl.toString());
     print(
         "===============================================================================================");
     final height = MediaQuery.of(context).size.height;
@@ -549,7 +549,10 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
           switch (ViewSikerProfileDetailsControllerinstances
               .rxRequestStatus.value) {
             case Status.LOADING:
-              return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
+              return const Center(
+                  child: CircularProgressIndicator(
+                color: Colors.pinkAccent,
+              ));
             case Status.ERROR:
               if (ViewSikerProfileDetailsControllerinstances.error.value ==
                   'No internet') {
@@ -598,15 +601,23 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
                               fit: StackFit.expand,
                               children: [
                                 imgFile == null
-                                    ? CircleAvatar(
-                                        backgroundImage:
-                                            imageUrl == null || imageUrl == ""
-                                                ? CachedNetworkImageProvider(
+                                    ? ClipOval(
+                                        child: imageUrl == null ||
+                                                imageUrl == ""
+                                            ? CachedNetworkImage(
+                                                imageUrl:
                                                     'https://cdn-icons-png.flaticon.com/512/847/847969.png?w=740&t=st=1691391117~exp=1691391717~hmac=c402e52cf04c8941cd7bc1fae55a6ed27830a0e3f82a34da252300f7b68ce614',
-                                                  )
-                                                : CachedNetworkImageProvider(
-                                                    imageUrl.toString(),
-                                                  ))
+                                                height: height,
+                                                width: width,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : CachedNetworkImage(
+                                                imageUrl: imageUrl.toString(),
+                                                height: height,
+                                                width: width,
+                                                fit: BoxFit.cover,
+                                              ),
+                                      )
                                     : CircleAvatar(
                                         child: ClipOval(
                                           child: Image.file(
@@ -2822,9 +2833,7 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
           backgroundColor: Colors.red,
           textColor: Colors.white,
           fontSize: 16.0);
-    } else if (imgFile == null ||
-        SeekerProfileControllerInstanse.imageUrl == null ||
-        SeekerProfileControllerInstanse.imageUrl == "") {
+    } else if (imgFile == null || imageUrl == null || imageUrl == "") {
       Fluttertoast.showToast(
           msg: "Pless Select profile picture",
           toastLength: Toast.LENGTH_SHORT,
@@ -2834,6 +2843,15 @@ class _SikerUpdateProfileDetailsState extends State<SikerUpdateProfileDetails> {
           textColor: Colors.white,
           fontSize: 16.0);
     } else if (datestring == null) {
+      Fluttertoast.showToast(
+          msg: "Pless Select birth date",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else if (selectZodic == null) {
       Fluttertoast.showToast(
           msg: "Pless Select birth date",
           toastLength: Toast.LENGTH_SHORT,

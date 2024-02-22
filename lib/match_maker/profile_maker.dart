@@ -98,9 +98,7 @@ class _ViewProfileDetailsMakerState extends State<ViewProfileDetailsMaker> {
                       child: Image.asset("assets/icons/menu.png"));
                 },
               ),
-              SizedBox(
-                width: Get.width * 0.02,
-              )
+              SizedBox(width: Get.width*0.03,)
             ],
           ),
           endDrawer: Drawer(child: MakerDrawer()),
@@ -853,7 +851,7 @@ class _ViewProfileDetailsMakerState extends State<ViewProfileDetailsMaker> {
                         ],
                       ),
                       Positioned(
-                        left: 120,
+                        left: 145,
                         top: height * 0.03,
                         child: Container(
                           height: height * 0.14,

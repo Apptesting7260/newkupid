@@ -23,6 +23,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 // import 'package:flutter_audio_recorder2/flutter_audio_recorder2.dart';
 // import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:get/get.dart';
@@ -33,9 +34,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:video_player/video_player.dart';
-String?makerName;
-String?seekerName1;
- var playerx;
+
+String? makerName;
+String? seekerName1;
+var playerx;
+
 class ChatPage extends StatefulWidget {
   const ChatPage({Key? key}) : super(key: key);
 
@@ -44,9 +47,9 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
-  String ?textmsg;
-     bool ispageloading=false;
-  String url="";
+  String? textmsg;
+  bool ispageloading = false;
+  String url = "";
   int maxduration = 100;
   int currentpos = 0;
   String currentpostlabel = "00:00";
@@ -55,7 +58,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   bool audioplayed = false;
   late Uint8List audiobytes;
   String? fcmToken;
-  String maketrChatStatus="offline";
+  String maketrChatStatus = "offline";
+
 // Recording ?recording;
   AudioPlayer player = AudioPlayer();
   Map<String, dynamic>? messages;
@@ -67,135 +71,140 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
 
   final ViewSikerProfileDetailsControllernstance =
       Get.put(ViewSikerProfileDetailsController());
+
   String formatTimestamp(Timestamp timestamp) {
     final DateTime dateTime = timestamp.toDate();
     final DateFormat formatter = DateFormat('h:mm a');
     return formatter.format(dateTime);
   }
 
+  final StreamController<String> _chatStatusController =
+      StreamController<String>();
 
-
-  final StreamController<String> _chatStatusController = StreamController<String>();
-
-
-
-  
   @override
   void initState() {
-              WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
-      _getDir();
+    _getDir();
     _initialiseControllers();
     getChatStatus();
-     setonline();
+    setonline();
     getFcmToken();
     onChatScreen();
     MessengeRead();
     ViewRequestDetailsControllerinstance.ViewRequestDetailsApiHit();
-     setState(() {
-       
-     });
-                
+    setState(() {});
+
 // ViewRequestDetailsControllerinstance.ViewRequestDetailsApiHit();
 // Timer(Duration(seconds: 3), () {
 //   setState(() {
 //         ispageloading=true;
 //   });
 //  });
-  // _initAudioRecorder();// TODO: implement initState
+    // _initAudioRecorder();// TODO: implement initState
 
-  
     super.initState();
   }
 
-final chatfunctions chatfunctionsinstance=chatfunctions();
+  final chatfunctions chatfunctionsinstance = chatfunctions();
   FocusNode messageFocusNode = FocusNode();
- 
+
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-       setonline();
-     print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+      setonline();
+      print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       print(screenStatus.value);
       print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       setStatus('online');
-       
-         print(currentRouteName);
-        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-      if(currentRouteName == '/ChatPage'){
-getChatStatus();
-onChatScreen();
-       setonline();
+
+      print(currentRouteName);
+      print(
+          "********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      if (currentRouteName == '/ChatPage') {
+        getChatStatus();
+        onChatScreen();
+        setonline();
         print(currentRouteName);
-        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-      }
-      else{
+        print(
+            "********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+      } else {
         print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
       }
-        print(currentRouteName);
-        print("********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-    
-        print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
-     
-     
+      print(currentRouteName);
+      print(
+          "********************************************************************************%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+
+      print("!!!!!^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&");
     } else {
       setStatus('offline');
-     
-     
+
       setOffline();
-      
-       screenStatus = false.obs;
+
+      screenStatus = false.obs;
       print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
       print(screenStatus.value);
       print("&&&&&&&&&&&&&&&&&&&&&&&&&&&");
     }
   }
-      MessengeRead(){
-          _firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid).collection("massages").get().then((value) {
-               value.docs.forEach((element) {
 
-_firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid).collection("massages").doc(element.id).update({'isRead':true});
+  MessengeRead() {
+    _firestore
+        .collection("s${anotherCollecatinName.toString()}")
+        .doc(roomid)
+        .collection("massages")
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        _firestore
+            .collection("s${anotherCollecatinName.toString()}")
+            .doc(roomid)
+            .collection("massages")
+            .doc(element.id)
+            .update({'isRead': true});
+      });
+    });
+  }
 
-
-               });
-          
-          });
-   
-      }
-
-
-    setOffline() async {
-    DocumentReference roomRef =
-        _firestore.collection("s${anotherCollecatinName.toString()}" ).doc(roomid);
+  setOffline() async {
+    DocumentReference roomRef = _firestore
+        .collection("s${anotherCollecatinName.toString()}")
+        .doc(roomid);
     await roomRef.update({"onScreen": "false"});
-    DocumentReference roomRef2 = _firestore.collection("s${Makeridchat.toString()}").doc(roomid);
-      await roomRef2.update({
-    "$collecatinName":"false"
+    DocumentReference roomRef2 =
+        _firestore.collection("s${Makeridchat.toString()}").doc(roomid);
+    await roomRef2.update({
+      "$collecatinName": "false"
 
       // Add other room metadata if needed
     });
-    print( "onScreen  false");
+    print("onScreen  false");
   }
 
   setonline() async {
     // DocumentReference roomRef =
     //     _firestore.collection("$collecatinName").doc(roomid);
     // await roomRef.update({"onScreen": "true"});
-      DocumentReference roomRef1 = _firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid);
-      await roomRef1.update({
-    "onScreen":"true"
+    DocumentReference roomRef1 = _firestore
+        .collection("s${anotherCollecatinName.toString()}")
+        .doc(roomid);
+    await roomRef1.update({
+      "onScreen": "true"
 
       // Add other room metadata if needed
     });
-    print( "onScreen  true");
-     DocumentReference roomRef2 = _firestore.collection("s${Makeridchat.toString()}").doc(roomid);
-      await roomRef2.update({
-    "$collecatinName":"true"
+    print("onScreen  true");
+
+    DocumentReference roomRef2 =
+        _firestore.collection("s${Makeridchat.toString()}").doc(roomid);
+    await roomRef2.update({
+      "$collecatinName": "true"
 
       // Add other room metadata if needed
     });
-    print( "onScreen  true");
+
+    print("onScreen  true");
   }
 
   setStatus(String status) async {
@@ -205,144 +214,152 @@ _firestore.collection("s${anotherCollecatinName.toString()}").doc(roomid).collec
     print("====================================================status");
   }
 
-
-  void getFcmToken(){
+  void getFcmToken() {
     //      var deviceTokenRef = _firestore.collection("s73").doc('');
-    // var deviceTokenRefsnapshot =  deviceTokenRef.get().then((value) =>      
+    // var deviceTokenRefsnapshot =  deviceTokenRef.get().then((value) =>
     //  fcmToken = value.data()?['']
-     _firestore.collection("s${anotherCollecatinName.toString()}").doc("Device Token").snapshots().listen((value) {
-setState(() {
-  fcmToken=value.data()!['device token'];
-});
-  print('FCM Token================================================: $fcmToken');
-     }
-  
-     
-    );
-   
-      // Assuming you have a field named 'fcmToken' in the document
- setState(() {
-   
- });
-    
-   _firestore.collection("s${collecatinName.toString()}").doc(roomid).snapshots().listen((value) {
-setState(() {
-  Makeridchat=value.data()!['maker_id'];
-  makerName=value.data()!['maker_name'];
-});
-  print('FCM Token================================================: $fcmToken');
-     }
-  
-     
-    );
+    _firestore
+        .collection("s${anotherCollecatinName.toString()}")
+        .doc("Device Token")
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        fcmToken = value.data()!['device token'];
+      });
+      print(
+          'FCM Token================================================: $fcmToken');
+    });
+
+    // Assuming you have a field named 'fcmToken' in the document
+    setState(() {});
+
+    _firestore
+        .collection("s${collecatinName.toString()}")
+        .doc(roomid)
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        Makeridchat = value.data()!['maker_id'];
+        makerName = value.data()!['maker_name'];
+      });
+      print(
+          'FCM Token================================================: $fcmToken');
+    });
   }
-  
+
   final ViewSikerProfileDetailsControllerinstance =
       Get.put(ViewSikerProfileDetailsController());
-      final SeekerMyProfileDetailsController seekerMyProfileController = Get.put(SeekerMyProfileDetailsController());
+  final SeekerMyProfileDetailsController seekerMyProfileController =
+      Get.put(SeekerMyProfileDetailsController());
   final ScrollController _scrollController = ScrollController();
 
   void onSendMessage() async {
-     String anotherseekerid=seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
-              .toString()==ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.getseeker!.id.toString()?
-              ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.getanotherseeker!.id.toString():ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.getseeker!.id.toString();
+    String anotherseekerid = seekerMyProfileController
+                .SeekerMyProfileDetail.value.ProfileDetail!.id
+                .toString() ==
+            ViewRequestDetailsControllerinstance
+                .ViewProfileDetail.value.data!.getseeker!.id
+                .toString()
+        ? ViewRequestDetailsControllerinstance
+            .ViewProfileDetail.value.data!.getanotherseeker!.id
+            .toString()
+        : ViewRequestDetailsControllerinstance
+            .ViewProfileDetail.value.data!.getseeker!.id
+            .toString();
     switch (messagetype) {
       case "text":
-      textmsg= messagecontroller.text.toString();
-      setState(() {
-        textmsg;
-      });
-      
-       
+        textmsg = messagecontroller.text.toString();
+        setState(() {
+          textmsg;
+        });
+
         //  sendNotification(textmsg.toString());
-     
-     
-      messagecontroller.clear();
+
+        messagecontroller.clear();
         Map<String, dynamic> messages = {
-          "sentby": seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
+          "sentby": seekerMyProfileController
+              .SeekerMyProfileDetail.value.ProfileDetail!.id
               .toString(),
-               "sendertype":"seeker" ,
-                 "profileimage":seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.imgPath,
+          "sendertype": "seeker",
+          "profileimage": seekerMyProfileController
+              .SeekerMyProfileDetail.value.ProfileDetail!.imgPath,
           "message": textmsg,
           "type": "text",
           "time": FieldValue.serverTimestamp(),
-           'isRead': false,
-          
+          'isRead': false,
         };
- 
 
-
-          setState(() {
-            anotherseekerid;
-          });
-          //  DocumentReference roomRef1 = _firestore.collection("s"+seekerMyProfileController.SeekerMyProfi
-          // leDetail.
-          // value.ProfileDetail!.id.toString()).doc(roomid);
+        setState(() {
+          anotherseekerid;
+        });
+        //  DocumentReference roomRef1 = _firestore.collection("s"+seekerMyProfileController.SeekerMyProfi
+        // leDetail.
+        // value.ProfileDetail!.id.toString()).doc(roomid);
 // DocumentReference roomRef2 = _firestore.collection("s"+anotherchatuser.toString()).doc(roomid);
 
-  
-    //          await roomRef1.update({
-    //   'timestamp': FieldValue.serverTimestamp(),
-    //   "lastmsg": textmsg,
+        //          await roomRef1.update({
+        //   'timestamp': FieldValue.serverTimestamp(),
+        //   "lastmsg": textmsg,
 
-    //   // Add other room metadata if needed
-    // });
-    //  await roomRef2.update({
-    //   'timestamp': FieldValue.serverTimestamp(),
-    //   "lastmsg":textmsg,
-    //   // Add other room metadata if needed
-    // });
- chatfunctionsinstance.selfsender(textmsg.toString(), seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
-              .toString(), roomid.toString(), messages);
-               chatfunctionsinstance.anotherseekersender(textmsg.toString(), anotherseekerid, roomid.toString(), messages);
+        //   // Add other room metadata if needed
+        // });
+        //  await roomRef2.update({
+        //   'timestamp': FieldValue.serverTimestamp(),
+        //   "lastmsg":textmsg,
+        //   // Add other room metadata if needed
+        // });
+        chatfunctionsinstance.selfsender(
+            textmsg.toString(),
+            seekerMyProfileController
+                .SeekerMyProfileDetail.value.ProfileDetail!.id
+                .toString(),
+            roomid.toString(),
+            messages);
+        chatfunctionsinstance.anotherseekersender(
+            textmsg.toString(), anotherseekerid, roomid.toString(), messages);
 
-chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.getmaker!.id.toString(), roomid.toString(), messages);
+        chatfunctionsinstance.Makersender(
+            textmsg.toString(),
+            ViewRequestDetailsControllerinstance
+                .ViewProfileDetail.value.data!.getmaker!.id
+                .toString(),
+            roomid.toString(),
+            messages);
 
-              
-  //       await _firestore
-  //           .collection("s"+seekerMyProfileController.SeekerMyProfileDetail.
-  //         value.ProfileDetail!.id.toString())
-  //           .doc(roomid)
-  //           .collection("massages")
-  //           .add(messages);
-  //            await _firestore
-  //           .collection("s"+anotherchatuser.toString())
-  //           .doc(roomid)
-  //           .collection("massages")
-  //           .add(messages);
-  //    if(ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.makerId.toString()!="null"){
-  //     print("absbabbbsbbfbdsfbdbsfbdsf");
-  //     DocumentReference makerref = _firestore.collection(ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.makerId.toString()).doc(roomid.toString());
- 
-  //   await makerref.update({
-  //     'timestamp': FieldValue.serverTimestamp(),
-  //     "lastmsg": textmsg,
+        //       await _firestore
+        //           .collection("s"+seekerMyProfileController.SeekerMyProfileDetail.
+        //         value.ProfileDetail!.id.toString())
+        //           .doc(roomid)
+        //           .collection("massages")
+        //           .add(messages);
+        //            await _firestore
+        //           .collection("s"+anotherchatuser.toString())
+        //           .doc(roomid)
+        //           .collection("massages")
+        //           .add(messages);
+        //    if(ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.makerId.toString()!="null"){
+        //     print("absbabbbsbbfbdsfbdbsfbdsf");
+        //     DocumentReference makerref = _firestore.collection(ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.makerId.toString()).doc(roomid.toString());
 
-  //     // Add other room metadata if needed
-  //   });
-  //        messagecontroller.clear();
-  //  await _firestore
-  //           .collection("s"+ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.makerId.toString())
-  //           .doc(roomid)
-  //           .collection("massages")
-  //           .add(messages);
-          
+        //   await makerref.update({
+        //     'timestamp': FieldValue.serverTimestamp(),
+        //     "lastmsg": textmsg,
 
-  //   }
-          
-            
+        //     // Add other room metadata if needed
+        //   });
+        //        messagecontroller.clear();
+        //  await _firestore
+        //           .collection("s"+ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.makerId.toString())
+        //           .doc(roomid)
+        //           .collection("massages")
+        //           .add(messages);
+
+        //   }
+
         print(messages);
 
-  
-
-   
-   
-          messagecontroller.clear();
-          print("cleared");
+        messagecontroller.clear();
+        print("cleared");
 
         // setState(() {
         //   messagetype = "text";
@@ -351,20 +368,20 @@ chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControlle
         // Add your logic for handling text messages here
         break;
       case "img":
-       Map<String, dynamic>   messages = {
-          "sentby": seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
+        Map<String, dynamic> messages = {
+          "sentby": seekerMyProfileController
+              .SeekerMyProfileDetail.value.ProfileDetail!.id
               .toString(),
-               "sendertype":"seeker" ,
-   "profileimage":seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.imgPath,
+          "sendertype": "seeker",
+          "profileimage": seekerMyProfileController
+              .SeekerMyProfileDetail.value.ProfileDetail!.imgPath,
           "message": "",
           "imageurl": messageimgurl,
           "type": "img",
           "time": FieldValue.serverTimestamp(),
-            'isRead': false,
+          'isRead': false,
         };
-        String latmdg="image";
+        String latmdg = "image";
 //          DocumentReference roomRef1 = _firestore.collection(seekerMyProfileController.SeekerMyProfileDetail.
 //           value.ProfileDetail!.id.toString()).doc(roomid);
 // DocumentReference roomRef2 = _firestore.collection(anotherchatuser.toString()).doc(roomid);
@@ -394,7 +411,7 @@ chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControlle
 //       // Add other room metadata if needed
 //     });}
 // messagecontroller.clear();
-   
+
 //         messagecontroller.clear();
 //     await _firestore
 //           .collection(seekerMyProfileController.SeekerMyProfileDetail.
@@ -408,33 +425,44 @@ chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControlle
 // .collection("massages").add(messages!);
 //       print("Enter Some Text");
 
+        chatfunctionsinstance.selfsender(
+            latmdg.toString(),
+            seekerMyProfileController
+                .SeekerMyProfileDetail.value.ProfileDetail!.id
+                .toString(),
+            roomid.toString(),
+            messages);
+        chatfunctionsinstance.anotherseekersender(
+            latmdg.toString(), anotherseekerid, roomid.toString(), messages);
 
-chatfunctionsinstance.selfsender(latmdg.toString(), seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
-              .toString(), roomid.toString(), messages);
-               chatfunctionsinstance.anotherseekersender(latmdg.toString(), anotherseekerid, roomid.toString(), messages);
+        chatfunctionsinstance.Makersender(
+            latmdg.toString(),
+            ViewRequestDetailsControllerinstance
+                .ViewProfileDetail.value.data!.getmaker!.id
+                .toString(),
+            roomid.toString(),
+            messages);
+        setState(() {
+          messagetype = "text";
+          print(messagetype);
+        });
 
-chatfunctionsinstance.Makersender(latmdg.toString(),ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.getmaker!.id.toString(), roomid.toString(), messages);
-       setState(() {
-        messagetype="text";
-        print(messagetype);
-      });
-        
-      // Add your logic for handling image messages here
-      break;
-    case "audio":
-   Map<String, dynamic>    messages = {
-        "sentby": seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id.toString(),
-        "message": messagecontroller.text,
-        "audiourl":messagaudiourl,
-               "sendertype":"seeker" ,
-           "profileimage":seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.imgPath,
-        "type": "audio",
-        "time": FieldValue.serverTimestamp(),
+        // Add your logic for handling image messages here
+        break;
+      case "audio":
+        Map<String, dynamic> messages = {
+          "sentby": seekerMyProfileController
+              .SeekerMyProfileDetail.value.ProfileDetail!.id
+              .toString(),
+          "message": messagecontroller.text,
+          "audiourl": messagaudiourl,
+          "sendertype": "seeker",
+          "profileimage": seekerMyProfileController
+              .SeekerMyProfileDetail.value.ProfileDetail!.imgPath,
+          "type": "audio",
+          "time": FieldValue.serverTimestamp(),
           'isRead': false,
-      };
+        };
 //         DocumentReference roomRef1 = _firestore.collection(seekerMyProfileController.SeekerMyProfileDetail.
 //           value.ProfileDetail!.id.toString()).doc(roomid);
 // DocumentReference roomRef2 = _firestore.collection(anotherchatuser.toString()).doc(roomid);
@@ -466,7 +494,7 @@ chatfunctionsinstance.Makersender(latmdg.toString(),ViewRequestDetailsController
 //       // Add other room metadata if needed
 //     });}
 // messagecontroller.clear();
-  
+
 //         messagecontroller.clear();
 //     await _firestore
 //           .collection(seekerMyProfileController.SeekerMyProfileDetail.
@@ -479,32 +507,44 @@ chatfunctionsinstance.Makersender(latmdg.toString(),ViewRequestDetailsController
 //           .doc(roomid)
 // .collection("massages").add(messages);
 
-chatfunctionsinstance.selfsender(textmsg.toString(), seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
-              .toString(), roomid.toString(), messages);
-               chatfunctionsinstance.anotherseekersender(textmsg.toString(), anotherseekerid, roomid.toString(), messages);
+        chatfunctionsinstance.selfsender(
+            textmsg.toString(),
+            seekerMyProfileController
+                .SeekerMyProfileDetail.value.ProfileDetail!.id
+                .toString(),
+            roomid.toString(),
+            messages);
+        chatfunctionsinstance.anotherseekersender(
+            textmsg.toString(), anotherseekerid, roomid.toString(), messages);
 
-chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControllerinstance.ViewProfileDetail.value.data!.getmaker!.id.toString(), roomid.toString(), messages);
-      print("Enter Some Text");
-       setState(() {
-        messagetype="text";
-        print(messagetype);
-      });
-      break;
-    case "video":
-      print("Video");
-      // Add your logic for handling video messages here
-      break;
-    default:
-      print("Unknown message type");
+        chatfunctionsinstance.Makersender(
+            textmsg.toString(),
+            ViewRequestDetailsControllerinstance
+                .ViewProfileDetail.value.data!.getmaker!.id
+                .toString(),
+            roomid.toString(),
+            messages);
+        print("Enter Some Text");
+        setState(() {
+          messagetype = "text";
+          print(messagetype);
+        });
+        break;
+      case "video":
+        print("Video");
+        // Add your logic for handling video messages here
+        break;
+      default:
+        print("Unknown message type");
       // Handle the case where the message type is unknown
     }
   }
 
   String customPath = '/flutter_audio_recorder_';
+
   Future<String> uploadSelectedImageAndGetUrl(ImageSource source) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage (source: source);
+    final pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
       try {
@@ -526,48 +566,55 @@ chatfunctionsinstance.Makersender(textmsg.toString(),ViewRequestDetailsControlle
             await storageTaskSnapshot.ref.getDownloadURL();
         print(downloadUrl);
 
-setState(() {
-  messageimgurl=downloadUrl;
-  messagetype="img";
-});
-onSendMessage();
-  // if(onScreen=="false"){
+        setState(() {
+          messageimgurl = downloadUrl;
+          messagetype = "img";
+        });
+        onSendMessage();
+        // if(onScreen=="false"){
         sendNotification("image");
-      // }
+        // }
 
-      return downloadUrl;
-
-      
-    } catch (error) {
-      // Handle any errors that occur during the upload process
-      print('Error uploading image: $error');
+        return downloadUrl;
+      } catch (error) {
+        // Handle any errors that occur during the upload process
+        print('Error uploading image: $error');
+        return "null";
+      }
+    } else {
+      // User canceled the image selection
       return "null";
     }
-  } else {
-    // User canceled the image selection
-    return "null";
   }
-}
 
-Future<void> showOptionsDialog(BuildContext context) {
+  Future<void> showOptionsDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Choose",style: Theme.of(context).textTheme.titleLarge,),
+            title: Text(
+              "Choose",
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             //Image Picker
             content: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  child:Icon(Icons.camera_alt,color: Colors.pink,),
+                  child: Icon(
+                    Icons.camera_alt,
+                    color: Colors.pink,
+                  ),
                   onTap: () {
                     uploadSelectedImageAndGetUrl(ImageSource.camera);
                     Navigator.of(context).pop();
                   },
                 ),
                 GestureDetector(
-                  child: Icon(Icons.photo_library,color: Colors.pink,),
+                  child: Icon(
+                    Icons.photo_library,
+                    color: Colors.pink,
+                  ),
                   onTap: () {
                     Navigator.of(context).pop();
                     uploadSelectedImageAndGetUrl(ImageSource.gallery);
@@ -596,7 +643,6 @@ Future<void> showOptionsDialog(BuildContext context) {
 //   String? _recordingPath;
 // late Timer _recordingTimer;
 
-
 // Future<void> _initAudioRecorder() async {
 //   final appDocumentsDirectory = await getApplicationDocumentsDirectory();
 //   final uniqueFileName = DateTime.now().toIso8601String(); // Generate a unique filename
@@ -609,7 +655,7 @@ Future<void> showOptionsDialog(BuildContext context) {
 //     _audioRecorder = recorder;
 //   });
 // }
-//   bool isRecordingAudio = false; 
+//   bool isRecordingAudio = false;
 
 // Future<void> _startRecording() async {
 //   try {
@@ -668,17 +714,14 @@ Future<void> showOptionsDialog(BuildContext context) {
 //     }
 //   }
 
-
 //  var playerx = Player.network(
 //       "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
 //       autoPlay: false);
-
 
 //   bool _changingPosition = false;
 //   bool loading = false;
 //   Duration _position = Duration.zero;
 
-  
 // double get position {
 //     if (playerx.duration.inSeconds == 0) {
 //       return 0;
@@ -688,52 +731,50 @@ Future<void> showOptionsDialog(BuildContext context) {
 //     } else {
 //       return playerx.position.inSeconds * 100 / playerx.duration.inSeconds;
 //     }
-  
-
 
 //   }
-  
-Future<void> _uploadAudioToFirebase(File audioFile) async {
-  if (audioFile.existsSync()) {
-    try {
-      final storage = FirebaseStorage.instance;
-      final fileName = audioFile.path.split('/').last; // Get the original file name
-      final uniqueFileName = '${DateTime.now().millisecondsSinceEpoch}_$fileName'; // Add a timestamp to make the file name unique
-      final Reference reference = storage.ref().child('audio_recordings/$uniqueFileName');
 
-      final UploadTask uploadTask = reference.putFile(audioFile);
+  Future<void> _uploadAudioToFirebase(File audioFile) async {
+    if (audioFile.existsSync()) {
+      try {
+        final storage = FirebaseStorage.instance;
+        final fileName =
+            audioFile.path.split('/').last; // Get the original file name
+        final uniqueFileName =
+            '${DateTime.now().millisecondsSinceEpoch}_$fileName'; // Add a timestamp to make the file name unique
+        final Reference reference =
+            storage.ref().child('audio_recordings/$uniqueFileName');
 
-      // Await the completion of the upload task
-      final TaskSnapshot storageTaskSnapshot = await uploadTask;
+        final UploadTask uploadTask = reference.putFile(audioFile);
 
-      // Get the download URL
-      final String downloadURL = await storageTaskSnapshot.ref.getDownloadURL();
-      
-      // Now you can use downloadURL to store in Firestore as you were doing
+        // Await the completion of the upload task
+        final TaskSnapshot storageTaskSnapshot = await uploadTask;
 
-      setState(() {
-        messagetype = "audio";
-        messagaudiourl = downloadURL;
-      });
-      onSendMessage();
-      print('File uploaded successfully. Download URL: $downloadURL');
-    } catch (error) {
-      print('Error uploading file: $error');
+        // Get the download URL
+        final String downloadURL =
+            await storageTaskSnapshot.ref.getDownloadURL();
+
+        // Now you can use downloadURL to store in Firestore as you were doing
+
+        setState(() {
+          messagetype = "audio";
+          messagaudiourl = downloadURL;
+        });
+        onSendMessage();
+        print('File uploaded successfully. Download URL: $downloadURL');
+      } catch (error) {
+        print('Error uploading file: $error');
+      }
+    } else {
+      print('File does not exist: ${audioFile.path}');
     }
-  } else {
-    print('File does not exist: ${audioFile.path}');
   }
-}
-
-
-
 
 //   @override
 //   void dispose() {
 //     // _audioRecorder.dispose();
 //     super.dispose();
 //   }
-
 
   late final RecorderController recorderController;
 
@@ -743,10 +784,9 @@ Future<void> _uploadAudioToFirebase(File audioFile) async {
   bool isRecordingCompleted = false;
   bool isLoading = true;
   late Directory appDirectory;
- String chatStatus="offline";
- String onScreen="";
- String? MakeronScreen;
-
+  String chatStatus = "offline";
+  String onScreen = "";
+  String? MakeronScreen;
 
   void _getDir() async {
     appDirectory = await getApplicationDocumentsDirectory();
@@ -763,152 +803,142 @@ Future<void> _uploadAudioToFirebase(File audioFile) async {
       ..sampleRate = 44100;
   }
 
-
-void getChatStatus(){
- _firestore.collection("s${anotherCollecatinName.toString()}").doc("Status").snapshots().listen((value) {
-setState(() {
-   chatStatus=value.data()!['status'];
-});
-
-
- } 
- 
-
-
- 
- );
-
-  _firestore.collection("m${Makeridchat.toString()}").doc("Status").snapshots().listen((value) {
-setState(() {
-   maketrChatStatus=value.data()!['status'];
-});
-
-
- } 
- 
-
-
- 
- );
-
- setState(() {
-   
- });
- 
-}
-
-
-
-
-void onChatScreen(){
- _firestore.collection("s${collecatinName.toString()}").doc(roomid).snapshots().listen((value) {
-setState(() {
-   onScreen=value.data()!['onScreen'];
-});});
- _firestore.collection("s${collecatinName.toString()}").doc(roomid).snapshots().listen((value) {
-setState(() {
-   MakeronScreen=value.data()!['makerOnScreen'];
-});
-print("============================================makerOnScreen  ${value.data()!['makerOnScreen']}=======================================================================");
- } 
- 
-
-
- 
- );
-    var gettingDeviceToken2;
-  var gettingDeviceTokenSnapshot2 =  _firestore.collection("m${Makeridchat.toString()}").doc('Device Token').get().then((value) =>
-  gettingDeviceToken2=value.data()!['device token'] 
-  );
-                                     
-print("========================device token=====${gettingDeviceToken2}======================================================================");
-                                       print("Maker Fcm Token    ${Makeridchat}");
- 
- setState(() {
-   
- });
- 
-}
-
-
- sendNotification(String body) async {
-
-  print("notification data ");
-      var gettingDeviceTokenSnapshot = await _firestore.collection("s${anotherCollecatinName.toString()}").doc('Device Token').get();
-                                        var gettingDeviceToken = gettingDeviceTokenSnapshot.data();
-                                          print(gettingDeviceToken!['device token']);
-      
-        if(onScreen=="false"&&gettingDeviceToken!=null){                               
-    var notificationContent = {
-      'to': gettingDeviceToken['device token'],
-     
-      'notification': {
-        'title': '${chatname}',
-        'body': '${body}',
-        "image": "${chatimage1}"
-      },
-      'data':{
-        
-        'what': 'chat',
-       
-      }
-    };
-    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        body: jsonEncode(notificationContent),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization':
-              'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
-        }).then((value) {
-      if (kDebugMode) {
-        print("================================send notification    =======${value.body.toString()}===============================");
-      }
-    }).onError((error, stackTrace) {
-      if (kDebugMode) {
-        print(error);
-      }
+  void getChatStatus() {
+    _firestore
+        .collection("s${anotherCollecatinName.toString()}")
+        .doc("Status")
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        chatStatus = value.data()!['status'];
+      });
     });
 
-        }
-          var gettingDeviceTokenSnapshot2 = await _firestore.collection("m${Makeridchat}").doc('Device Token').get();
-                                        var gettingDeviceToken2 = gettingDeviceTokenSnapshot2.data();
-print("========================device token=====${gettingDeviceToken2!['device token']}======================================================================");
-                                       print("Maker Fcm Token    ${Makeridchat}");
-             if(MakeronScreen=="false"&&gettingDeviceToken2!=null){                               
-    var notificationContent = {
-      'to': gettingDeviceToken2['device token'],
-     
-      'notification': {
-        'title': '${chatname}',
-        'body': '${body}',
-        "image": "${chatimage1}"
-      },
-      'data':{
-        
-        'what': 'chat',
-       
-      }
-    };
-    await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        body: jsonEncode(notificationContent),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization':
-              'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
-        }).then((value) {
-      if (kDebugMode) {
-        print("================================maker send notification    =======${value.body.toString()}===============================");
-      }
-    }).onError((error, stackTrace) {
-      if (kDebugMode) {
-        print(error);
-      }
+    _firestore
+        .collection("m${Makeridchat.toString()}")
+        .doc("Status")
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        maketrChatStatus = value.data()!['status'];
+      });
     });
 
-        }
+    setState(() {});
   }
-  
-  
+
+  void onChatScreen() {
+    _firestore
+        .collection("s${collecatinName.toString()}")
+        .doc(roomid)
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        onScreen = value.data()!['onScreen'];
+      });
+    });
+    _firestore
+        .collection("s${collecatinName.toString()}")
+        .doc(roomid)
+        .snapshots()
+        .listen((value) {
+      setState(() {
+        MakeronScreen = value.data()!['makerOnScreen'];
+      });
+      print(
+          "============================================makerOnScreen  ${value.data()!['makerOnScreen']}=======================================================================");
+    });
+    var gettingDeviceToken2;
+    var gettingDeviceTokenSnapshot2 = _firestore
+        .collection("m${Makeridchat.toString()}")
+        .doc('Device Token')
+        .get()
+        .then((value) => gettingDeviceToken2 = value.data()!['device token']);
+
+    print(
+        "========================device token=====${gettingDeviceToken2}======================================================================");
+    print("Maker Fcm Token    ${Makeridchat}");
+
+    setState(() {});
+  }
+
+  sendNotification(String body) async {
+    print("notification data ");
+    var gettingDeviceTokenSnapshot = await _firestore
+        .collection("s${anotherCollecatinName.toString()}")
+        .doc('Device Token')
+        .get();
+    var gettingDeviceToken = gettingDeviceTokenSnapshot.data();
+    print(gettingDeviceToken!['device token']);
+
+    if (onScreen == "false" && gettingDeviceToken != null) {
+      var notificationContent = {
+        'to': gettingDeviceToken['device token'],
+        'notification': {
+          'title': '${chatname}',
+          'body': '${body}',
+          "image": "${chatimage1}"
+        },
+        'data': {
+          'what': 'chat',
+        }
+      };
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          body: jsonEncode(notificationContent),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':
+                'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
+          }).then((value) {
+        if (kDebugMode) {
+          print(
+              "================================send notification    =======${value.body.toString()}===============================");
+        }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print(error);
+        }
+      });
+    }
+    var gettingDeviceTokenSnapshot2 = await _firestore
+        .collection("m${Makeridchat}")
+        .doc('Device Token')
+        .get();
+    var gettingDeviceToken2 = gettingDeviceTokenSnapshot2.data();
+    print(
+        "========================device token=====${gettingDeviceToken2!['device token']}======================================================================");
+    print("Maker Fcm Token    ${Makeridchat}");
+    if (MakeronScreen == "false" && gettingDeviceToken2 != null) {
+      var notificationContent = {
+        'to': gettingDeviceToken2['device token'],
+        'notification': {
+          'title': '${chatname}',
+          'body': '${body}',
+          "image": "${chatimage1}"
+        },
+        'data': {
+          'what': 'chat',
+        }
+      };
+      await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+          body: jsonEncode(notificationContent),
+          headers: {
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization':
+                'key=AAAAmlxyhHk:APA91bGH2iSIQb2WDZngInSeh41OJak5ovkzbFiftngdh1A8WU6Xf2b2SAB2RgdLFEphSLnPoPUipOjvLBPAbZuFE3HycjzkH8DTDQ7_0zSgdeuE8b08b1loiq9c9_GH5_5xRXHrK6hq'
+          }).then((value) {
+        if (kDebugMode) {
+          print(
+              "================================maker send notification    =======${value.body.toString()}===============================");
+        }
+      }).onError((error, stackTrace) {
+        if (kDebugMode) {
+          print(error);
+        }
+      });
+    }
+  }
+
   void _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
@@ -924,44 +954,47 @@ print("========================device token=====${gettingDeviceToken2!['device t
     recorderController.dispose();
     super.dispose();
   }
-Future<String?> uploadVideoToFirebaseStorage(String filePath) async {
-  try {
-    Reference storageReference = FirebaseStorage.instance.ref().child('videos/${DateTime.now()}.mp4');
-    final UploadTask uploadTask = storageReference.putFile(File(filePath));
 
-    final TaskSnapshot downloadUrl = (await uploadTask.whenComplete(() {}));
+  Future<String?> uploadVideoToFirebaseStorage(String filePath) async {
+    try {
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('videos/${DateTime.now()}.mp4');
+      final UploadTask uploadTask = storageReference.putFile(File(filePath));
 
-    final String url = await downloadUrl.ref.getDownloadURL();
-    return url;
-  } catch (e) {
-    print('Error uploading video: $e');
-    return null;
-  }
-}
+      final TaskSnapshot downloadUrl = (await uploadTask.whenComplete(() {}));
 
-Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
-  try {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      // type: FileType.custom,
-      // allowedExtensions: ['mp4', 'mov'],
-    );
-
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      String filePath = file.path.toString();
-
-      String? videoUrl = await uploadVideoToFirebaseStorage(filePath);
-
-      if (videoUrl != null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Video uploaded to Firebase: $videoUrl'),
-        ));
-      }
+      final String url = await downloadUrl.ref.getDownloadURL();
+      return url;
+    } catch (e) {
+      print('Error uploading video: $e');
+      return null;
     }
-  } catch (e) {
-    print('Error picking and uploading video: $e');
   }
-}
+
+  Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+          // type: FileType.custom,
+          // allowedExtensions: ['mp4', 'mov'],
+          );
+
+      if (result != null) {
+        PlatformFile file = result.files.first;
+        String filePath = file.path.toString();
+
+        String? videoUrl = await uploadVideoToFirebaseStorage(filePath);
+
+        if (videoUrl != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Video uploaded to Firebase: $videoUrl'),
+          ));
+        }
+      }
+    } catch (e) {
+      print('Error picking and uploading video: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     currentRouteName = ModalRoute.of(context)!.settings.name;
@@ -969,69 +1002,81 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
     final width = MediaQuery.of(context).size.width;
     return SafeArea(
         child: Scaffold(
-
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-         toolbarHeight: Get.height*0.1,
-
-
-
+        toolbarHeight: Get.height * 0.1,
         actions: [
           Container(
             child: GestureDetector(
               child: Image.asset("assets/icons/menuu.png"),
               onTap: () {
-
-                     print(Makeridchat);
-                if(Makeridchat!=null)  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-                  // Color(0xffFFFFFF)
-            backgroundColor: Color(0xffFFFFFF),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),),
-          title: Center(child: Text('Chat Info',style: TextStyle(color: Colors.black),)),
-          content: SingleChildScrollView(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-               Column(
-             
-
-
-                 children: [
-
-                   Text(makerName.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
-                   Text(seekerName1.toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
-                 ],
-               ),
-               Column(
-                  
-                 children: [
-                  
-                    Text(maketrChatStatus.toString(),style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color:maketrChatStatus!="online"? Colors.red:Colors.green),),
-                    Text(chatStatus.toString(),style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color:chatStatus!="online"? Colors.red:Colors.green),),
-                 ],
-               ),
-
-              ],
+                print(Makeridchat);
+                if (Makeridchat != null)
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        // Color(0xffFFFFFF)
+                        backgroundColor: Color(0xffFFFFFF),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        title: Center(
+                            child: Text(
+                          'Chat Info',
+                          style: TextStyle(color: Colors.black),
+                        )),
+                        content: SingleChildScrollView(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(makerName.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                  Text(seekerName1.toString(),
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black)),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    maketrChatStatus.toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                            color: maketrChatStatus != "online"
+                                                ? Colors.red
+                                                : Colors.green),
+                                  ),
+                                  Text(
+                                    chatStatus.toString(),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .copyWith(
+                                            color: chatStatus != "online"
+                                                ? Colors.red
+                                                : Colors.green),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+              },
             ),
           ),
-       );
-      },
-    );
-  
-              
-              },
-
-              ) ,
+          SizedBox(
+            width: Get.width * .02,
           )
         ],
         leading: GestureDetector(
@@ -1046,15 +1091,16 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
           ),
         ),
         title: Container(
-
           child: Row(
             children: [
-
-              SizedBox(width: width * .01,height: Get.height*0.1,),
+              SizedBox(
+                width: width * .01,
+                height: Get.height * 0.1,
+              ),
               CircleAvatar(
                 radius: 30.0,
-                backgroundImage: CachedNetworkImageProvider(
-                    chatimage1.toString()),
+                backgroundImage:
+                    CachedNetworkImageProvider(chatimage1.toString()),
                 backgroundColor: Colors.transparent,
               ),
               SizedBox(width: width * .02),
@@ -1063,24 +1109,26 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: Get.width*0.3
-
-              ,
+                    width: Get.width * 0.3,
                     child: Text(
-                     chatname.toString(),
-                      style: TextStyle(fontSize: 12,),maxLines: 2,
+                      chatname.toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      maxLines: 2,
                     ),
                   ),
                   SizedBox(
                     height: height * .01,
                   ),
-                if(Makeridchat==null)  Text(
-                    "$chatStatus",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(color:chatStatus!="online"? Colors.red:Colors.green),
-                  ),
+                  if (Makeridchat == null)
+                    Text(
+                      "$chatStatus",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: chatStatus != "online"
+                              ? Colors.red
+                              : Colors.green),
+                    ),
                 ],
               ),
             ],
@@ -1091,256 +1139,314 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
         child: Column(
           children: [
             // SizedBox(height: height*.03),
-        
-           
-        
+
             SizedBox(
               height: Get.height * 0.02,
             ),
-         Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                                  stream: _firestore
-                                      .collection("s"+seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!.id
-              .toString())
-                                      .doc(roomid)
-                                      .collection('massages')
-                                      .orderBy("time", descending: true)
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    return snapshot.data != null
-                                        ? ListView.builder(
-                          shrinkWrap: true,
-                          reverse: true,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final message = snapshot
-                                .data!.docs[index]['message']
-                                .toString();
-                            final timestamp = snapshot.data!.docs[index]['time']
-                                as Timestamp?; // Assuming 'time' is the timestamp field
-                            final isSentByCurrentUser = snapshot
-                                    .data!.docs[index]['sentby']
-                                    .toString() ==
-                                seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!
-                                    .id
-                                    .toString();
-        
-                            return Align(
-                              alignment: isSentByCurrentUser
-                                  ? Alignment.centerRight
-                                  : Alignment.centerLeft,
-                              child: Row(
-                                mainAxisAlignment:isSentByCurrentUser
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start, 
-                                children: [
-        SizedBox(width: Get.width*0.02,),
-                               if(snapshot
-                                    .data!.docs[index]['sentby']
-                                    .toString() !=
-                                seekerMyProfileController.SeekerMyProfileDetail.
-          value.ProfileDetail!
-                                    .id
-                                    .toString())   CircleAvatar(radius: 10,backgroundImage: NetworkImage(snapshot
-                                                    .data!.docs[index]['profileimage']
-                                                    .toString()),), Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  decoration: BoxDecoration(
-                                    color: isSentByCurrentUser
-                                        ? Color(0xffFFCCCB)
-                                        : Color(0xffcce7e8),
-                                    borderRadius: isSentByCurrentUser
-                                        ? BorderRadius.only(
-                                            topLeft: Radius.circular(8),
-                                            topRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(8),
-                                          )
-                                        : BorderRadius.only(
-                                            topRight: Radius.circular(8),
-                                            bottomRight: Radius.circular(8),
-                                            bottomLeft: Radius.circular(8),
-                                          ),
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment: isSentByCurrentUser
-                                        ? CrossAxisAlignment.end
-                                        : CrossAxisAlignment.start,
-                                    children: [
-                                      if (snapshot.data!.docs[index]['type']
-                                              .toString() ==
-                                          "text")
-                                        Container(
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: _firestore
+                      .collection("s" +
+                          seekerMyProfileController
+                              .SeekerMyProfileDetail.value.ProfileDetail!.id
+                              .toString())
+                      .doc(roomid)
+                      .collection('massages')
+                      .orderBy("time", descending: true)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    return snapshot.data != null
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            reverse: true,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final message = snapshot
+                                  .data!.docs[index]['message']
+                                  .toString();
+                              final timestamp = snapshot.data!.docs[index]
+                                      ['time']
+                                  as Timestamp?; // Assuming 'time' is the timestamp field
+                              final isSentByCurrentUser = snapshot
+                                      .data!.docs[index]['sentby']
+                                      .toString() ==
+                                  seekerMyProfileController
+                                      .SeekerMyProfileDetail
+                                      .value
+                                      .ProfileDetail!
+                                      .id
+                                      .toString();
 
-
-                                          child: Text(
-                                            breakMessage(message),
-                                            style: TextStyle(color: Colors.black),
-                                            textAlign: TextAlign.start,
-                                            softWrap: true,
-                                          ),
-
+                              return Align(
+                                  alignment: isSentByCurrentUser
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  child: Row(
+                                      mainAxisAlignment: isSentByCurrentUser
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.02,
                                         ),
-                                      if (snapshot.data!.docs[index]['type']
-                                              .toString() ==
-                                          "img")
-                                        Container(
-                                          height: 150,
-                                          width: 100,
-                                          child: CachedNetworkImage(
-                                            imageUrl: snapshot
-                                                .data!.docs[index]['imageurl']
-                                                .toString(),
-                                            progressIndicatorBuilder: (context,
-                                                    url, downloadProgress) =>
-                                                Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                            value:
-                                                                downloadProgress
-                                                                    .progress)),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    Icon(Icons.error),
+                                        if (snapshot.data!.docs[index]['sentby']
+                                                .toString() !=
+                                            seekerMyProfileController
+                                                .SeekerMyProfileDetail
+                                                .value
+                                                .ProfileDetail!
+                                                .id
+                                                .toString())
+                                          CircleAvatar(
+                                            radius: 10,
+                                            backgroundImage: NetworkImage(
+                                                snapshot.data!
+                                                    .docs[index]['profileimage']
+                                                    .toString()),
+                                          ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            padding: EdgeInsets.all(8.0),
+                                            decoration: BoxDecoration(
+                                              color: isSentByCurrentUser
+                                                  ? Color(0xffFFCCCB)
+                                                  : Color(0xffcce7e8),
+                                              borderRadius: isSentByCurrentUser
+                                                  ? BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(8),
+                                                      topRight:
+                                                          Radius.circular(8),
+                                                      bottomLeft:
+                                                          Radius.circular(8),
+                                                    )
+                                                  : BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(8),
+                                                      bottomRight:
+                                                          Radius.circular(8),
+                                                      bottomLeft:
+                                                          Radius.circular(8),
+                                                    ),
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  isSentByCurrentUser
+                                                      ? CrossAxisAlignment.end
+                                                      : CrossAxisAlignment
+                                                          .start,
+                                              children: [
+                                                if (snapshot.data!
+                                                        .docs[index]['type']
+                                                        .toString() ==
+                                                    "text")
+                                                  Container(
+                                                    child: Text(
+                                                      breakMessage(message),
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                      softWrap: true,
+                                                    ),
+                                                  ),
+                                                if (snapshot.data!
+                                                        .docs[index]['type']
+                                                        .toString() ==
+                                                    "img")
+                                                  Container(
+                                                    height: 150,
+                                                    width: 100,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: snapshot
+                                                          .data!
+                                                          .docs[index]
+                                                              ['imageurl']
+                                                          .toString(),
+                                                      progressIndicatorBuilder: (context,
+                                                              url,
+                                                              downloadProgress) =>
+                                                          Center(
+                                                              child: CircularProgressIndicator(
+                                                                  value: downloadProgress
+                                                                      .progress)),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(Icons.error),
+                                                    ),
+                                                  ),
+
+                                                if (snapshot.data!
+                                                        .docs[index]['type']
+                                                        .toString() ==
+                                                    "audio")
+                                                  CustomAudioPlayer(
+                                                    audioUrl: snapshot.data!
+                                                        .docs[index]['audiourl']
+                                                        .toString(),
+                                                  ),
+
+                                                //        Container(r
+                                                //   alignment: AlignmentDirectional.bottomEnd,
+                                                //   height: 70,
+                                                //   width: 200,
+                                                //   decoration: BoxDecoration(
+                                                //     borderRadius: BorderRadius.circular(20),
+                                                //     color: Colors.black,
+                                                //   ),
+                                                //   child: Padding(
+                                                //     padding: const EdgeInsets.all(20.0),
+                                                //     child: Row(
+                                                //       children: [
+                                                //         Stack(
+                                                //           children: [
+                                                //             SizedBox(
+
+                                                //               width: 30,
+                                                //               height: 30,
+                                                //               child: StreamBuilder(
+                                                //                 stream: playerx.streams.position,
+                                                //                 builder: (context, snapshot) {
+                                                //                   return CircularProgressIndicator(
+                                                //                     strokeWidth: 2,
+                                                //                     color: Colors.white,
+                                                //                     value: loading
+                                                //                         ? null
+                                                //                         : playerx.position.inSeconds /
+                                                //                         max(playerx.duration.inSeconds, 0.01),
+                                                //                   );
+                                                //                 },
+                                                //               ),
+                                                //             ),
+                                                //             SizedBox(
+
+                                                //               width: 30,
+                                                //               height: 30,
+                                                //               child: FloatingActionButton(
+                                                //                 disabledElevation: 0,
+                                                //                 elevation: 0,
+                                                //                 focusElevation: 0,
+                                                //                 hoverElevation: 0,
+                                                //                 highlightElevation: 0,
+                                                //                 backgroundColor: Colors.teal.withOpacity(0.1),
+                                                //                 onPressed: () {
+                                                //                   setState(() {
+                                                //                     playerx.toggle();
+                                                //                   });
+                                                //                 },
+                                                //                 child: DefaultTextStyle(
+                                                //                   style: const TextStyle(color: Colors.black87),
+                                                //                   child: StreamBuilder(
+                                                //                     stream: playerx.streams.position,
+                                                //                     builder: (context, snapshot) {
+                                                //                       return playerx.playing
+                                                //                           ? const Icon(
+                                                //                         Icons.pause,
+                                                //                         color: Colors.white,
+                                                //                         size: 20,
+                                                //                       )
+                                                //                           : const Icon(
+                                                //                         Icons.play_arrow,
+                                                //                         color: Colors.white,
+                                                //                         size: 20,
+                                                //                       );
+                                                //                     },
+                                                //                   ),
+                                                //                 ),
+                                                //               ),
+                                                //             ),
+                                                //           ],
+                                                //         ),
+                                                //         Expanded(
+                                                //           child: Container(
+
+                                                //             width: double.infinity,
+                                                //             child: StreamBuilder(
+                                                //                 stream: playerx.streams.position,
+                                                //                 builder: (context, AsyncSnapshot<Duration> snapshot) {
+                                                //                   loading = false;
+                                                //                   return Slider(
+                                                //                     value: position,
+                                                //                     min: 0,
+                                                //                     max: 100,
+                                                //                     onChangeStart: (double value) {
+                                                //                       _changingPosition = true;
+                                                //                     },
+                                                //                     onChangeEnd: (double value) {
+                                                //                       _changingPosition = false;
+                                                //                     },
+                                                //                     onChanged: (double value) {
+                                                //                       setState(() {
+                                                //                         loading = true;
+                                                //                         _position = Duration(
+                                                //                             seconds:
+                                                //                             ((value / 100) * playerx.duration.inSeconds)
+                                                //                                 .toInt());
+                                                //                         playerx.position = _position;
+                                                //                       });
+                                                //                     },
+                                                //                   );
+                                                //                 }),
+                                                //           ),
+                                                //         )
+                                                //       ],
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                                //CustomAudioPlayerWidget(audioUrl: snapshot.data!.docs[index]['audiourl'].toString(),),
+
+                                                //  CustomAudioPlayer(audioUrl:snapshot.data!.docs[index]['audiourl'].toString() ,),
+                                                SizedBox(height: 4),
+                                                // Adjust the spacing as needed
+                                                Row(
+                                                  children: [
+                                                    if (timestamp != null)
+                                                      Text(
+                                                        formatTimestamp(
+                                                            timestamp),
+                                                        // Format timestamp as needed
+                                                        style: TextStyle(
+                                                            color: Colors.grey,
+                                                            fontSize: 12),
+                                                      ),
+                                                    if (Makeridchat == null &&
+                                                        seekerMyProfileController
+                                                                .SeekerMyProfileDetail
+                                                                .value
+                                                                .ProfileDetail!
+                                                                .id
+                                                                .toString() ==
+                                                            snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                    ['sentby']
+                                                                .toString())
+                                                      Text(
+                                                        snapshot.data!.docs[
+                                                                        index][
+                                                                    'isRead'] ==
+                                                                false
+                                                            ? "Sent"
+                                                            : "Seen",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black),
+                                                      )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
-        
-             if(snapshot.data!.docs[index]['type'].toString()=="audio") CustomAudioPlayer(audioUrl:snapshot.data!.docs[index]['audiourl'].toString() ,),
-             
-            //        Container(r
-            //   alignment: AlignmentDirectional.bottomEnd,
-            //   height: 70,
-            //   width: 200,
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(20),
-            //     color: Colors.black,
-            //   ),
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(20.0),
-            //     child: Row(
-            //       children: [
-            //         Stack(
-            //           children: [
-            //             SizedBox(
-        
-            //               width: 30,
-            //               height: 30,
-            //               child: StreamBuilder(
-            //                 stream: playerx.streams.position,
-            //                 builder: (context, snapshot) {
-            //                   return CircularProgressIndicator(
-            //                     strokeWidth: 2,
-            //                     color: Colors.white,
-            //                     value: loading
-            //                         ? null
-            //                         : playerx.position.inSeconds /
-            //                         max(playerx.duration.inSeconds, 0.01),
-            //                   );
-            //                 },
-            //               ),
-            //             ),
-            //             SizedBox(
-        
-            //               width: 30,
-            //               height: 30,
-            //               child: FloatingActionButton(
-            //                 disabledElevation: 0,
-            //                 elevation: 0,
-            //                 focusElevation: 0,
-            //                 hoverElevation: 0,
-            //                 highlightElevation: 0,
-            //                 backgroundColor: Colors.teal.withOpacity(0.1),
-            //                 onPressed: () {
-            //                   setState(() {
-            //                     playerx.toggle();
-            //                   });
-            //                 },
-            //                 child: DefaultTextStyle(
-            //                   style: const TextStyle(color: Colors.black87),
-            //                   child: StreamBuilder(
-            //                     stream: playerx.streams.position,
-            //                     builder: (context, snapshot) {
-            //                       return playerx.playing
-            //                           ? const Icon(
-            //                         Icons.pause,
-            //                         color: Colors.white,
-            //                         size: 20,
-            //                       )
-            //                           : const Icon(
-            //                         Icons.play_arrow,
-            //                         color: Colors.white,
-            //                         size: 20,
-            //                       );
-            //                     },
-            //                   ),
-            //                 ),
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //         Expanded(
-            //           child: Container(
-        
-            //             width: double.infinity,
-            //             child: StreamBuilder(
-            //                 stream: playerx.streams.position,
-            //                 builder: (context, AsyncSnapshot<Duration> snapshot) {
-            //                   loading = false;
-            //                   return Slider(
-            //                     value: position,
-            //                     min: 0,
-            //                     max: 100,
-            //                     onChangeStart: (double value) {
-            //                       _changingPosition = true;
-            //                     },
-            //                     onChangeEnd: (double value) {
-            //                       _changingPosition = false;
-            //                     },
-            //                     onChanged: (double value) {
-            //                       setState(() {
-            //                         loading = true;
-            //                         _position = Duration(
-            //                             seconds:
-            //                             ((value / 100) * playerx.duration.inSeconds)
-            //                                 .toInt());
-            //                         playerx.position = _position;
-            //                       });
-            //                     },
-            //                   );
-            //                 }),
-            //           ),
-            //         )
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            //CustomAudioPlayerWidget(audioUrl: snapshot.data!.docs[index]['audiourl'].toString(),),
-        
-          //  CustomAudioPlayer(audioUrl:snapshot.data!.docs[index]['audiourl'].toString() ,),
-              SizedBox(height: 4), // Adjust the spacing as needed
-            Row(children: [
-               if (timestamp != null)  Text(
-                formatTimestamp(timestamp), // Format timestamp as needed
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-              Text( snapshot.data!.docs[index]['isRead']==false?"Sent":"Seen",style: TextStyle(color: Colors.black),)
-            ],)
-            ],
-          ),
-        ),
+                                      ]));
+                            },
+                          )
+                        : Container();
+                  }),
             ),
-          ]));
-        },
-        ):Container();
-        
-                    }
-        ),
-        ),
-        
+
             // Obx(() {
             //   switch (
             //       ViewRequestDetailsControllerinstance.rxRequestStatus.value) {
@@ -1371,20 +1477,20 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
             //           if (snapshot.connectionState == ConnectionState.waiting) {
             //             return Center(child: CircularProgressIndicator());
             //           }
-        
+
             //           if (!snapshot.hasData || !snapshot.data!.exists) {
             //             return Center(
             //               child: Text("No status data yet."),
             //             );
             //           }
-        
+
             //           Map<String, dynamic> statusData =
             //               snapshot.data!.data() as Map<String, dynamic>;
             //           String status = statusData['status']
             //               .toString(); // Assuming 'status' is the field name
             //           String id = statusData['id']
             //               .toString(); // Assuming 'status' is the field name
-        
+
             //           return id !=
             //                       ViewSikerProfileDetailsControllerinstance
             //                           .ViewProfileDetail
@@ -1421,205 +1527,189 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
             //       );
             //   }
             // }),
-        
-              // Row(
-              //   children: [
-              //     Wrap(
-              //             runSpacing: 8.0,
-              //             spacing: 6.0,
-              //             children: [
-              //               GestureDetector(
-              //                 onTap: () {
-              //                   // messagecontroller.text = "Hello!";
-              //                 },
-              //                 child: Container(
-              //                   decoration: BoxDecoration(
-              //                       border: Border.all(color: Colors.grey),
-              //                       borderRadius: BorderRadius.circular(20)),
-              //                   height: height * .04,
-              //                   width: width * .18,
-              //                   child: Center(
-              //                     child: Text(
-              //                       "Hello!",
-              //                       style: Theme.of(context)
-              //                           .textTheme
-              //                           .bodySmall!
-              //                           .copyWith(color: Colors.grey),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ),
-              //               GestureDetector(
-              //                 onTap: () {
-              //                   // messagecontroller.text = "How are you?";
-              //                 },
-              //                 child: Container(
-              //                   decoration: BoxDecoration(
-              //                       border: Border.all(color: Colors.grey),
-              //                       borderRadius: BorderRadius.circular(20)),
-              //                   height: height * .04,
-              //                   width: width * .3,
-              //                   child: Center(
-              //                     child: Text(
-              //                       "How are you?",
-              //                       style: Theme.of(context)
-              //                           .textTheme
-              //                           .bodySmall!
-              //                           .copyWith(color: Colors.grey),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ),
-              //               GestureDetector(
-              //                 onTap: () {
-              //                   // messagecontroller.text = "What are you doing?";
-              //                 },
-              //                 child: Container(
-              //                   decoration: BoxDecoration(
-              //                       border: Border.all(color: Colors.grey),
-              //                       borderRadius: BorderRadius.circular(20)),
-              //                   height: height * .04,
-              //                   width: width * .37,
-              //                   child: Center(
-              //                     child: Text(
-              //                       "What are you doing?",
-              //                       style: Theme.of(context)
-              //                           .textTheme
-              //                           .bodySmall!
-              //                           .copyWith(color: Colors.grey),
-              //                     ),
-              //                   ),
-              //                 ),
-              //               ),
-              //             ],
-              //           ),
-              //   ],
-              // ),
-        
-        
-              SizedBox(height: Get.height*0.02,),
-        
-             
-               
-            ],
+
+            // Row(
+            //   children: [
+            //     Wrap(
+            //             runSpacing: 8.0,
+            //             spacing: 6.0,
+            //             children: [
+            //               GestureDetector(
+            //                 onTap: () {
+            //                   // messagecontroller.text = "Hello!";
+            //                 },
+            //                 child: Container(
+            //                   decoration: BoxDecoration(
+            //                       border: Border.all(color: Colors.grey),
+            //                       borderRadius: BorderRadius.circular(20)),
+            //                   height: height * .04,
+            //                   width: width * .18,
+            //                   child: Center(
+            //                     child: Text(
+            //                       "Hello!",
+            //                       style: Theme.of(context)
+            //                           .textTheme
+            //                           .bodySmall!
+            //                           .copyWith(color: Colors.grey),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //               GestureDetector(
+            //                 onTap: () {
+            //                   // messagecontroller.text = "How are you?";
+            //                 },
+            //                 child: Container(
+            //                   decoration: BoxDecoration(
+            //                       border: Border.all(color: Colors.grey),
+            //                       borderRadius: BorderRadius.circular(20)),
+            //                   height: height * .04,
+            //                   width: width * .3,
+            //                   child: Center(
+            //                     child: Text(
+            //                       "How are you?",
+            //                       style: Theme.of(context)
+            //                           .textTheme
+            //                           .bodySmall!
+            //                           .copyWith(color: Colors.grey),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //               GestureDetector(
+            //                 onTap: () {
+            //                   // messagecontroller.text = "What are you doing?";
+            //                 },
+            //                 child: Container(
+            //                   decoration: BoxDecoration(
+            //                       border: Border.all(color: Colors.grey),
+            //                       borderRadius: BorderRadius.circular(20)),
+            //                   height: height * .04,
+            //                   width: width * .37,
+            //                   child: Center(
+            //                     child: Text(
+            //                       "What are you doing?",
+            //                       style: Theme.of(context)
+            //                           .textTheme
+            //                           .bodySmall!
+            //                           .copyWith(color: Colors.grey),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //   ],
+            // ),
+
+            SizedBox(
+              height: Get.height * 0.02,
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: TapRegion(
+        onTapOutside: (event) => FocusScope.of(context).unfocus(),
+        child: Container(
+          padding: MediaQuery.of(context).viewInsets,
+          width: Get.width,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Row(
+              children: [
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  child: isRecording
+                      ? AudioWaveforms(
+                          enableGesture: true,
+                          size: Size(MediaQuery.of(context).size.width / 2, 50),
+                          recorderController: recorderController,
+                          waveStyle: const WaveStyle(
+                            waveColor: Colors.black,
+                            extendWaveform: true,
+                            showMiddleLine: false,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.0),
+                            color: Colors.white,
+                          ),
+                          padding: const EdgeInsets.only(left: 18),
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                        )
+                      : Container(
+                          width: MediaQuery.of(context).size.width / 1.7,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12.0),
+                              border:
+                                  Border.all(width: 1, color: Colors.black)),
+                          padding: const EdgeInsets.only(left: 18),
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
+                          child: TextField(
+                            // readOnly: true,
+                            controller: messagecontroller,
+                            style: TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                              hintText: "Type Something...",
+                              hintStyle: const TextStyle(color: Colors.grey),
+                              contentPadding: const EdgeInsets.only(top: 16),
+                              border: InputBorder.none,
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  showOptionsDialog(context);
+                                },
+                                icon: Icon(Icons.adaptive.share),
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    String userMessage = messagecontroller.text.trim();
+                    if (userMessage.isNotEmpty) {
+                      onSendMessage();
+                      sendNotification(userMessage);
+                    }
+                  },
+                  icon: Icon(
+                    isRecording ? Icons.refresh : Icons.send,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                IconButton(
+                  onPressed: _startOrStopRecording,
+                  icon: Icon(isRecording ? Icons.send : Icons.mic),
+                  color: Colors.black,
+                  iconSize: 28,
+                ),
+              ],
+            ),
           ),
         ),
-
-        bottomNavigationBar: TapRegion(
-      onTapOutside: (event) => FocusScope.of(context).unfocus(),
-       child: Container(
-         padding: MediaQuery.of(context).viewInsets,
-        
-        width:Get.width,child:  Padding(
-          padding: const EdgeInsets.only(bottom: 10),
-          child: Row(
-                                children: [
-                                  AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 200),
-                                    child: isRecording
-                                        ? AudioWaveforms(
-                                            enableGesture: true,
-                                            size: Size(
-                                                MediaQuery.of(context).size.width / 2,
-                                                50),
-                                            recorderController: recorderController,
-                                            waveStyle: const WaveStyle(
-                                              waveColor: Colors.black,
-                                              extendWaveform: true,
-                                              showMiddleLine: false,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(12.0),
-                                              color:  Colors.white,
-                                            ),
-                                            padding: const EdgeInsets.only(left: 18),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                          )
-                                        : Container(
-                                            width:
-                                                MediaQuery.of(context).size.width / 1.7,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.circular(12.0),
-                                              border: Border.all(width: 1,color:Colors.black)
-                                            ),
-                                            padding: const EdgeInsets.only(left: 18),
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 15),
-                                            child: TextField(
-                                              // readOnly: true,
-                                              controller: messagecontroller,
-                                              style: TextStyle(color: Colors.black),
-                                              decoration: InputDecoration(
-                                                hintText: "Type Something...",
-                                                hintStyle: const TextStyle(
-                                                    color: Colors.grey),
-                                                contentPadding:
-                                                    const EdgeInsets.only(top: 16),
-                                                border: InputBorder.none,
-                                                
-                                                suffixIcon: IconButton(
-                                                  onPressed: (){
-                                                    showOptionsDialog(context);
-                                                  },
-                                                  icon: Icon(Icons.adaptive.share),
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                  ),
-                                  IconButton(
-                                    onPressed:(){
-                                      String userMessage = messagecontroller.text.trim();
-                                      if(userMessage.isNotEmpty){
-                                        onSendMessage();
-                                         sendNotification(userMessage);
-                                      }
-                                    } ,
-                                    icon: Icon(
-                                      isRecording ? Icons.refresh : Icons.send,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  IconButton(
-                                    onPressed: _startOrStopRecording,
-                                    icon: Icon(isRecording ? Icons.send : Icons.mic),
-                                    color: Colors.black,
-                                    iconSize: 28,
-                                  ),
-                                ],
-                              ),
-        ),),
-     ), 
-   
+      ),
     ));
   }
 
-
-
   String breakMessage(String message) {
-
-
     var words = message.length; // Count of characters in the string
     var lines = "";
-    var linesBreak="";// Variable to store the characters in separate lines
+    var linesBreak = ""; // Variable to store the characters in separate lines
 
     for (int i = 0; i < words; i++) {
       // Concatenating characters to create separate lines
       if (linesBreak.length == 30) {
-        linesBreak="";
+        linesBreak = "";
         lines += '\n';
         // print(lines);// Add a line break for each non-space character
       }
 
-        lines += message[i];
+      lines += message[i];
       linesBreak += message[i];
-        // print(lines);
-
+      // print(lines);
     }
     // List<String> words = message.split(' ');
     // var wordLenght=words.where((word) => word.isNotEmpty).length;
@@ -1629,12 +1719,6 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
     // }
     return lines;
   }
-
-
-
-
-
-
 
   void _startOrStopRecording() async {
     try {
@@ -1664,21 +1748,4 @@ Future<void> pickVideoAndUploadToFirebase(BuildContext context) async {
   void _refreshWave() {
     if (isRecording) recorderController.refresh();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 }

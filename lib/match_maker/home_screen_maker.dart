@@ -30,6 +30,7 @@ import '../GlobalVariable/GlobalVariable.dart';
 import '../controllers/MakerGetMyProfileDetails/MakerGetProfileDetailsController.dart';
 import '../controllers/MakerHomePageController/MakerHomePageController.dart';
 import '../controllers/controller/IncomingMakerRequestController/incoming_maker_request_ controller.dart';
+import '../controllers/controller/MakerProfileController/MakerEditeProfileControllert.dart';
 import '../controllers/controller/MakerRecentMatchesController/maker_recent_matches_controller.dart';
 import '../controllers/controller/OutgoingMakerRequestController/outgoing_maker_request_controller.dart';
 import '../controllers/controller/ViewMakerProfileDetailsController/ViewMakerProfileDetailscontroller.dart';
@@ -59,6 +60,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   //     Get.put(IncomingMakerRequestController());
   RecentMakerMatchesController recentMakerMatchesController =
       Get.put(RecentMakerMatchesController());
+  MakerEditViewDeatailsController makerEditViewDeatailsController=Get.put(MakerEditViewDeatailsController());
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   MakerHomePageRequestController makerRequestController =
@@ -92,6 +94,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     makerRequestController.makerListApi();
     recentMakerMatchesController.isrecentMakerMatchApi();
     ViewMakerProfileDetailsControllerinstance.ViewMakerProfileDetailsApiHit();
+    makerEditViewDeatailsController.ViewSikerProfileDetailsApiHit();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       getusers();
     });
