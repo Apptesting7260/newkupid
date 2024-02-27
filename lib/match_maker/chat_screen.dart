@@ -865,6 +865,7 @@ class _MakerChatScreenState extends State<MakerChatScreen>
           messagetype = "audio";
           messagaudiourl = downloadURL;
         });
+        sendNotification("audio");
         onSendMessage();
         print('File uploaded successfully. Download URL: $downloadURL');
       } catch (error) {
@@ -969,11 +970,19 @@ class _MakerChatScreenState extends State<MakerChatScreen>
         child: Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        toolbarHeight: Get.height * 0.1,
+        toolbarHeight: Get.height * 0.12,
+        backgroundColor: Color(0xbd330df0),
+
+        shape: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xbd330df0)),
+
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
         actions: [
           Container(
             child: GestureDetector(
-              child: Image.asset("assets/icons/menuu.png"),
+              child: Image.asset("assets/icons/menuu.png",color: Colors.white,),
               onTap: () {
                 getChatStatus();
 
@@ -1043,8 +1052,9 @@ class _MakerChatScreenState extends State<MakerChatScreen>
           },
           child: Icon(
             Icons.arrow_back_ios,
+
             size: 25,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         title: Container(
@@ -1098,7 +1108,12 @@ class _MakerChatScreenState extends State<MakerChatScreen>
                     width: width * .3,
                     child: Text(
                       "$chatname",
-                      style: Theme.of(context).textTheme.titleSmall,
+
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+
                       softWrap: true,
                       maxLines: 2,
                     ),
@@ -1111,7 +1126,7 @@ class _MakerChatScreenState extends State<MakerChatScreen>
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
-                        .copyWith(color: Colors.grey),
+                        .copyWith(color: Colors.white),
                   ),
                 ],
               ),
@@ -1123,472 +1138,383 @@ class _MakerChatScreenState extends State<MakerChatScreen>
           ? Center(
               child: CircularProgressIndicator(color: Colors.pinkAccent,),
             )
-          : Container(
-              child: Column(
-                children: [
-                  // SizedBox(height: height*.03),
+          : Padding(
+            padding: const EdgeInsets.only(left: 5,right: 5),
+            child: Container(
+                child: Column(
+                  children: [
+                    // SizedBox(height: height*.03),
 
-                  // AcceptRequestwidget(),
+                    // AcceptRequestwidget(),
 
-                  SizedBox(
-                    height: Get.height * 0.02,
-                  ),
+                    SizedBox(
+                      height: Get.height * 0.02,
+                    ),
 
-                  // switch (
-                  //     MakerRequestDetailsControllerinstance.rxRequestStatus.value) {
-                  //   case Status.LOADING:
-                  //     return const Center(child: Text(""));
-                  //   case Status.ERROR:
-                  //     if (MakerRequestDetailsControllerinstance.error.value ==
-                  //         'No internet') {
-                  //       return InterNetExceptionWidget(
-                  //         onPress: () {},
-                  //       );
-                  //     } else {
-                  //       return GeneralExceptionWidget(onPress: () {});
-                  //     }
+                    // switch (
+                    //     MakerRequestDetailsControllerinstance.rxRequestStatus.value) {
+                    //   case Status.LOADING:
+                    //     return const Center(child: Text(""));
+                    //   case Status.ERROR:
+                    //     if (MakerRequestDetailsControllerinstance.error.value ==
+                    //         'No internet') {
+                    //       return InterNetExceptionWidget(
+                    //         onPress: () {},
+                    //       );
+                    //     } else {
+                    //       return GeneralExceptionWidget(onPress: () {});
+                    //     }
 
-                  Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                      stream: _firestore
-                          .collection("m" +
-                              ViewMakerProfileDetailsControllerinstance
-                                  .ViewProfileDetail.value.ProfileDetail!.id
-                                  .toString())
-                          .doc(roomid)
-                          .collection('massages')
-                          .orderBy("time", descending: true)
-                          .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
-                        return snapshot.data != null
-                            ? ListView.builder(
-                                reverse: true,
-                                itemCount: snapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final message = snapshot
-                                      .data!.docs[index]['message']
-                                      .toString();
+                    Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: _firestore
+                            .collection("m" +
+                                ViewMakerProfileDetailsControllerinstance
+                                    .ViewProfileDetail.value.ProfileDetail!.id
+                                    .toString())
+                            .doc(roomid)
+                            .collection('massages')
+                            .orderBy("time", descending: true)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          return snapshot.data != null
+                              ? ListView.builder(
+                                  reverse: true,
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    final message = snapshot
+                                        .data!.docs[index]['message']
+                                        .toString();
 
-                                  if (message.isNotEmpty) {
-                                    ismessage = true;
-                                  }
-                                  final timestamp = snapshot.data!.docs[index]
-                                          ['time']
-                                      as Timestamp?; // Assuming 'time' is the timestamp field
-                                  final isSentByCurrentUser = snapshot
-                                          .data!.docs[index]['sentby']
-                                          .toString() ==
-                                      "m" +
-                                          ViewMakerProfileDetailsControllerinstance
-                                              .ViewProfileDetail
-                                              .value
-                                              .ProfileDetail!
-                                              .id
-                                              .toString();
+                                    if (message.isNotEmpty) {
+                                      ismessage = true;
+                                    }
+                                    final timestamp = snapshot.data!.docs[index]
+                                            ['time']
+                                        as Timestamp?; // Assuming 'time' is the timestamp field
+                                    final isSentByCurrentUser = snapshot
+                                            .data!.docs[index]['sentby']
+                                            .toString() ==
+                                        "m" +
+                                            ViewMakerProfileDetailsControllerinstance
+                                                .ViewProfileDetail
+                                                .value
+                                                .ProfileDetail!
+                                                .id
+                                                .toString();
 
-                                  return Align(
-                                    alignment: isSentByCurrentUser
-                                        ? Alignment.centerRight
-                                        : Alignment.centerLeft,
-                                    child: Row(
-                                      mainAxisAlignment: isSentByCurrentUser
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: Get.width * 0.02,
-                                        ),
-                                        if (snapshot.data!.docs[index]['sentby']
-                                                .toString() !=
-                                            "m" +
-                                                ViewMakerProfileDetailsControllerinstance
-                                                    .ViewProfileDetail
-                                                    .value
-                                                    .ProfileDetail!
-                                                    .id
-                                                    .toString())
-                                          CircleAvatar(
-                                            radius: 10,
-                                            backgroundImage: NetworkImage(
-                                                snapshot.data!
-                                                    .docs[index]['profileimage']
-                                                    .toString()),
+                                    return Align(
+                                      alignment: isSentByCurrentUser
+                                          ? Alignment.centerRight
+                                          : Alignment.centerLeft,
+                                      child: Row(
+                                        mainAxisAlignment: isSentByCurrentUser
+                                            ? MainAxisAlignment.end
+                                            : MainAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: Get.width * 0.02,
                                           ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            padding: EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
-                                              color: isSentByCurrentUser
-                                                  ? Color(0xffFFCCCB)
-                                                  : Color(0xffcce7e8),
-                                              borderRadius: isSentByCurrentUser
-                                                  ? BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(8),
-                                                      topRight:
-                                                          Radius.circular(8),
-                                                      bottomLeft:
-                                                          Radius.circular(8),
-                                                    )
-                                                  : BorderRadius.only(
-                                                      topRight:
-                                                          Radius.circular(8),
-                                                      bottomRight:
-                                                          Radius.circular(8),
-                                                      bottomLeft:
-                                                          Radius.circular(8),
-                                                    ),
+                                          if (snapshot.data!.docs[index]['sentby']
+                                                  .toString() !=
+                                              "m" +
+                                                  ViewMakerProfileDetailsControllerinstance
+                                                      .ViewProfileDetail
+                                                      .value
+                                                      .ProfileDetail!
+                                                      .id
+                                                      .toString())
+                                            CircleAvatar(
+                                              radius: 10,
+                                              backgroundImage: NetworkImage(
+                                                  snapshot.data!
+                                                      .docs[index]['profileimage']
+                                                      .toString()),
                                             ),
-                                            child: Column(
-                                              crossAxisAlignment:
+                                        Column(
+                                          crossAxisAlignment:
+                                          isSentByCurrentUser
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                          isSentByCurrentUser
+                                              ? MainAxisAlignment.end
+                                              : MainAxisAlignment.end,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Container(
+                                                padding: EdgeInsets.all(8.0),
+                                                decoration: BoxDecoration(
+                                                  color: isSentByCurrentUser
+                                                      ? Color(0xffFE0091)
+                                                      : Colors.black12,
+                                                  borderRadius: isSentByCurrentUser
+                                                      ? BorderRadius.only(
+                                                    topLeft:
+                                                    Radius.circular(8),
+                                                    topRight:
+                                                    Radius.circular(8),
+                                                    bottomLeft:
+                                                    Radius.circular(8),
+                                                  )
+                                                      : BorderRadius.only(
+                                                    topRight:
+                                                    Radius.circular(8),
+                                                    bottomRight:
+                                                    Radius.circular(8),
+                                                    bottomLeft:
+                                                    Radius.circular(8),
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  crossAxisAlignment:
                                                   isSentByCurrentUser
                                                       ? CrossAxisAlignment.end
                                                       : CrossAxisAlignment
-                                                          .start,
-                                              children: [
-                                                if (snapshot.data!
+                                                      .start,
+                                                  children: [
+                                                    if (snapshot.data!
                                                         .docs[index]['type']
                                                         .toString() ==
-                                                    "text")
-                                                  Text(
-                                                    breakMessage(message),
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                if (snapshot.data!
+                                                        "text")
+                                                      Text(
+                                                        breakMessage(message),
+                                                          style: TextStyle(
+                                                              color: isSentByCurrentUser
+                                                                  ? Colors
+                                                                  .white
+                                                                  : Colors
+                                                                  .black),
+                                                      ),
+                                                    if (snapshot.data!
                                                         .docs[index]['type']
                                                         .toString() ==
-                                                    "img")
-                                                  Container(
-                                                    height: 150,
-                                                    width: 100,
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: snapshot
-                                                          .data!
-                                                          .docs[index]
-                                                              ['imageurl']
-                                                          .toString(),
-                                                      progressIndicatorBuilder: (context,
+                                                        "img")
+                                                      Container(
+                                                        height: 150,
+                                                        width: 100,
+                                                        child: CachedNetworkImage(
+                                                          imageUrl: snapshot
+                                                              .data!
+                                                              .docs[index]
+                                                          ['imageurl']
+                                                              .toString(),
+                                                          progressIndicatorBuilder: (context,
                                                               url,
                                                               downloadProgress) =>
-                                                          Center(
-                                                              child: CircularProgressIndicator(
-                                                                  value: downloadProgress
-                                                                      .progress)),
-                                                      errorWidget: (context,
+                                                              Center(
+                                                                  child: CircularProgressIndicator(
+                                                                      value: downloadProgress
+                                                                          .progress)),
+                                                          errorWidget: (context,
                                                               url, error) =>
-                                                          Icon(Icons.error),
-                                                    ),
-                                                  ),
+                                                              Icon(Icons.error),
+                                                        ),
+                                                      ),
 
-                                                if (snapshot.data!
+                                                    if (snapshot.data!
                                                         .docs[index]['type']
                                                         .toString() ==
-                                                    "audio")
-                                                  CustomAudioPlayer(
-                                                    audioUrl: snapshot.data!
-                                                        .docs[index]['audiourl']
-                                                        .toString(),
-                                                  ),
+                                                        "audio")
+                                                      CustomAudioPlayer(
+                                                        audioUrl: snapshot.data!
+                                                            .docs[index]['audiourl']
+                                                            .toString(),
+                                                      ),
 
-                                                //        Container(r
-                                                //   alignment: AlignmentDirectional.bottomEnd,
-                                                //   height: 70,
-                                                //   width: 200,
-                                                //   decoration: BoxDecoration(
-                                                //     borderRadius: BorderRadius.circular(20),
-                                                //     color: Colors.black,
-                                                //   ),
-                                                //   child: Padding(
-                                                //     padding: const EdgeInsets.all(20.0),
-                                                //     child: Row(
-                                                //       children: [
-                                                //         Stack(
-                                                //           children: [
-                                                //             SizedBox(
 
-                                                //               width: 30,
-                                                //               height: 30,
-                                                //               child: StreamBuilder(
-                                                //                 stream: playerx.streams.position,
-                                                //                 builder: (context, snapshot) {
-                                                //                   return CircularProgressIndicator(
-                                                //                     strokeWidth: 2,
-                                                //                     color: Colors.white,
-                                                //                     value: loading
-                                                //                         ? null
-                                                //                         : playerx.position.inSeconds /
-                                                //                         max(playerx.duration.inSeconds, 0.01),
-                                                //                   );
-                                                //                 },
-                                                //               ),
-                                                //             ),
-                                                //             SizedBox(
+                                                    SizedBox(height: 4),
+                                                    // Adjust the spacing as needed
 
-                                                //               width: 30,
-                                                //               height: 30,
-                                                //               child: FloatingActionButton(
-                                                //                 disabledElevation: 0,
-                                                //                 elevation: 0,
-                                                //                 focusElevation: 0,
-                                                //                 hoverElevation: 0,
-                                                //                 highlightElevation: 0,
-                                                //                 backgroundColor: Colors.teal.withOpacity(0.1),
-                                                //                 onPressed: () {
-                                                //                   setState(() {
-                                                //                     playerx.toggle();
-                                                //                   });
-                                                //                 },
-                                                //                 child: DefaultTextStyle(
-                                                //                   style: const TextStyle(color: Colors.black87),
-                                                //                   child: StreamBuilder(
-                                                //                     stream: playerx.streams.position,
-                                                //                     builder: (context, snapshot) {
-                                                //                       return playerx.playing
-                                                //                           ? const Icon(
-                                                //                         Icons.pause,
-                                                //                         color: Colors.white,
-                                                //                         size: 20,
-                                                //                       )
-                                                //                           : const Icon(
-                                                //                         Icons.play_arrow,
-                                                //                         color: Colors.white,
-                                                //                         size: 20,
-                                                //                       );
-                                                //                     },
-                                                //                   ),
-                                                //                 ),
-                                                //               ),
-                                                //             ),
-                                                //           ],
-                                                //         ),
-                                                //         Expanded(
-                                                //           child: Container(
-
-                                                //             width: double.infinity,
-                                                //             child: StreamBuilder(
-                                                //                 stream: playerx.streams.position,
-                                                //                 builder: (context, AsyncSnapshot<Duration> snapshot) {
-                                                //                   loading = false;
-                                                //                   return Slider(
-                                                //                     value: position,
-                                                //                     min: 0,
-                                                //                     max: 100,
-                                                //                     onChangeStart: (double value) {
-                                                //                       _changingPosition = true;
-                                                //                     },
-                                                //                     onChangeEnd: (double value) {
-                                                //                       _changingPosition = false;
-                                                //                     },
-                                                //                     onChanged: (double value) {
-                                                //                       setState(() {
-                                                //                         loading = true;
-                                                //                         _position = Duration(
-                                                //                             seconds:
-                                                //                             ((value / 100) * playerx.duration.inSeconds)
-                                                //                                 .toInt());
-                                                //                         playerx.position = _position;
-                                                //                       });
-                                                //                     },
-                                                //                   );
-                                                //                 }),
-                                                //           ),
-                                                //         )
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                //CustomAudioPlayerWidget(audioUrl: snapshot.data!.docs[index]['audiourl'].toString(),),
-
-                                                //  CustomAudioPlayer(audioUrl:snapshot.data!.docs[index]['audiourl'].toString() ,),
-                                                SizedBox(height: 4),
-                                                // Adjust the spacing as needed
-                                                if (timestamp != null)
-                                                  Text(
-                                                    formatTimestamp(timestamp),
-                                                    // Format timestamp as needed
-                                                    style: TextStyle(
-                                                        color: Colors.grey,
-                                                        fontSize: 12),
-                                                  ),
-                                              ],
+                                                  ],
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                                            if (timestamp != null)
+                                              Text(
+                                                formatTimestamp(timestamp),
+                                                // Format timestamp as needed
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12),
+                                              ),
+                                          ],
+                                        )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                )
+                              : Container();
+                        },
+                      ),
+                    ),
+
+                    // Obx(() {
+                    //   switch (
+                    //       ViewRequestDetailsControllerinstance.rxRequestStatus.value) {
+                    //     case Status.LOADING:
+                    //       return const Center(child: CircularProgressIndicator());
+                    //     case Status.ERROR:
+                    //       if (ViewRequestDetailsControllerinstance.error.value ==
+                    //           'No internet') {
+                    //         return InterNetExceptionWidget(
+                    //           onPress: () {},
+                    //         );
+                    //       } else {
+                    //         return GeneralExceptionWidget(onPress: () {});
+                    //       }
+                    //     case Status.COMPLETED:
+                    //       return StreamBuilder<DocumentSnapshot>(
+                    //         stream: _firestore
+                    //             .collection("RoomId's")
+                    //             .doc(ViewRequestDetailsControllerinstance
+                    //                 .ViewProfileDetail.value.data!.roomId
+                    //                 .toString())
+                    //             .collection('typestatus')
+                    //             .doc(
+                    //                 "userstypingstatus") // Replace with the actual document ID
+                    //             .snapshots(),
+                    //         builder: (BuildContext context,
+                    //             AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    //           if (snapshot.connectionState == ConnectionState.waiting) {
+                    //             return Center(child: CircularProgressIndicator());
+                    //           }
+
+                    //           if (!snapshot.hasData || !snapshot.data!.exists) {
+                    //             return Center(
+                    //               child: Text("No status data yet."),
+                    //             );
+                    //           }
+
+                    //           Map<String, dynamic> statusData =
+                    //               snapshot.data!.data() as Map<String, dynamic>;
+                    //           String status = statusData['status']
+                    //               .toString(); // Assuming 'status' is the field name
+                    //           String id = statusData['id']
+                    //               .toString(); // Assuming 'status' is the field name
+
+                    //           return id !=
+                    //                       ViewSikerProfileDetailsControllerinstance
+                    //                           .ViewProfileDetail
+                    //                           .value
+                    //                           .profileDetails![0]
+                    //                           .id
+                    //                           .toString() &&
+                    //                   status == "true"
+                    //               ? Align(
+                    //                   child: Padding(
+                    //                     padding: const EdgeInsets.all(8.0),
+                    //                     child: Container(
+                    //                         padding: EdgeInsets.all(8.0),
+                    //                         decoration: BoxDecoration(
+                    //                           color: Color(0xffcce7e8),
+                    //                           borderRadius: BorderRadius.only(
+                    //                             topRight: Radius.circular(8),
+                    //                             bottomRight: Radius.circular(8),
+                    //                             bottomLeft: Radius.circular(8),
+                    //                           ),
+                    //                         ),
+                    //                         child: Row(
+                    //                           children: [
+                    //                             Text(
+                    //                               "typing...",
+                    //                               style: TextStyle(color: Colors.black),
+                    //                             ),
+                    //                           ],
+                    //                         )),
+                    //                   ),
+                    //                 )
+                    //               : Container();
+                    //         },
+                    //       );
+                    //   }
+                    // }),
+
+                    if (ismessage == false)
+                      Row(
+                        children: [
+                          Wrap(
+                            runSpacing: 8.0,
+                            spacing: 6.0,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  // messagecontroller.text = "Hello!";
                                 },
-                              )
-                            : Container();
-                      },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  height: height * .04,
+                                  width: width * .18,
+                                  child: Center(
+                                    child: Text(
+                                      "Hello!",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // messagecontroller.text = "How are you?";
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  height: height * .04,
+                                  width: width * .3,
+                                  child: Center(
+                                    child: Text(
+                                      "How are you?",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  // messagecontroller.text = "What are you doing?";
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(20)),
+                                  height: height * .04,
+                                  width: width * .37,
+                                  child: Center(
+                                    child: Text(
+                                      "What are you doing?",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                    SizedBox(
+                      height: Get.height * 0.02,
                     ),
-                  ),
-
-                  // Obx(() {
-                  //   switch (
-                  //       ViewRequestDetailsControllerinstance.rxRequestStatus.value) {
-                  //     case Status.LOADING:
-                  //       return const Center(child: CircularProgressIndicator());
-                  //     case Status.ERROR:
-                  //       if (ViewRequestDetailsControllerinstance.error.value ==
-                  //           'No internet') {
-                  //         return InterNetExceptionWidget(
-                  //           onPress: () {},
-                  //         );
-                  //       } else {
-                  //         return GeneralExceptionWidget(onPress: () {});
-                  //       }
-                  //     case Status.COMPLETED:
-                  //       return StreamBuilder<DocumentSnapshot>(
-                  //         stream: _firestore
-                  //             .collection("RoomId's")
-                  //             .doc(ViewRequestDetailsControllerinstance
-                  //                 .ViewProfileDetail.value.data!.roomId
-                  //                 .toString())
-                  //             .collection('typestatus')
-                  //             .doc(
-                  //                 "userstypingstatus") // Replace with the actual document ID
-                  //             .snapshots(),
-                  //         builder: (BuildContext context,
-                  //             AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  //           if (snapshot.connectionState == ConnectionState.waiting) {
-                  //             return Center(child: CircularProgressIndicator());
-                  //           }
-
-                  //           if (!snapshot.hasData || !snapshot.data!.exists) {
-                  //             return Center(
-                  //               child: Text("No status data yet."),
-                  //             );
-                  //           }
-
-                  //           Map<String, dynamic> statusData =
-                  //               snapshot.data!.data() as Map<String, dynamic>;
-                  //           String status = statusData['status']
-                  //               .toString(); // Assuming 'status' is the field name
-                  //           String id = statusData['id']
-                  //               .toString(); // Assuming 'status' is the field name
-
-                  //           return id !=
-                  //                       ViewSikerProfileDetailsControllerinstance
-                  //                           .ViewProfileDetail
-                  //                           .value
-                  //                           .profileDetails![0]
-                  //                           .id
-                  //                           .toString() &&
-                  //                   status == "true"
-                  //               ? Align(
-                  //                   child: Padding(
-                  //                     padding: const EdgeInsets.all(8.0),
-                  //                     child: Container(
-                  //                         padding: EdgeInsets.all(8.0),
-                  //                         decoration: BoxDecoration(
-                  //                           color: Color(0xffcce7e8),
-                  //                           borderRadius: BorderRadius.only(
-                  //                             topRight: Radius.circular(8),
-                  //                             bottomRight: Radius.circular(8),
-                  //                             bottomLeft: Radius.circular(8),
-                  //                           ),
-                  //                         ),
-                  //                         child: Row(
-                  //                           children: [
-                  //                             Text(
-                  //                               "typing...",
-                  //                               style: TextStyle(color: Colors.black),
-                  //                             ),
-                  //                           ],
-                  //                         )),
-                  //                   ),
-                  //                 )
-                  //               : Container();
-                  //         },
-                  //       );
-                  //   }
-                  // }),
-
-                  if (ismessage == false)
-                    Row(
-                      children: [
-                        Wrap(
-                          runSpacing: 8.0,
-                          spacing: 6.0,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                // messagecontroller.text = "Hello!";
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(20)),
-                                height: height * .04,
-                                width: width * .18,
-                                child: Center(
-                                  child: Text(
-                                    "Hello!",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // messagecontroller.text = "How are you?";
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(20)),
-                                height: height * .04,
-                                width: width * .3,
-                                child: Center(
-                                  child: Text(
-                                    "How are you?",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                // messagecontroller.text = "What are you doing?";
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(20)),
-                                height: height * .04,
-                                width: width * .37,
-                                child: Center(
-                                  child: Text(
-                                    "What are you doing?",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .copyWith(color: Colors.grey),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-
-                  SizedBox(
-                    height: Get.height * 0.02,
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+          ),
       bottomNavigationBar: TapRegion(
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         child: Container(
@@ -1610,10 +1536,11 @@ class _MakerChatScreenState extends State<MakerChatScreen>
                             extendWaveform: true,
                             showMiddleLine: false,
                           ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.0),
-                            color: const Color(0xFF1E1B26),
-                          ),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.0),
+                        border:
+                        Border.all(width: 1, color: Colors.black)),
                           padding: const EdgeInsets.only(left: 18),
                           margin: const EdgeInsets.symmetric(horizontal: 15),
                         )
@@ -1623,7 +1550,7 @@ class _MakerChatScreenState extends State<MakerChatScreen>
                           decoration: BoxDecoration(
                             border: Border.all(),
                             // color: const Color(0xFF1E1B26),
-                            borderRadius: BorderRadius.circular(12.0),
+                            borderRadius: BorderRadius.circular(20.0),
                           ),
                           padding: const EdgeInsets.only(left: 18),
                           margin: const EdgeInsets.symmetric(horizontal: 15),

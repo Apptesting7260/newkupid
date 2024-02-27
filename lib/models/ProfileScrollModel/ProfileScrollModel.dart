@@ -98,7 +98,7 @@ class Male {
     currentStep = null;
     imgPath = json['img_path'];
     videoPath = json['video_path'];
-    details = null;
+    details = Details.fromJson(json['details']);
   }
 
   Map<String, dynamic> toJson() {
@@ -137,22 +137,26 @@ class Details {
      this.status,
      this.createdAt,
      this.updatedAt,
+     this.gallaryPath,
+     this.interestName,
   });
-  int? id;
-  int ?seekerId;
-  List<String>? profileGallery;
-  String ?inInterested;
-  String ?interest;
-  String ?bioTitle;
-  String ?bioDescription;
-  int ?status;
-  String? createdAt;
-  String? updatedAt;
-  
+  var id;
+  var seekerId;
+  var profileGallery;
+  var inInterested;
+  var interest;
+  var bioTitle;
+  var bioDescription;
+  var status;
+  var createdAt;
+  var updatedAt;
+   List<String>? gallaryPath;
+List<InterestName>? interestName;
+
   Details.fromJson(Map<String, dynamic> json){
     id = json['id'];
     seekerId = json['seeker_id'];
-    profileGallery = List.castFrom<dynamic, String>(json['profile_gallery']);
+    profileGallery = json['profile_gallery'];
     inInterested = json['in_interested'];
     interest = json['interest'];
     bioTitle = json['bio_title'];
@@ -160,6 +164,8 @@ class Details {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    gallaryPath = List.castFrom<dynamic, String>(json['gallary_path']);
+    interestName = List.from(json['interest_name']).map((e)=>InterestName.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -174,9 +180,82 @@ class Details {
     _data['status'] = status;
     _data['created_at'] = createdAt;
     _data['updated_at'] = updatedAt;
+    _data['gallary_path'] = gallaryPath;
+    _data['interest_name'] = interestName!.map((e)=>e.toJson()).toList();
     return _data;
   }
 }
+
+class InterestName {
+  InterestName({
+     this.title,
+  });
+  var title;
+
+  InterestName.fromJson(Map<String, dynamic> json){
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['title'] = title;
+    return _data;
+  }
+}
+
+
+// class Details {
+//   Details({
+//      this.id,
+//      this.seekerId,
+//      this.profileGallery,
+//      this.inInterested,
+//      this.interest,
+//      this.bioTitle,
+//      this.bioDescription,
+//      this.status,
+//      this.createdAt,
+//      this.updatedAt,
+//   });
+//   int? id;
+//   int ?seekerId;
+//   List<String>? profileGallery;
+//   String ?inInterested;
+//   String ?interest;
+//   String ?bioTitle;
+//   String ?bioDescription;
+//   int ?status;
+//   String? createdAt;
+//   String? updatedAt;
+//
+//   Details.fromJson(Map<String, dynamic> json){
+//     id = json['id'];
+//     seekerId = json['seeker_id'];
+//     profileGallery = List.castFrom<dynamic, String>(json['profile_gallery']);
+//     inInterested = json['in_interested'];
+//     interest = json['interest'];
+//     bioTitle = json['bio_title'];
+//     bioDescription = json['bio_description'];
+//     status = json['status'];
+//     createdAt = json['created_at'];
+//     updatedAt = json['updated_at'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final _data = <String, dynamic>{};
+//     _data['id'] = id;
+//     _data['seeker_id'] = seekerId;
+//     _data['profile_gallery'] = profileGallery;
+//     _data['in_interested'] = inInterested;
+//     _data['interest'] = interest;
+//     _data['bio_title'] = bioTitle;
+//     _data['bio_description'] = bioDescription;
+//     _data['status'] = status;
+//     _data['created_at'] = createdAt;
+//     _data['updated_at'] = updatedAt;
+//     return _data;
+//   }
+// }
 
 class Female {
   Female({
@@ -236,7 +315,7 @@ class Female {
     currentStep = json['current_step'];
     imgPath = json['img_path'];
     videoPath = json['video_path'];
-    details = null;
+    details = Details.fromJson(json['details']);
   }
 
   Map<String, dynamic> toJson() {

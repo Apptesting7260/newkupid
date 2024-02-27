@@ -136,8 +136,8 @@ class ViewRequestDetailsController extends GetxController {
                 value.data!.matchType.toString() == "2" ||
                 value.data!.matchType.toString() == "3")
               "maker_image": value.data!.getmaker!.imgPath.toString(),
-            "seeker_inage1": image,
-            "seeker_inage2": image2,
+            "seeker_inage1": image2,
+            "seeker_inage2": image,
             if (value.data!.matchType.toString() == "0" ||
                 value.data!.matchType.toString() == "2" ||
                 value.data!.matchType.toString() == "3")
@@ -183,8 +183,8 @@ class ViewRequestDetailsController extends GetxController {
                 value.data!.matchType.toString() == "2" ||
                 value.data!.matchType.toString() == "3")
               "maker_image": value.data!.getmaker!.imgPath.toString(),
-            "seeker_inage1": image2,
-            "seeker_inage2": image,
+            "seeker_inage1": image,
+            "seeker_inage2": image2,
             if (value.data!.matchType.toString() == "0" ||
                 value.data!.matchType.toString() == "2" ||
                 value.data!.matchType.toString() == "3")
@@ -221,10 +221,10 @@ class ViewRequestDetailsController extends GetxController {
               "maker_id": value.data!.getmaker!.id.toString(),
               "maker_name": value.data!.getmaker!.name.toString(),
               "maker_image": value.data!.getmaker!.imgPath.toString(),
-                "roomid": value.data!.roomid!.toString(),
-                "status": "online",
-                "$seekerId": "false",
-                "$seekerId2": "false",
+              "roomid": value.data!.roomid!.toString(),
+              "status": "online",
+              "$seekerId": "false",
+              "$seekerId2": "false",
               "seeker_inage1": image,
               "seeker_inage2": image2,
               "roomname": value.data!.getanotherseeker!.name.toString() +
@@ -248,13 +248,23 @@ class ViewRequestDetailsController extends GetxController {
 
           await _firestore
               .collection(
-                "s" + value.data!.getseeker!.id.toString(),
+                value.data!.getseeker!.id.toString() ==
+                        seekerMyProfileController
+                            .SeekerMyProfileDetail.value.ProfileDetail!.id
+                            .toString()
+                    ? "s" + value.data!.getseeker!.id.toString()
+                    : "s" + value.data!.getanotherseeker!.id.toString(),
               )
               .doc(value.data!.roomid.toString())
               .set(roomdetails);
           await _firestore
               .collection(
-                "s" + value.data!.getanotherseeker!.id.toString(),
+                value.data!.getseeker!.id.toString() !=
+                        seekerMyProfileController
+                            .SeekerMyProfileDetail.value.ProfileDetail!.id
+                            .toString()
+                    ? "s" + value.data!.getseeker!.id.toString()
+                    : "s" + value.data!.getanotherseeker!.id.toString(),
               )
               .doc(value.data!.roomid.toString())
               .set(roomdetailsanotherseeker);

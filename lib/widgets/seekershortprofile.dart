@@ -73,10 +73,16 @@ class _ShortProfileSeekerState extends State<ShortProfileSeeker> {
               if (ViewSikerProfileDetailsControllerinstance.error.value ==
                   'No internet') {
                 return InterNetExceptionWidget(
-                  onPress: () {},
+                  onPress: () {
+                    ViewSikerProfileDetailsControllerinstance.ViewSikerProfileDetailsApiHit();
+
+                  },
                 );
               } else {
-                return GeneralExceptionWidget(onPress: () {});
+                return GeneralExceptionWidget(onPress: () {
+                  ViewSikerProfileDetailsControllerinstance.ViewSikerProfileDetailsApiHit();
+
+                });
               }
             case Status.COMPLETED:
               return SingleChildScrollView(

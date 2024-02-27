@@ -208,9 +208,12 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
   }
 
   setStatus(String status) async {
-    DocumentReference roomRef =
-        _firestore.collection("$collecatinName").doc("Status");
-    await roomRef.update({'status': status});
+    // DocumentReference roomRef =
+    _firestore
+        .collection("$collecatinName")
+        .doc("Status")
+        .update({'status': status});
+    // await roomRef.update({'status': status});
     print("====================================================status");
   }
 
@@ -448,6 +451,10 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         });
 
         // Add your logic for handling image messages here
+        setState(() {
+          messageimgurl = null;
+          messagetype = "text";
+        });
         break;
       case "audio":
         Map<String, dynamic> messages = {
@@ -463,6 +470,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           "time": FieldValue.serverTimestamp(),
           'isRead': false,
         };
+        String latmdg = "audio";
+
 //         DocumentReference roomRef1 = _firestore.collection(seekerMyProfileController.SeekerMyProfileDetail.
 //           value.ProfileDetail!.id.toString()).doc(roomid);
 // DocumentReference roomRef2 = _firestore.collection(anotherchatuser.toString()).doc(roomid);
@@ -760,6 +769,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           messagetype = "audio";
           messagaudiourl = downloadURL;
         });
+        sendNotification("audio");
         onSendMessage();
         print('File uploaded successfully. Download URL: $downloadURL');
       } catch (error) {
@@ -869,9 +879,9 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         .doc('Device Token')
         .get();
     var gettingDeviceToken = gettingDeviceTokenSnapshot.data();
-    print(gettingDeviceToken!['device token']);
 
     if (onScreen == "false" && gettingDeviceToken != null) {
+      print(gettingDeviceToken['device token']);
       var notificationContent = {
         'to': gettingDeviceToken['device token'],
         'notification': {
@@ -905,10 +915,11 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         .doc('Device Token')
         .get();
     var gettingDeviceToken2 = gettingDeviceTokenSnapshot2.data();
-    print(
-        "========================device token=====${gettingDeviceToken2!['device token']}======================================================================");
     print("Maker Fcm Token    ${Makeridchat}");
     if (MakeronScreen == "false" && gettingDeviceToken2 != null) {
+      print(
+          "========================device token=====${gettingDeviceToken2['device token']}======================================================================");
+
       var notificationContent = {
         'to': gettingDeviceToken2['device token'],
         'notification': {
@@ -1004,14 +1015,25 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         child: Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        toolbarHeight: Get.height * 0.1,
+        toolbarHeight: Get.height * 0.12,
+        backgroundColor: Color(0xbd330df0),
+
+        shape: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xbd330df0)),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
         actions: [
-          Container(
-            child: GestureDetector(
-              child: Image.asset("assets/icons/menuu.png"),
-              onTap: () {
-                print(Makeridchat);
-                if (Makeridchat != null)
+          if (Makeridchat != null)
+            Container(
+              child: GestureDetector(
+                child: Image.asset(
+                  "assets/icons/menuu.png",
+                  color: Colors.white,
+                ),
+                onTap: () {
+                  print(Makeridchat);
+
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -1072,13 +1094,38 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                       );
                     },
                   );
-              },
+                },
+              ),
             ),
-          ),
           SizedBox(
-            width: Get.width * .02,
+            width: Get.width * .03,
           )
         ],
+        // actions: [
+        //   PopupMenuButton<String>(
+        //     iconColor: Colors.white,
+        //     iconSize: 30,
+        //     onSelected: (String result) {
+        //       setState(() {
+        //         // _selectedOption = result;
+        //       });
+        //     },
+        //     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        //       PopupMenuItem<String>(
+        //         value: 'Option 1',
+        //         child: Text('Option 1'),
+        //       ),
+        //       PopupMenuItem<String>(
+        //         value: 'Option 2',
+        //         child: Text('Option 2'),
+        //       ),
+        //       PopupMenuItem<String>(
+        //         value: 'Option 3',
+        //         child: Text('Option 3'),
+        //       ),
+        //     ],
+        //   ),
+        // ],
         leading: GestureDetector(
           onTap: () {
             Get.back();
@@ -1087,7 +1134,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           child: Icon(
             Icons.arrow_back_ios,
             size: 25,
-            color: Colors.black,
+            color: Colors.white,
           ),
         ),
         title: Container(
@@ -1113,6 +1160,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                     child: Text(
                       chatname.toString(),
                       style: TextStyle(
+                        color: Colors.white,
                         fontSize: 12,
                       ),
                       maxLines: 2,
@@ -1126,8 +1174,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                       "$chatStatus",
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: chatStatus != "online"
-                              ? Colors.red
-                              : Colors.green),
+                              ? Colors.white
+                              : Colors.white),
                     ),
                 ],
               ),
@@ -1135,271 +1183,217 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
           ),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            // SizedBox(height: height*.03),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 5, right: 5),
+        child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+          child: Column(
+            children: [
+              // SizedBox(height: height*.03),
 
-            SizedBox(
-              height: Get.height * 0.02,
-            ),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: _firestore
-                      .collection("s" +
-                          seekerMyProfileController
-                              .SeekerMyProfileDetail.value.ProfileDetail!.id
-                              .toString())
-                      .doc(roomid)
-                      .collection('massages')
-                      .orderBy("time", descending: true)
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    return snapshot.data != null
-                        ? ListView.builder(
-                            shrinkWrap: true,
-                            reverse: true,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              final message = snapshot
-                                  .data!.docs[index]['message']
-                                  .toString();
-                              final timestamp = snapshot.data!.docs[index]
-                                      ['time']
-                                  as Timestamp?; // Assuming 'time' is the timestamp field
-                              final isSentByCurrentUser = snapshot
-                                      .data!.docs[index]['sentby']
-                                      .toString() ==
-                                  seekerMyProfileController
-                                      .SeekerMyProfileDetail
-                                      .value
-                                      .ProfileDetail!
-                                      .id
-                                      .toString();
+              SizedBox(
+                height: Get.height * 0.02,
+              ),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: _firestore
+                        .collection("s" +
+                            seekerMyProfileController
+                                .SeekerMyProfileDetail.value.ProfileDetail!.id
+                                .toString())
+                        .doc(roomid)
+                        .collection('massages')
+                        .orderBy("time", descending: true)
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      return snapshot.data != null
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              reverse: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final message = snapshot
+                                    .data!.docs[index]['message']
+                                    .toString();
+                                final timestamp = snapshot.data!.docs[index]
+                                        ['time']
+                                    as Timestamp?; // Assuming 'time' is the timestamp field
+                                final isSentByCurrentUser = snapshot
+                                        .data!.docs[index]['sentby']
+                                        .toString() ==
+                                    seekerMyProfileController
+                                        .SeekerMyProfileDetail
+                                        .value
+                                        .ProfileDetail!
+                                        .id
+                                        .toString();
 
-                              return Align(
-                                  alignment: isSentByCurrentUser
-                                      ? Alignment.centerRight
-                                      : Alignment.centerLeft,
-                                  child: Row(
-                                      mainAxisAlignment: isSentByCurrentUser
-                                          ? MainAxisAlignment.end
-                                          : MainAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: Get.width * 0.02,
-                                        ),
-                                        if (snapshot.data!.docs[index]['sentby']
-                                                .toString() !=
-                                            seekerMyProfileController
-                                                .SeekerMyProfileDetail
-                                                .value
-                                                .ProfileDetail!
-                                                .id
-                                                .toString())
-                                          CircleAvatar(
-                                            radius: 10,
-                                            backgroundImage: NetworkImage(
-                                                snapshot.data!
-                                                    .docs[index]['profileimage']
-                                                    .toString()),
-                                          ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            padding: EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
-                                              color: isSentByCurrentUser
-                                                  ? Color(0xffFFCCCB)
-                                                  : Color(0xffcce7e8),
-                                              borderRadius: isSentByCurrentUser
-                                                  ? BorderRadius.only(
-                                                      topLeft:
-                                                          Radius.circular(8),
-                                                      topRight:
-                                                          Radius.circular(8),
-                                                      bottomLeft:
-                                                          Radius.circular(8),
-                                                    )
-                                                  : BorderRadius.only(
-                                                      topRight:
-                                                          Radius.circular(8),
-                                                      bottomRight:
-                                                          Radius.circular(8),
-                                                      bottomLeft:
-                                                          Radius.circular(8),
-                                                    ),
+                                return Align(
+                                    alignment: isSentByCurrentUser
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: Container(
+                                      child: Row(
+                                          mainAxisAlignment: isSentByCurrentUser
+                                              ? MainAxisAlignment.end
+                                              : MainAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                              width: Get.width * 0.02,
                                             ),
-                                            child: Column(
+                                            if (snapshot
+                                                    .data!.docs[index]['sentby']
+                                                    .toString() !=
+                                                seekerMyProfileController
+                                                    .SeekerMyProfileDetail
+                                                    .value
+                                                    .ProfileDetail!
+                                                    .id
+                                                    .toString())
+                                              CircleAvatar(
+                                                radius: 10,
+                                                backgroundImage: NetworkImage(
+                                                    snapshot
+                                                        .data!
+                                                        .docs[index]
+                                                            ['profileimage']
+                                                        .toString()),
+                                              ),
+                                            Column(
                                               crossAxisAlignment:
                                                   isSentByCurrentUser
                                                       ? CrossAxisAlignment.end
-                                                      : CrossAxisAlignment
-                                                          .start,
+                                                      : CrossAxisAlignment.end,
+                                              mainAxisAlignment:
+                                                  isSentByCurrentUser
+                                                      ? MainAxisAlignment.end
+                                                      : MainAxisAlignment.end,
                                               children: [
-                                                if (snapshot.data!
-                                                        .docs[index]['type']
-                                                        .toString() ==
-                                                    "text")
-                                                  Container(
-                                                    child: Text(
-                                                      breakMessage(message),
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                      textAlign:
-                                                          TextAlign.start,
-                                                      softWrap: true,
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.all(8.0),
+                                                    decoration: BoxDecoration(
+                                                      color: isSentByCurrentUser
+                                                          ? Color(0xffFE0091)
+                                                          : Colors.black12,
+                                                      borderRadius:
+                                                          isSentByCurrentUser
+                                                              ? BorderRadius
+                                                                  .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          0), // Only bottom right for sent messages
+                                                                )
+                                                              : BorderRadius
+                                                                  .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                  bottomLeft: Radius
+                                                                      .circular(
+                                                                          0),
+                                                                  // Only bottom left for received messages
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          15),
+                                                                ),
+                                                    ),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          isSentByCurrentUser
+                                                              ? CrossAxisAlignment
+                                                                  .start
+                                                              : CrossAxisAlignment
+                                                                  .start,
+                                                      children: [
+                                                        if (snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                    ['type']
+                                                                .toString() ==
+                                                            "text")
+                                                          Container(
+                                                            child: Text(
+                                                              breakMessage(
+                                                                  message),
+                                                              style: TextStyle(
+                                                                  color: isSentByCurrentUser
+                                                                      ? Colors
+                                                                          .white
+                                                                      : Colors
+                                                                          .black),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                              softWrap: true,
+                                                            ),
+                                                          ),
+                                                        if (snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                    ['type']
+                                                                .toString() ==
+                                                            "img")
+                                                          Container(
+                                                            height: 150,
+                                                            width: 100,
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              imageUrl: snapshot
+                                                                  .data!
+                                                                  .docs[index][
+                                                                      'imageurl']
+                                                                  .toString(),
+                                                              progressIndicatorBuilder: (context,
+                                                                      url,
+                                                                      downloadProgress) =>
+                                                                  Center(
+                                                                      child: CircularProgressIndicator(
+                                                                          value:
+                                                                              downloadProgress.progress)),
+                                                              errorWidget: (context,
+                                                                      url,
+                                                                      error) =>
+                                                                  Icon(Icons
+                                                                      .error),
+                                                            ),
+                                                          ),
+                                                        if (snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                    ['type']
+                                                                .toString() ==
+                                                            "audio")
+                                                          CustomAudioPlayer(
+                                                            audioUrl: snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                    ['audiourl']
+                                                                .toString(),
+                                                          ),
+                                                      ],
                                                     ),
                                                   ),
-                                                if (snapshot.data!
-                                                        .docs[index]['type']
-                                                        .toString() ==
-                                                    "img")
-                                                  Container(
-                                                    height: 150,
-                                                    width: 100,
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: snapshot
-                                                          .data!
-                                                          .docs[index]
-                                                              ['imageurl']
-                                                          .toString(),
-                                                      progressIndicatorBuilder: (context,
-                                                              url,
-                                                              downloadProgress) =>
-                                                          Center(
-                                                              child: CircularProgressIndicator(
-                                                                  value: downloadProgress
-                                                                      .progress)),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(Icons.error),
-                                                    ),
-                                                  ),
-
-                                                if (snapshot.data!
-                                                        .docs[index]['type']
-                                                        .toString() ==
-                                                    "audio")
-                                                  CustomAudioPlayer(
-                                                    audioUrl: snapshot.data!
-                                                        .docs[index]['audiourl']
-                                                        .toString(),
-                                                  ),
-
-                                                //        Container(r
-                                                //   alignment: AlignmentDirectional.bottomEnd,
-                                                //   height: 70,
-                                                //   width: 200,
-                                                //   decoration: BoxDecoration(
-                                                //     borderRadius: BorderRadius.circular(20),
-                                                //     color: Colors.black,
-                                                //   ),
-                                                //   child: Padding(
-                                                //     padding: const EdgeInsets.all(20.0),
-                                                //     child: Row(
-                                                //       children: [
-                                                //         Stack(
-                                                //           children: [
-                                                //             SizedBox(
-
-                                                //               width: 30,
-                                                //               height: 30,
-                                                //               child: StreamBuilder(
-                                                //                 stream: playerx.streams.position,
-                                                //                 builder: (context, snapshot) {
-                                                //                   return CircularProgressIndicator(
-                                                //                     strokeWidth: 2,
-                                                //                     color: Colors.white,
-                                                //                     value: loading
-                                                //                         ? null
-                                                //                         : playerx.position.inSeconds /
-                                                //                         max(playerx.duration.inSeconds, 0.01),
-                                                //                   );
-                                                //                 },
-                                                //               ),
-                                                //             ),
-                                                //             SizedBox(
-
-                                                //               width: 30,
-                                                //               height: 30,
-                                                //               child: FloatingActionButton(
-                                                //                 disabledElevation: 0,
-                                                //                 elevation: 0,
-                                                //                 focusElevation: 0,
-                                                //                 hoverElevation: 0,
-                                                //                 highlightElevation: 0,
-                                                //                 backgroundColor: Colors.teal.withOpacity(0.1),
-                                                //                 onPressed: () {
-                                                //                   setState(() {
-                                                //                     playerx.toggle();
-                                                //                   });
-                                                //                 },
-                                                //                 child: DefaultTextStyle(
-                                                //                   style: const TextStyle(color: Colors.black87),
-                                                //                   child: StreamBuilder(
-                                                //                     stream: playerx.streams.position,
-                                                //                     builder: (context, snapshot) {
-                                                //                       return playerx.playing
-                                                //                           ? const Icon(
-                                                //                         Icons.pause,
-                                                //                         color: Colors.white,
-                                                //                         size: 20,
-                                                //                       )
-                                                //                           : const Icon(
-                                                //                         Icons.play_arrow,
-                                                //                         color: Colors.white,
-                                                //                         size: 20,
-                                                //                       );
-                                                //                     },
-                                                //                   ),
-                                                //                 ),
-                                                //               ),
-                                                //             ),
-                                                //           ],
-                                                //         ),
-                                                //         Expanded(
-                                                //           child: Container(
-
-                                                //             width: double.infinity,
-                                                //             child: StreamBuilder(
-                                                //                 stream: playerx.streams.position,
-                                                //                 builder: (context, AsyncSnapshot<Duration> snapshot) {
-                                                //                   loading = false;
-                                                //                   return Slider(
-                                                //                     value: position,
-                                                //                     min: 0,
-                                                //                     max: 100,
-                                                //                     onChangeStart: (double value) {
-                                                //                       _changingPosition = true;
-                                                //                     },
-                                                //                     onChangeEnd: (double value) {
-                                                //                       _changingPosition = false;
-                                                //                     },
-                                                //                     onChanged: (double value) {
-                                                //                       setState(() {
-                                                //                         loading = true;
-                                                //                         _position = Duration(
-                                                //                             seconds:
-                                                //                             ((value / 100) * playerx.duration.inSeconds)
-                                                //                                 .toInt());
-                                                //                         playerx.position = _position;
-                                                //                       });
-                                                //                     },
-                                                //                   );
-                                                //                 }),
-                                                //           ),
-                                                //         )
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                                //CustomAudioPlayerWidget(audioUrl: snapshot.data!.docs[index]['audiourl'].toString(),),
-
-                                                //  CustomAudioPlayer(audioUrl:snapshot.data!.docs[index]['audiourl'].toString() ,),
-                                                SizedBox(height: 4),
-                                                // Adjust the spacing as needed
+                                                ),
                                                 Row(
                                                   children: [
                                                     if (timestamp != null)
@@ -1409,7 +1403,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                                                         // Format timestamp as needed
                                                         style: TextStyle(
                                                             color: Colors.grey,
-                                                            fontSize: 12),
+                                                            fontSize: 10),
                                                       ),
                                                     if (Makeridchat == null &&
                                                         seekerMyProfileController
@@ -1423,194 +1417,205 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                                                                 .docs[index]
                                                                     ['sentby']
                                                                 .toString())
-                                                      Text(
+                                                      Image.asset(
                                                         snapshot.data!.docs[
                                                                         index][
                                                                     'isRead'] ==
                                                                 false
-                                                            ? "Sent"
-                                                            : "Seen",
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black),
+                                                            ? "assets/image/send.png"
+                                                            : "assets/image/seen.png",
+                                                        height: 15,
+                                                        width: 15,
                                                       )
+                                                    // Text(
+                                                    //   snapshot.data!.docs[
+                                                    //                   index][
+                                                    //               'isRead'] ==
+                                                    //           false
+                                                    //       ? "Sent"
+                                                    //       : "Seen",
+                                                    //   style: TextStyle(
+                                                    //       color:
+                                                    //           Colors.black),
+                                                    // )
                                                   ],
                                                 )
                                               ],
-                                            ),
-                                          ),
-                                        ),
-                                      ]));
-                            },
-                          )
-                        : Container();
-                  }),
-            ),
+                                            )
+                                          ]),
+                                    ));
+                              },
+                            )
+                          : Container();
+                    }),
+              ),
 
-            // Obx(() {
-            //   switch (
-            //       ViewRequestDetailsControllerinstance.rxRequestStatus.value) {
-            //     case Status.LOADING:
-            //       return const Center(child: CircularProgressIndicator());
-            //     case Status.ERROR:
-            //       if (ViewRequestDetailsControllerinstance.error.value ==
-            //           'No internet') {
-            //         return InterNetExceptionWidget(
-            //           onPress: () {},
-            //         );
-            //       } else {
-            //         return GeneralExceptionWidget(onPress: () {});
-            //       }
-            //     case Status.COMPLETED:
-            //       return StreamBuilder<DocumentSnapshot>(
-            //         stream: _firestore
-            //             .collection("RoomId's")
-            //             .doc(ViewRequestDetailsControllerinstance
-            //                 .ViewProfileDetail.value.data!.roomId
-            //                 .toString())
-            //             .collection('typestatus')
-            //             .doc(
-            //                 "userstypingstatus") // Replace with the actual document ID
-            //             .snapshots(),
-            //         builder: (BuildContext context,
-            //             AsyncSnapshot<DocumentSnapshot> snapshot) {
-            //           if (snapshot.connectionState == ConnectionState.waiting) {
-            //             return Center(child: CircularProgressIndicator());
-            //           }
+              // Obx(() {
+              //   switch (
+              //       ViewRequestDetailsControllerinstance.rxRequestStatus.value) {
+              //     case Status.LOADING:
+              //       return const Center(child: CircularProgressIndicator());
+              //     case Status.ERROR:
+              //       if (ViewRequestDetailsControllerinstance.error.value ==
+              //           'No internet') {
+              //         return InterNetExceptionWidget(
+              //           onPress: () {},
+              //         );
+              //       } else {
+              //         return GeneralExceptionWidget(onPress: () {});
+              //       }
+              //     case Status.COMPLETED:
+              //       return StreamBuilder<DocumentSnapshot>(
+              //         stream: _firestore
+              //             .collection("RoomId's")
+              //             .doc(ViewRequestDetailsControllerinstance
+              //                 .ViewProfileDetail.value.data!.roomId
+              //                 .toString())
+              //             .collection('typestatus')
+              //             .doc(
+              //                 "userstypingstatus") // Replace with the actual document ID
+              //             .snapshots(),
+              //         builder: (BuildContext context,
+              //             AsyncSnapshot<DocumentSnapshot> snapshot) {
+              //           if (snapshot.connectionState == ConnectionState.waiting) {
+              //             return Center(child: CircularProgressIndicator());
+              //           }
 
-            //           if (!snapshot.hasData || !snapshot.data!.exists) {
-            //             return Center(
-            //               child: Text("No status data yet."),
-            //             );
-            //           }
+              //           if (!snapshot.hasData || !snapshot.data!.exists) {
+              //             return Center(
+              //               child: Text("No status data yet."),
+              //             );
+              //           }
 
-            //           Map<String, dynamic> statusData =
-            //               snapshot.data!.data() as Map<String, dynamic>;
-            //           String status = statusData['status']
-            //               .toString(); // Assuming 'status' is the field name
-            //           String id = statusData['id']
-            //               .toString(); // Assuming 'status' is the field name
+              //           Map<String, dynamic> statusData =
+              //               snapshot.data!.data() as Map<String, dynamic>;
+              //           String status = statusData['status']
+              //               .toString(); // Assuming 'status' is the field name
+              //           String id = statusData['id']
+              //               .toString(); // Assuming 'status' is the field name
 
-            //           return id !=
-            //                       ViewSikerProfileDetailsControllerinstance
-            //                           .ViewProfileDetail
-            //                           .value
-            //                           .profileDetails![0]
-            //                           .id
-            //                           .toString() &&
-            //                   status == "true"
-            //               ? Align(
-            //                   child: Padding(
-            //                     padding: const EdgeInsets.all(8.0),
-            //                     child: Container(
-            //                         padding: EdgeInsets.all(8.0),
-            //                         decoration: BoxDecoration(
-            //                           color: Color(0xffcce7e8),
-            //                           borderRadius: BorderRadius.only(
-            //                             topRight: Radius.circular(8),
-            //                             bottomRight: Radius.circular(8),
-            //                             bottomLeft: Radius.circular(8),
-            //                           ),
-            //                         ),
-            //                         child: Row(
-            //                           children: [
-            //                             Text(
-            //                               "typing...",
-            //                               style: TextStyle(color: Colors.black),
-            //                             ),
-            //                           ],
-            //                         )),
-            //                   ),
-            //                 )
-            //               : Container();
-            //         },
-            //       );
-            //   }
-            // }),
+              //           return id !=
+              //                       ViewSikerProfileDetailsControllerinstance
+              //                           .ViewProfileDetail
+              //                           .value
+              //                           .profileDetails![0]
+              //                           .id
+              //                           .toString() &&
+              //                   status == "true"
+              //               ? Align(
+              //                   child: Padding(
+              //                     padding: const EdgeInsets.all(8.0),
+              //                     child: Container(
+              //                         padding: EdgeInsets.all(8.0),
+              //                         decoration: BoxDecoration(
+              //                           color: Color(0xffcce7e8),
+              //                           borderRadius: BorderRadius.only(
+              //                             topRight: Radius.circular(8),
+              //                             bottomRight: Radius.circular(8),
+              //                             bottomLeft: Radius.circular(8),
+              //                           ),
+              //                         ),
+              //                         child: Row(
+              //                           children: [
+              //                             Text(
+              //                               "typing...",
+              //                               style: TextStyle(color: Colors.black),
+              //                             ),
+              //                           ],
+              //                         )),
+              //                   ),
+              //                 )
+              //               : Container();
+              //         },
+              //       );
+              //   }
+              // }),
 
-            // Row(
-            //   children: [
-            //     Wrap(
-            //             runSpacing: 8.0,
-            //             spacing: 6.0,
-            //             children: [
-            //               GestureDetector(
-            //                 onTap: () {
-            //                   // messagecontroller.text = "Hello!";
-            //                 },
-            //                 child: Container(
-            //                   decoration: BoxDecoration(
-            //                       border: Border.all(color: Colors.grey),
-            //                       borderRadius: BorderRadius.circular(20)),
-            //                   height: height * .04,
-            //                   width: width * .18,
-            //                   child: Center(
-            //                     child: Text(
-            //                       "Hello!",
-            //                       style: Theme.of(context)
-            //                           .textTheme
-            //                           .bodySmall!
-            //                           .copyWith(color: Colors.grey),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //               GestureDetector(
-            //                 onTap: () {
-            //                   // messagecontroller.text = "How are you?";
-            //                 },
-            //                 child: Container(
-            //                   decoration: BoxDecoration(
-            //                       border: Border.all(color: Colors.grey),
-            //                       borderRadius: BorderRadius.circular(20)),
-            //                   height: height * .04,
-            //                   width: width * .3,
-            //                   child: Center(
-            //                     child: Text(
-            //                       "How are you?",
-            //                       style: Theme.of(context)
-            //                           .textTheme
-            //                           .bodySmall!
-            //                           .copyWith(color: Colors.grey),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //               GestureDetector(
-            //                 onTap: () {
-            //                   // messagecontroller.text = "What are you doing?";
-            //                 },
-            //                 child: Container(
-            //                   decoration: BoxDecoration(
-            //                       border: Border.all(color: Colors.grey),
-            //                       borderRadius: BorderRadius.circular(20)),
-            //                   height: height * .04,
-            //                   width: width * .37,
-            //                   child: Center(
-            //                     child: Text(
-            //                       "What are you doing?",
-            //                       style: Theme.of(context)
-            //                           .textTheme
-            //                           .bodySmall!
-            //                           .copyWith(color: Colors.grey),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //   ],
-            // ),
+              // Row(
+              //   children: [
+              //     Wrap(
+              //             runSpacing: 8.0,
+              //             spacing: 6.0,
+              //             children: [
+              //               GestureDetector(
+              //                 onTap: () {
+              //                   // messagecontroller.text = "Hello!";
+              //                 },
+              //                 child: Container(
+              //                   decoration: BoxDecoration(
+              //                       border: Border.all(color: Colors.grey),
+              //                       borderRadius: BorderRadius.circular(20)),
+              //                   height: height * .04,
+              //                   width: width * .18,
+              //                   child: Center(
+              //                     child: Text(
+              //                       "Hello!",
+              //                       style: Theme.of(context)
+              //                           .textTheme
+              //                           .bodySmall!
+              //                           .copyWith(color: Colors.grey),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //               GestureDetector(
+              //                 onTap: () {
+              //                   // messagecontroller.text = "How are you?";
+              //                 },
+              //                 child: Container(
+              //                   decoration: BoxDecoration(
+              //                       border: Border.all(color: Colors.grey),
+              //                       borderRadius: BorderRadius.circular(20)),
+              //                   height: height * .04,
+              //                   width: width * .3,
+              //                   child: Center(
+              //                     child: Text(
+              //                       "How are you?",
+              //                       style: Theme.of(context)
+              //                           .textTheme
+              //                           .bodySmall!
+              //                           .copyWith(color: Colors.grey),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //               GestureDetector(
+              //                 onTap: () {
+              //                   // messagecontroller.text = "What are you doing?";
+              //                 },
+              //                 child: Container(
+              //                   decoration: BoxDecoration(
+              //                       border: Border.all(color: Colors.grey),
+              //                       borderRadius: BorderRadius.circular(20)),
+              //                   height: height * .04,
+              //                   width: width * .37,
+              //                   child: Center(
+              //                     child: Text(
+              //                       "What are you doing?",
+              //                       style: Theme.of(context)
+              //                           .textTheme
+              //                           .bodySmall!
+              //                           .copyWith(color: Colors.grey),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //   ],
+              // ),
 
-            SizedBox(
-              height: Get.height * 0.02,
-            ),
-          ],
+              SizedBox(
+                height: Get.height * 0.02,
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: TapRegion(
         onTapOutside: (event) => FocusScope.of(context).unfocus(),
         child: Container(
+          color: Colors.white,
           padding: MediaQuery.of(context).viewInsets,
           width: Get.width,
           child: Padding(
@@ -1620,28 +1625,40 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 200),
                   child: isRecording
-                      ? AudioWaveforms(
-                          enableGesture: true,
-                          size: Size(MediaQuery.of(context).size.width / 2, 50),
-                          recorderController: recorderController,
-                          waveStyle: const WaveStyle(
-                            waveColor: Colors.black,
-                            extendWaveform: true,
-                            showMiddleLine: false,
-                          ),
+                      ? Container(
+                          width: MediaQuery.of(context).size.width / 1.7,
+                          height: 50,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.0),
-                            color: Colors.white,
-                          ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20.0),
+                              border:
+                                  Border.all(width: 1, color: Colors.black)),
                           padding: const EdgeInsets.only(left: 18),
                           margin: const EdgeInsets.symmetric(horizontal: 15),
+                          child: AudioWaveforms(
+                            enableGesture: true,
+                            size:
+                                Size(MediaQuery.of(context).size.width / 2, 50),
+                            recorderController: recorderController,
+                            waveStyle: const WaveStyle(
+                              waveColor: Colors.black,
+                              extendWaveform: true,
+                              showMiddleLine: false,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: Colors.white,
+                            ),
+                            padding: const EdgeInsets.only(left: 18),
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                          ),
                         )
                       : Container(
                           width: MediaQuery.of(context).size.width / 1.7,
                           height: 50,
                           decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(12.0),
+                              borderRadius: BorderRadius.circular(20.0),
                               border:
                                   Border.all(width: 1, color: Colors.black)),
                           padding: const EdgeInsets.only(left: 18),
@@ -1649,12 +1666,23 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                           child: TextField(
                             // readOnly: true,
                             controller: messagecontroller,
+                            onChanged: (value) {
+                              messagetype = "text";
+                              value == null
+                                  ? setStatus('Typing..')
+                                  : setStatus('Typing..');
+                            },
+
                             style: TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                               hintText: "Type Something...",
                               hintStyle: const TextStyle(color: Colors.grey),
-                              contentPadding: const EdgeInsets.only(top: 16),
+                              contentPadding: const EdgeInsets.only(top: 15),
                               border: InputBorder.none,
+                              // prefixIcon: InkWell(
+                              //     onTap: () {
+                              //       showOptionsDialog(context);
+                              //     }, child: Image.asset("assets/image/pin.png",height: 1,width: 1,)),
                               suffixIcon: IconButton(
                                 onPressed: () {
                                   showOptionsDialog(context);
@@ -1670,8 +1698,8 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
                   onPressed: () {
                     String userMessage = messagecontroller.text.trim();
                     if (userMessage.isNotEmpty) {
-                      onSendMessage();
                       sendNotification(userMessage);
+                      onSendMessage();
                     }
                   },
                   icon: Icon(

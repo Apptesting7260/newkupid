@@ -75,6 +75,7 @@ class _ChatScreenMakerState extends State<ChatScreenMaker> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           centerTitle: true,
+
           actions: [
             Builder(
               builder: (context) {
@@ -112,7 +113,11 @@ class _ChatScreenMakerState extends State<ChatScreenMaker> {
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 child: Container(
                                   height: height * 0.1,
-                                  color: Colors.amber[50],
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
                                   width: Get.width,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),

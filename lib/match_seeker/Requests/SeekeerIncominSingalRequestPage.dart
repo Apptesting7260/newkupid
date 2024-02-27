@@ -1494,7 +1494,7 @@ class _SeekerIncomingRequestSinglePageState
             .ViewProfileDetail.value.data!.roomid
             .toString())
         .get();
-    var roomdetails = data.data() as Map<String, dynamic>;
+    var roomdetails = data.data()   as Map<String, dynamic>;
 
     print(roomdetails);
     roomid = roomdetails["roomid"];
@@ -1512,7 +1512,7 @@ class _SeekerIncomingRequestSinglePageState
     // seeker1=data['seeker_id1'];
     // seeker2=data['seeker_id2'];
     chatname = roomdetails['roomname'];
-    chatimage1 = roomdetails['seeker_inage1'];
+    chatimage1 = roomdetails['seeker_inage2'];
 
     if (seekerOutgoingRequestSinglePageController
             .ViewProfileDetail.value.data!.getmaker !=

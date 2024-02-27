@@ -155,7 +155,7 @@ class Getmaker {
     currentStep = json['current_step'];
     imgPath = json['img_path'];
     videoPath = json['video_path'];
-    details = Details.fromJson(json['details']);
+    // details = Details.fromJson(json['details']);
   }
 
   Map<String, dynamic> toJson() {

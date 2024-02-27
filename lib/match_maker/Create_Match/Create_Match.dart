@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+import '../../widgets/seekershortprofile.dart';
 
 class MatchScreen extends StatefulWidget {
   @override
@@ -89,7 +89,10 @@ class _MatchScreenState extends State<MatchScreen> {
             body: Obx(() {
               switch (ProfileScrollControllerinstance.rxRequestStatus.value) {
                 case Status.LOADING:
-                  return const Center(child: CircularProgressIndicator(color: Colors.pinkAccent,));
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: Colors.pinkAccent,
+                  ));
                 case Status.ERROR:
                   if (ProfileScrollControllerinstance.error.value ==
                       'No internet') {
@@ -164,104 +167,106 @@ class _MatchScreenState extends State<MatchScreen> {
                                     child: FloatingActionButton(
                                       onPressed: () async {
                                         final SharedPreferences prefs =
-                                        await SharedPreferences
-                                            .getInstance();
+                                            await SharedPreferences
+                                                .getInstance();
                                         setState(() {
                                           isloading = true;
                                         });
                                         Timer(Duration(seconds: 1), () {
+                                          setState(() {
+                                            name1 = null;
+                                            name2 = null;
+                                            name1 = "";
+                                            im2 = "";
+                                            im2 = null;
+                                            img1 = null;
+                                            img1 = "";
+                                            images.clear();
 
-                                        setState(() {
-                                          name1=null;
-                                          name2=null;
-                                          name1="";
-                                          im2="";
-                                          im2=null;
-                                          img1=null;
-                                          img1="";
-                                          images.clear();
+                                            name2 = "";
+                                          });
+                                          print('item 1st ->  ' + '$_topItem1');
+                                          match_fromid =
+                                              ProfileScrollControllerinstance
+                                                  .ProfileScrollList
+                                                  .value
+                                                  .allseekers!
+                                                  .Mal![_topItem1]
+                                                  .id
+                                                  .toString();
+                                          print(ProfileScrollControllerinstance
+                                              .ProfileScrollList
+                                              .value
+                                              .allseekers!
+                                              .Mal![_topItem1]
+                                              .name
+                                              .toString());
+                                          name1 =
+                                              ProfileScrollControllerinstance
+                                                  .ProfileScrollList
+                                                  .value
+                                                  .allseekers!
+                                                  .Mal![_topItem1]
+                                                  .name
+                                                  .toString();
+                                          match_withid =
+                                              ProfileScrollControllerinstance
+                                                  .ProfileScrollList
+                                                  .value
+                                                  .allseekers!
+                                                  .Femal![_topItem2]
+                                                  .id
+                                                  .toString();
+                                          print('item 2nd ->  ' + '$_topItem2');
+                                          print(ProfileScrollControllerinstance
+                                              .ProfileScrollList
+                                              .value
+                                              .allseekers!
+                                              .Femal![_topItem2]
+                                              .name
+                                              .toString());
+                                          name2 =
+                                              ProfileScrollControllerinstance
+                                                  .ProfileScrollList
+                                                  .value
+                                                  .allseekers!
+                                                  .Femal![_topItem2]
+                                                  .name
+                                                  .toString();
+                                          im2 = ProfileScrollControllerinstance
+                                              .ProfileScrollList
+                                              .value
+                                              .allseekers!
+                                              .Femal![_topItem2]
+                                              .imgPath
+                                              .toString();
+                                          Makerid = prefs.getString('Tokernid');
+                                          Matchtype = "0";
+                                          DoMatchesControllerinstance
+                                              .DoMatchesApiHit();
 
-                                          name2="";
-
-                                        });
-                                        print('item 1st ->  ' + '$_topItem1');
-                                        match_fromid =
-                                            ProfileScrollControllerinstance
-                                                .ProfileScrollList
-                                                .value
-                                                .allseekers!
-                                                .Mal![_topItem1]
-                                                .id
-                                                .toString();
-                                        print(ProfileScrollControllerinstance
-                                            .ProfileScrollList
-                                            .value
-                                            .allseekers!
-                                            .Mal![_topItem1]
-                                            .name
-                                            .toString());
-                                        name1 = ProfileScrollControllerinstance
-                                            .ProfileScrollList
-                                            .value
-                                            .allseekers!
-                                            .Mal![_topItem1]
-                                            .name
-                                            .toString();
-                                        match_withid =
-                                            ProfileScrollControllerinstance
-                                                .ProfileScrollList
-                                                .value
-                                                .allseekers!
-                                                .Femal![_topItem2]
-                                                .id
-                                                .toString();
-                                        print('item 2nd ->  ' + '$_topItem2');
-                                        print(ProfileScrollControllerinstance
-                                            .ProfileScrollList
-                                            .value
-                                            .allseekers!
-                                            .Femal![_topItem2]
-                                            .name
-                                            .toString());
-                                        name2 = ProfileScrollControllerinstance
-                                            .ProfileScrollList
-                                            .value
-                                            .allseekers!
-                                            .Femal![_topItem2]
-                                            .name
-                                            .toString();
-                                        im2 = ProfileScrollControllerinstance
-                                            .ProfileScrollList
-                                            .value
-                                            .allseekers!
-                                            .Femal![_topItem2]
-                                            .imgPath
-                                            .toString();
-                                        Makerid = prefs.getString('Tokernid');
-                                        Matchtype = "0";
-                                        DoMatchesControllerinstance
-                                            .DoMatchesApiHit();
-
-                                        img1 = ProfileScrollControllerinstance
-                                            .ProfileScrollList
-                                            .value
-                                            .allseekers!
-                                            .Mal![_topItem1]
-                                            .imgPath
-                                            .toString();
-                                        images.addAll([img1,im2]);
-                                        Timer(Duration(seconds: 2), (){
-                                          if (DoMatchesControllerinstance
-                                                  .DoMatches.value.status.toString() ==
-                                              "success") {
-                                            ShowDialog(context);
-                                            setState(() {
-                                              name1;
-                                              name2;
-                                              images;
-                                              isloading = false;
-                                            });
-                                          }});
+                                          img1 = ProfileScrollControllerinstance
+                                              .ProfileScrollList
+                                              .value
+                                              .allseekers!
+                                              .Mal![_topItem1]
+                                              .imgPath
+                                              .toString();
+                                          images.addAll([img1, im2]);
+                                          Timer(Duration(seconds: 2), () {
+                                            if (DoMatchesControllerinstance
+                                                    .DoMatches.value.status
+                                                    .toString() ==
+                                                "success") {
+                                              ShowDialog(context);
+                                              setState(() {
+                                                name1;
+                                                name2;
+                                                images;
+                                                isloading = false;
+                                              });
+                                            }
+                                          });
                                         });
                                       },
                                       child: Container(
@@ -285,33 +290,33 @@ class _MatchScreenState extends State<MatchScreen> {
                                     ),
                                   )
                                 : Container(
-                              decoration: BoxDecoration(),
-                              height: MediaQuery.of(context).size.width *
-                                  0.29,
-                              width: MediaQuery.of(context).size.width *
-                                  0.29,
-                              child: FloatingActionButton(
-
-
-                                onPressed: (){},
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Center(
-                                      child: CircularProgressIndicator(color: Colors.pinkAccent,)),
-                                ),
-                                backgroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    MediaQuery.of(context).size.width *
-                                        0.3,
-                                  ),
-                                  side: BorderSide(
-                                    color: Colors.pink.shade400,
-                                    width: 4,
-                                  ),
-                                ),
-                              ),
-                            )),
+                                    decoration: BoxDecoration(),
+                                    height: MediaQuery.of(context).size.width *
+                                        0.29,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.29,
+                                    child: FloatingActionButton(
+                                      onPressed: () {},
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: Center(
+                                            child: CircularProgressIndicator(
+                                          color: Colors.pinkAccent,
+                                        )),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          MediaQuery.of(context).size.width *
+                                              0.3,
+                                        ),
+                                        side: BorderSide(
+                                          color: Colors.pink.shade400,
+                                          width: 4,
+                                        ),
+                                      ),
+                                    ),
+                                  )),
                       ),
                     ],
                   );
@@ -370,8 +375,10 @@ class _MatchScreenState extends State<MatchScreen> {
                                     .imgPath
                                     .toString(),
                                 fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator(color: Colors.pinkAccent,)),
+                                placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                  color: Colors.pinkAccent,
+                                )),
                                 // Placeholder widget while loading
                                 errorWidget: (context, url, error) => Icon(Icons
                                     .error), // Error widget if loading fails
@@ -448,27 +455,59 @@ class _MatchScreenState extends State<MatchScreen> {
                               SizedBox(
                                 height: Get.height * 0.001,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Travelling",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 10,
-                                        color: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    width: Get.width * 0.01,
-                                  ),
-                                  Text(
-                                    "Books",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 10,
-                                        color: Colors.black),
-                                  ),
-                                ],
+                              Container(
+
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.04,
+                                    ),
+                                    (ProfileScrollControllerinstance
+                                        .ProfileScrollList
+                                        .value
+                                        .allseekers!
+                                        .Femal![index]
+                                        .details!
+                                        .interestName !=
+                                        [])
+                                        ? Row(
+                                      children: [
+                                        for (var i = 0;
+                                        ProfileScrollControllerinstance
+                                            .ProfileScrollList
+                                            .value
+                                            .allseekers!
+                                            .Femal![index]
+                                            .details!
+                                            .interestName!
+                                            .length >
+                                            i;
+                                        i++)
+                                          Container(
+                                            width: Get.width * 0.05,
+                                            child: Text(
+                                              ProfileScrollControllerinstance
+                                                  .ProfileScrollList
+                                                  .value
+                                                  .allseekers!
+                                                  .Femal![index]
+                                                  .details!
+                                                  .interestName![i]
+                                                  .title
+                                                  .toString() +
+                                                  " ",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 6,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                      ],
+                                    )
+                                        : Container(),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: Get.height * 0.001,
@@ -476,36 +515,63 @@ class _MatchScreenState extends State<MatchScreen> {
                               Wrap(
                                 direction: Axis.horizontal,
                                 children: [
-                                  iconText(
-                                    'assets/images/religion_icon.png',
-                                    ProfileScrollControllerinstance
-                                        .ProfileScrollList
-                                        .value
-                                        .allseekers!
-                                        .Femal![index]
-                                        .religion
-                                        .toString(),
-                                  ),
-                                  iconText(
-                                    'assets/images/height_icon.png',
-                                    ProfileScrollControllerinstance
-                                        .ProfileScrollList
-                                        .value
-                                        .allseekers!
-                                        .Femal![index]
-                                        .height
-                                        .toString(),
-                                  ),
-                                  iconText(
-                                    'assets/images/salary_icon.png',
-                                    ProfileScrollControllerinstance
-                                        .ProfileScrollList
-                                        .value
-                                        .allseekers!
-                                        .Femal![index]
-                                        .salary
-                                        .toString(),
-                                  ),
+                                  if (ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Femal![index]
+                                          .religion
+                                          .toString()
+                                          !=
+                                      "null")
+                                    iconText(
+                                      'assets/images/religion_icon.png',
+                                      ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Femal![index]
+                                          .religion
+                                          .toString(),
+                                    ),
+                                  if (ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Femal![index]
+                                          .height
+                                          .toString()
+                                           !=
+                                      "null")
+                                    iconText(
+                                      'assets/images/height_icon.png',
+                                      ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Femal![index]
+                                          .height
+                                          .toString(),
+                                    ),
+                                  if (ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Femal![index]
+                                          .salary
+                                          .toString()
+                                          !=
+                                      "null")
+                                    iconText(
+                                      'assets/images/salary_icon.png',
+                                      ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Femal![index]
+                                          .salary
+                                          .toString(),
+                                    ),
                                 ],
                               ),
                             ],
@@ -532,7 +598,15 @@ class _MatchScreenState extends State<MatchScreen> {
                           }
 
                           print(userIdsiker);
-                          Get.to(SikerProfilePage());
+                          userIdsiker = ProfileScrollControllerinstance
+                              .ProfileScrollList
+                              .value
+                              .allseekers!
+                              .Femal![index]
+                              .id
+                              .toString();
+                          print('object');
+                          Get.to(ShortProfileSeeker());
                         },
                         child: Container(
                           padding: EdgeInsets.all(3),
@@ -607,8 +681,9 @@ class _MatchScreenState extends State<MatchScreen> {
                                     .imgPath
                                     .toString(),
                                 fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator(color: Colors.pinkAccent)),
+                                placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                        color: Colors.pinkAccent)),
                                 // Placeholder widget while loading
                                 errorWidget: (context, url, error) => Icon(Icons
                                     .error), // Error widget if loading fails
@@ -639,7 +714,13 @@ class _MatchScreenState extends State<MatchScreen> {
                                 height: Get.height * 0.001,
                               ),
                               Text(
-                                "Fashion Designer",
+                                ProfileScrollControllerinstance
+                                    .ProfileScrollList
+                                    .value
+                                    .allseekers!
+                                    .Mal![index]
+                                    .occupation
+                                    .toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 12,
@@ -676,27 +757,82 @@ class _MatchScreenState extends State<MatchScreen> {
                               SizedBox(
                                 height: Get.height * 0.001,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Travelling",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 10,
-                                        color: Colors.black),
-                                  ),
-                                  SizedBox(
-                                    width: Get.width * 0.01,
-                                  ),
-                                  Text(
-                                    "Books",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 10,
-                                        color: Colors.black),
-                                  ),
-                                ],
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.start,
+                              //   children: [
+                              //     Text(
+                              //       "Travelling",
+                              //       style: TextStyle(
+                              //           fontWeight: FontWeight.w400,
+                              //           fontSize: 10,
+                              //           color: Colors.black),
+                              //     ),
+                              //     SizedBox(
+                              //       width: Get.width * 0.01,
+                              //     ),
+                              //     Text(
+                              //       "Books",
+                              //       style: TextStyle(
+                              //           fontWeight: FontWeight.w400,
+                              //           fontSize: 10,
+                              //           color: Colors.black),
+                              //     ),
+                              //   ],
+                              // ),
+
+                              Container(
+
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: Get.width * 0.04,
+                                    ),
+                                    (ProfileScrollControllerinstance
+                                        .ProfileScrollList
+                                        .value
+                                        .allseekers!
+                                        .Mal![index]
+                                        .details!
+                                        .interestName !=
+                                        [])
+                                        ? Row(
+                                      children: [
+                                        for (var i = 0;
+                                        ProfileScrollControllerinstance
+                                            .ProfileScrollList
+                                            .value
+                                            .allseekers!
+                                            .Mal![index]
+                                            .details!
+                                            .interestName!
+                                            .length >
+                                            i;
+                                        i++)
+                                          Container(
+                                            width: Get.width * 0.05,
+                                            child: Text(
+                                              ProfileScrollControllerinstance
+                                                  .ProfileScrollList
+                                                  .value
+                                                  .allseekers!
+                                                  .Mal![index]
+                                                  .details!
+                                                  .interestName![i]
+                                                  .title
+                                                  .toString() +
+                                                  " ",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 6,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                      ],
+                                    )
+                                        : Container(),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: Get.height * 0.001,
@@ -704,36 +840,60 @@ class _MatchScreenState extends State<MatchScreen> {
                               Wrap(
                                 direction: Axis.horizontal,
                                 children: [
-                                  iconText(
-                                    'assets/images/religion_icon.png',
-                                    ProfileScrollControllerinstance
-                                        .ProfileScrollList
-                                        .value
-                                        .allseekers!
-                                        .Mal![index]
-                                        .religion
-                                        .toString(),
-                                  ),
-                                  iconText(
-                                    'assets/images/height_icon.png',
-                                    ProfileScrollControllerinstance
-                                        .ProfileScrollList
-                                        .value
-                                        .allseekers!
-                                        .Mal![index]
-                                        .height
-                                        .toString(),
-                                  ),
-                                  iconText(
-                                    'assets/images/salary_icon.png',
-                                    ProfileScrollControllerinstance
-                                        .ProfileScrollList
-                                        .value
-                                        .allseekers!
-                                        .Mal![index]
-                                        .salary
-                                        .toString(),
-                                  ),
+                                  if (ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Mal![index]
+                                          .religion
+                                          .toString() !=
+                                      "null")
+                                    iconText(
+                                      'assets/images/religion_icon.png',
+                                      ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Mal![index]
+                                          .religion
+                                          .toString(),
+                                    ),
+                                  if (ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Mal![index]
+                                          .height
+                                          .toString() !=
+                                      "null")
+                                    iconText(
+                                      'assets/images/height_icon.png',
+                                      ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Mal![index]
+                                          .height
+                                          .toString(),
+                                    ),
+                                  if (ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Mal![index]
+                                          .salary
+                                          .toString() !=
+                                      "null")
+                                    iconText(
+                                      'assets/images/salary_icon.png',
+                                      ProfileScrollControllerinstance
+                                          .ProfileScrollList
+                                          .value
+                                          .allseekers!
+                                          .Mal![index]
+                                          .salary
+                                          .toString(),
+                                    ),
                                 ],
                               ),
                             ],
@@ -760,7 +920,15 @@ class _MatchScreenState extends State<MatchScreen> {
                           }
 
                           print(userIdsiker);
-                          Get.to(SikerProfilePage());
+                          userIdsiker = ProfileScrollControllerinstance
+                              .ProfileScrollList
+                              .value
+                              .allseekers!
+                              .Mal![index]
+                              .id
+                              .toString();
+                          print('object');
+                          Get.to(ShortProfileSeeker());
                         },
                         child: Container(
                           padding: EdgeInsets.all(3),
@@ -797,7 +965,7 @@ ShowDialog(BuildContext context) {
   final DoMatchesControllerinstance = Get.put(DoMatchesController());
 
   showDialog(
-    barrierDismissible: false,
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -900,18 +1068,19 @@ ShowDialog(BuildContext context) {
               Text(
                 name1.toString() + " and " + name2.toString(),
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Color(0xff000CAA),fontWeight: FontWeight.w300
-                    ),
+                    color: Color(0xff000CAA), fontWeight: FontWeight.w300),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * .01,
               ),
-        Text(
-        (DoMatchesControllerinstance.DoMatches.value.msg.toString()) ,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Color(0xffFE0091)),
-          textAlign: TextAlign.center,
-
-        ),
+              Text(
+                (DoMatchesControllerinstance.DoMatches.value.msg.toString()),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(color: Color(0xffFE0091)),
+                textAlign: TextAlign.center,
+              ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * .02,
               ),

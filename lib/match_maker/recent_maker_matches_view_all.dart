@@ -134,7 +134,7 @@ class _RecentMakerMatchesViewAllState extends State<RecentMakerMatchesViewAll> {
                                         Stack(
                                           children: [
                                             Container(
-                                              height: height * 0.32,
+                                              height: height * 0.3,
                                               width: width * 0.43,
                                               decoration: BoxDecoration(
                                                   color:
@@ -197,7 +197,7 @@ class _RecentMakerMatchesViewAllState extends State<RecentMakerMatchesViewAll> {
                                                   backgroundColor:
                                                       AppColors.white,
                                                   child:
-                                                      Icon(Icons.heart_broken),
+                                                      Icon(Icons.heart_broken,color: Colors.pinkAccent,),
                                                 ),
                                               ),
                                             ),
@@ -211,7 +211,7 @@ class _RecentMakerMatchesViewAllState extends State<RecentMakerMatchesViewAll> {
                                                   backgroundColor:
                                                       AppColors.white,
                                                   child:
-                                                      Icon(Icons.heart_broken),
+                                                      Icon(Icons.heart_broken,color: Colors.pinkAccent ,),
                                                 ),
                                               ),
                                             ),
